@@ -1,0 +1,41 @@
+
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" version="3.0">
+  
+    <servlet>
+        <servlet-name>MapExternalDataSourceServlet</servlet-name>
+        <description>
+            MapExternalDataSourceServlet
+        </description>
+        <servlet-class>se.nrm.dina.external.datasource.servlet.MapExternalDataSourceServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>MapExternalDataSourceServlet</servlet-name>
+        <url-pattern>/externalData</url-pattern>
+    </servlet-mapping>
+    
+    
+    
+    <servlet>
+        <servlet-name>ExternalFilesServlet</servlet-name>
+        <description>
+            ExternalFilesServlet
+        </description>
+        <servlet-class>se.nrm.dina.external.file.servlet.ExternalFilesServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ExternalFilesServlet</servlet-name>
+        <url-pattern>/externalfile</url-pattern>
+    </servlet-mapping>
+    
+    
+    
+
+ 
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+</web-app>
+
+ 
