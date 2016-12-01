@@ -156,10 +156,9 @@ public class OnlineForm implements Serializable {
     
     private int numOfPages;
        
+    private String loanRequestPeriod;
     
-    
-    private final String LOCAL_EXTERNAL_FILES = "http://localhost:8080/dina-external-datasource/pdf?pdf=";
-    private final String REMOTE_EXTERNAL_FILES_LOAN = "https://dina-loans.nrm.se:8453/dina-external-datasource/pdf?pdf=";
+    private final String LOCAL_EXTERNAL_FILES = "http://localhost:8080/dina-external-datasource/pdf?pdf="; 
     private final String REMOTE_EXTERNAL_FILES_AS = "https://www.dina-web.net/dina-external-datasource/pdf?pdf="; 
     
     private final String DESTRUCTIVE_SAMPLING_POLICY;
@@ -175,6 +174,8 @@ public class OnlineForm implements Serializable {
     
     
     private String selectedCollection;
+    
+    private boolean isHolidaySession;
      
      
     @Inject
@@ -233,8 +234,7 @@ public class OnlineForm implements Serializable {
         if(servername.contains(LOCALHOST)) {
             basePath = LOCAL_EXTERNAL_FILES;
             server = "localhost";
-            host = "localhost";
-//        } else if(servername.contains(DINA_WEB)) {
+            host = server + ":8080"; 
         }  else {
             basePath = REMOTE_EXTERNAL_FILES_AS;
             server = "dina-web";
@@ -274,11 +274,7 @@ public class OnlineForm implements Serializable {
         section = 1;  
         minDate = Util.addWeeksToDate(2);  
         toMinDate = minDate; 
-        
-//        minDateForHoliday = Util.holidayMinDate();
-//        toMinDateForHoliday = minDateForHoliday;
-        
-//        isLocal = Util.isLocal(); 
+         
      
         Calendar now = Calendar.getInstance();    
         CURRENT_YEAR = now.get(Calendar.YEAR);    
@@ -1627,6 +1623,14 @@ public class OnlineForm implements Serializable {
 
         toMinDate = fromDate;
     }
+
+    public boolean isIsHolidaySession() {
+        return Util.isHoliday();
+    }
+    
+    
+    
+    
  
     public String getDestructiveSamplingPolicy() { 
         return DESTRUCTIVE_SAMPLING_POLICY;
@@ -1726,6 +1730,10 @@ public class OnlineForm implements Serializable {
 
     public void setNoCITE(boolean noCITE) {
         this.noCITE = noCITE;
+    }
+
+    public String getLoanRequestPeriod() {
+        return  CommonString.getLoanRequestPeriod(isSwedish, Util.isHoliday());
     }
 
  

@@ -57,7 +57,11 @@ public class CommonString {
     private static final String EN_ATTACHMENTS = "Attachment: "; 
     private static final String SV_ATTACHMENTS = "Bifogat: ";
      
+    private static final String EN_LOANREQUEST_PERIOD = "Request loan period";
+    private static final String SV_LOANREQUEST_PERIOD = "Ansökt låneperiod";
     
+    private static final String EN_LOANREQUEST_HOLIDAY_PERIOD = "Request loan period (Holiday)";
+    private static final String SV_LOANREQUEST_HOLIDAY_PERIOD = "Ansökt låneperiod (juletider)";
     
     // Sample details
     private static final String EN_SAMPLE_DETAILS = "Loan request object details";
@@ -367,7 +371,13 @@ public class CommonString {
         return isSwedish ? SV_LOCATION : EN_LOCAION;
     }
     
-    
+    public static String getLoanRequestPeriod(boolean isSwedish, boolean isHoliday) {
+        if(isHoliday) {
+           return isSwedish ? SV_LOANREQUEST_HOLIDAY_PERIOD : EN_LOANREQUEST_HOLIDAY_PERIOD;
+        } else {
+            return isSwedish ? SV_LOANREQUEST_PERIOD : EN_LOANREQUEST_PERIOD;
+        }
+    }
     
     
     public static synchronized CommonString getInstance() {

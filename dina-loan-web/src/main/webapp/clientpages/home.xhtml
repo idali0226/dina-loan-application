@@ -128,12 +128,12 @@
                                             <p:outputLabel value="#{onlineForm.otherTotalCount}" /> 
                                         </p:panelGrid>
                                         <p:spacer width="10" />
-                                         
-                                        <ui:remove> <!-- this message displays only during the holiday season -->
-                                            <h:panelGrid style="border: 1px solid; border-color: red; width: 400px; ">
-                                                <p:outputLabel value="#{msg.tempmsg}" />
-                                            </h:panelGrid>
-                                        </ui:remove>
+
+                                        <!-- this message displays only during the holiday season -->
+                                        <h:panelGrid style="border: 1px solid; border-color: red; width: 400px; " rendered="#{onlineForm.isHolidaySession}">
+                                            <p:outputLabel value="#{msg.tempmsg}" />
+                                        </h:panelGrid>
+
                                     </h:panelGrid>
                                     <br />
                                     <h:panelGroup  layout="block" id="chart_div" style="width: 700px;  border: solid 1px;">  </h:panelGroup>  
@@ -648,7 +648,7 @@
                                     <br />
 
                                     <h:panelGrid columns="3" style="font-size: 12px;">
-                                        <p:outputLabel value="#{msg.requestloanperiod}: holiday" styleClass="text" />  
+                                        <p:outputLabel value="#{onlineForm.loanRequestPeriod}:" styleClass="text" />  
                                         <h:panelGrid cellspacing="0" cellpadding="0">
                                             <p:calendar pattern="yyyy-MM-dd" showButtonPanel="true" navigator="true"   
                                                         id="fromdate" value="#{onlineForm.fromDate}" pages="3" mindate="#{onlineForm.minDate}"   >    
@@ -2026,7 +2026,7 @@
                                         </h:panelGrid>
                                     
                                         <h:panelGrid columns="3" style="font-size: 12px; font-family:  Arial,sans-serif;   "  > 
-                                            <p:outputLabel  value="#{msg.requestloanperiod}: fsdfsaf"/>
+                                            <p:outputLabel  value="#{onlineForm.loanRequestPeriod}: "/>
                                             <p:spacer width="5" />  
                                             <h:panelGrid  style="font-size: 12px; font-family:  Arial,sans-serif;   " columns="5" cellpadding="0" cellspacing="0">
                                                 
@@ -2094,7 +2094,7 @@
 
                                        <h:panelGrid columns="3" style="font-size: 12px; font-family:  Arial,sans-serif;   "  > 
 
-                                            <p:outputLabel  value="#{msg.requestloanperiod}:"/>
+                                            <p:outputLabel  value="#{onlineForm.loanRequestPeriod}:"/>
                                             <p:spacer width="5" />  
                                             <h:panelGrid  style="font-size: 12px; font-family:  Arial,sans-serif;   " columns="5" cellpadding="0" cellspacing="0">  
                                             

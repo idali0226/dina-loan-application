@@ -8,7 +8,9 @@ package se.nrm.dina.loan.web.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDate; 
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.Calendar;
@@ -27,12 +29,17 @@ public class Util {
     
     private static final Logger logger = LoggerFactory.getLogger(Util.class);
     
+    private static LocalDate today;
+    private static int year;
+    private static int nextYear;
+    
     private final static SimpleDateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd"); 
+    private final static DateTimeFormatter germanFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(Locale.GERMAN);
       
     public static Date addWeeksToDate(int numOfWeeks) {
         
-        logger.info("addWeeksToDate");
-        
+        logger.info("addWeeksToDate"); 
+         
         Calendar now = Calendar.getInstance();
          
         now.add(Calendar.WEEK_OF_YEAR, numOfWeeks); 
@@ -46,17 +53,11 @@ public class Util {
     public static Date holidayMinDate() {
         
         logger.info("holidayMinDate");
-
-        LocalDate today = LocalDate.now();
-        
-        DateTimeFormatter germanFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(Locale.GERMAN);
-        
-        LocalDate minDate = LocalDate.parse("28.11.2015", germanFormatter);  
-        LocalDate maxDate = LocalDate.parse("01.01.2016", germanFormatter);  
-        
-        if (today.isAfter(minDate) && today.isBefore(maxDate)) {
+ 
+        if (isHoliday()) { 
+            String holidayStr = "14.01." + nextYear;
             try { 
-                LocalDate startDate = LocalDate.parse("14.01.2016", germanFormatter);  
+                LocalDate startDate = LocalDate.parse(holidayStr, germanFormatter);  
 
                 return new SimpleDateFormat("yyyy-MM-dd").parse(startDate.toString()); 
             } catch (ParseException ex) {
@@ -65,6 +66,19 @@ public class Util {
         } else {
             return addWeeksToDate(2);
         } 
+    }
+    
+    public static boolean isHoliday() { 
+        
+        today = LocalDate.now();
+        year = today.getYear();
+        nextYear = year + 1;
+        String minStr = "30.11." + year;
+        String maxStr = "01.01." + nextYear;
+         
+        LocalDate minDate = LocalDate.parse(minStr, germanFormatter);  
+        LocalDate maxDate = LocalDate.parse(maxStr, germanFormatter);  
+        return today.isAfter(minDate) && today.isBefore(maxDate);
     }
     
     /**
@@ -78,9 +92,5 @@ public class Util {
             return "";
         }
         return FORMAT.format(date);
-    }
-    
-//    public static boolean isLocal() {
-//        return IS_LOCAL;
-//    }
+    } 
 }
