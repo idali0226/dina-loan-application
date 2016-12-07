@@ -88,18 +88,20 @@ public class SearchLoanController implements Serializable {
     public SearchLoanController() {
         loans = new ArrayList<>();
 
-        statusOptions = new SelectItem[4];
-
+        statusOptions = new SelectItem[5];
+        
         statusOptions[0] = new SelectItem("", "Select");
-        statusOptions[1] = new SelectItem("Request pending", "Request pending");  
-        statusOptions[2] = new SelectItem("Request accepted", "Request accepted");  
-        statusOptions[3] = new SelectItem("Request denied", "Request denied");   
+        statusOptions[1] = new SelectItem("Request pending", "Request pending"); 
+        statusOptions[2] = new SelectItem("In progress", "In progress");  
+        statusOptions[3] = new SelectItem("Request accepted", "Request accepted");  
+        statusOptions[4] = new SelectItem("Request denied", "Request denied");   
     
         statusList = new ArrayList<>();
         statusList.add("Request pending");
+        statusList.add("In progress");
         statusList.add("Request denied");
         statusList.add("Request accepted"); 
-        
+  
         selectedDepartments = new ArrayList<>();
         selectedDepartments.add("Zoology");
         
@@ -156,7 +158,7 @@ public class SearchLoanController implements Serializable {
                         });
             
             collections.add(0, "");
-        }
+        } 
     }
 
     public void cancel() {
@@ -184,18 +186,7 @@ public class SearchLoanController implements Serializable {
         
         if(borrower != null && !borrower.isEmpty()) {
             queryMap.put("borrower", borrower);
-        }
-        
-//        List<String> list = Arrays.asList(selectedStatusList);   
-//        if (list != null && !list.isEmpty()) {
-//            loans = mongo.findLoansWithQuery(list, queryMap);
-//        } else {
-//            if(!queryMap.isEmpty()) {
-//                loans = mongo.findLoansWithQuery(queryMap);
-//            } else {
-//                loans = mongo.findAllLoans();
-//            }  
-//        } 
+        } 
     }
     
     public void refreshLoans() {
@@ -224,20 +215,7 @@ public class SearchLoanController implements Serializable {
         
         return collectionGroups.stream()
                 .filter(name -> name.toLowerCase().contains(query.toLowerCase()))
-                .collect(Collectors.toList());
-        
-        
-//        nameList = new ArrayList<>();  
-//        collectionGroups = mongo.findAllCollectionGroupNames();
-//        nameList = collectionGroups.stream()
-//                .filter(name -> name.toLowerCase().contains(query.toLowerCase()))
-//                .collect(Collectors.toList());
-//                
-//                
-////                .forEach((name) -> {
-////            nameList.add(name);
-////        });  
-//        return nameList;   
+                .collect(Collectors.toList());   
     }
     
     private void searchFilterLoans() {
@@ -378,14 +356,7 @@ public class SearchLoanController implements Serializable {
         
         searchFilterLoans();
     }
-
-//    public List<String> getNameList() {
-//        return nameList;
-//    }
-//
-//    public void setNameList(List<String> nameList) {
-//        this.nameList = nameList;
-//    }
+ 
 
     public List<String> getSelectedDepartments() {
         return selectedDepartments;
