@@ -171,12 +171,10 @@ public class OnlineForm implements Serializable {
     
     private final String NON_SCIENTIFIC_LOANS = "Non scientific";
     private final int CURRENT_YEAR;
-    
-    
+     
     private String selectedCollection;
     
-    private boolean isHolidaySession;
-     
+    private boolean isProjectDescriptionSet;
      
     @Inject
     private BreadCrumbBean breadCrumb;
@@ -217,7 +215,7 @@ public class OnlineForm implements Serializable {
     private final String host;
     
     private final String LOCALHOST = "localhost";
-    private final String DINA_WEB = "dina-web";
+//    private final String DINA_WEB = "dina-web";
     
     
     
@@ -239,12 +237,7 @@ public class OnlineForm implements Serializable {
             basePath = REMOTE_EXTERNAL_FILES_AS;
             server = "dina-web";
             host = "www.dina-web.net";
-        } 
-//        else {
-//            basePath = REMOTE_EXTERNAL_FILES_LOAN;
-//            server = "loans";
-//            host = "dina-loans.nrm.se";
-//        } 
+        }  
          
         DESTRUCTIVE_SAMPLING_POLICY = basePath + "Loanpolicyforscientificpurposes.pdf#page=2"; 
         SCIENTIFIC_PURPOSE_LOAN_POLICY = basePath + "Loanpolicyforscientificpurposes.pdf";
@@ -354,9 +347,7 @@ public class OnlineForm implements Serializable {
         educationPurpose = null;
         requestType = RequestType.Physical.getText();
         page3requestType = RequestType.Physical.getText();
-         
-//        fileNameList = new ArrayList<>();
-        
+          
         // attachement file name
         scPurposeFileName = null;
         edPurposeFileName = null;
@@ -396,7 +387,7 @@ public class OnlineForm implements Serializable {
         sample = new Sample(); 
         sample.setType(NameMapping.getMsgByKey(CommonNames.PreservationTypeNotSpecified, isSwedish));
   
- 
+        isProjectDescriptionSet = false;
          
         isPhoto = false;
         photoInstruction = " - ";
@@ -601,12 +592,16 @@ public class OnlineForm implements Serializable {
                 gotoPage2();
             }
         } else { 
-            if (numOfPages == 9) {
-                currentpage = "descLoanPage3"; 
-            } else if (numOfPages == 7) { 
-                currentpage = "page32panel";
-            } else { 
-                currentpage = "page33panel";
+            switch (numOfPages) {
+                case 9:
+                    currentpage = "descLoanPage3";
+                    break;
+                case 7:
+                    currentpage = "page32panel";
+                    break;
+                default:
+                    currentpage = "page33panel";
+                    break;
             }
 
             if (step == 3) {
@@ -820,10 +815,7 @@ public class OnlineForm implements Serializable {
         if(numOfPages == 9) {
             loan.setType(requestType); 
             loan.setReleventCollection(selectedCollection);
-        
-//            c = mongo.findCollection(selectedCollection, "name"); 
-//            loan.setCurator(c.getEmail());
-            
+         
             if(isPhoto) {
                 loan.setPhotoInstraction(photoInstruction);
                 if(photoInstructionFileName != null && !photoInstructionFileName.isEmpty()) {
@@ -1514,8 +1506,24 @@ public class OnlineForm implements Serializable {
         this.department = department;
     }
 
+    public void handleProjectDescription() {
+        logger.info("handleProjectDescription : {} -- {}", descriptionOfLoan, scPurposeFileName);
+        
+        setIsProjectDescriptionSet();
+    }
     
-        /**
+    private void setIsProjectDescriptionSet() {
+        isProjectDescriptionSet = false;
+        if(scPurposeFileName != null) {
+            isProjectDescriptionSet = true;
+        } else if(descriptionOfLoan != null && !descriptionOfLoan.isEmpty()) {
+            if(!descriptionOfLoan.trim().equals("-")) {
+                isProjectDescriptionSet = true;
+            } 
+        }
+    }
+    
+    /**
      * Upload file 
      *  
      * @param event
@@ -1524,12 +1532,13 @@ public class OnlineForm implements Serializable {
         logger.info("handleFileUpload : {} ", event.getFile().getFileName());
         try { 
             scPurposeFileName = event.getFile().getFileName(); 
-            fileHander.saveTempFile(event.getFile(), uuid);
-        } catch (IOException ex) {
+            fileHander.saveTempFile(event.getFile(), uuid); 
+        } catch (IOException ex) {  
             logger.warn(ex.getMessage());
             addError("", NameMapping.getMsgByKey(CommonNames.UploadFileFailed, isSwedish));
         }
-    }
+        setIsProjectDescriptionSet();
+    } 
 
     /**
      * Upload file
@@ -1583,8 +1592,9 @@ public class OnlineForm implements Serializable {
 
         logger.info("removefile : {}", filename);
 
-        if(filename.equals(scPurposeFileName)) {
+        if(filename.equals(scPurposeFileName)) { 
             scPurposeFileName = null;
+            setIsProjectDescriptionSet();
         } else if(filename.equals(edPurposeFileName)) {
             edPurposeFileName = null;
         } else if(filename.equals(destructiveMethodFileName)) {
@@ -1736,15 +1746,16 @@ public class OnlineForm implements Serializable {
         return  CommonString.getLoanRequestPeriod(isSwedish, Util.isHoliday());
     }
 
- 
+    public boolean isIsProjectDescriptionSet() {
+        return isProjectDescriptionSet;
+    }
 
-//    public String getAppropriate() {
-//        return appropriate;
-//    }
-//
-//    public void setAppropriate(String appropriate) {
-//        this.appropriate = appropriate;
-//    }
+    public void setIsProjectDescriptionSet(boolean isProjectDescriptionSet) {
+        this.isProjectDescriptionSet = isProjectDescriptionSet;
+    }
+
+ 
+ 
 
     public boolean isIsPhoto() {
         return isPhoto;

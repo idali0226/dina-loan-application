@@ -7,10 +7,8 @@
 package se.nrm.dina.loan.web.util;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDate; 
-import java.time.ZoneId;
+import java.text.SimpleDateFormat; 
+import java.time.LocalDate;  
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.Calendar;
@@ -27,14 +25,14 @@ import org.slf4j.LoggerFactory;
  */
 public class Util {
     
-    private static final Logger logger = LoggerFactory.getLogger(Util.class);
+    private static Logger logger = LoggerFactory.getLogger(Util.class);
     
     private static LocalDate today;
     private static int year;
     private static int nextYear;
     
     private final static SimpleDateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd"); 
-    private final static DateTimeFormatter germanFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(Locale.GERMAN);
+    private final static DateTimeFormatter GERMAN_FORMATTER = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(Locale.GERMAN);
       
     public static Date addWeeksToDate(int numOfWeeks) {
         
@@ -57,7 +55,7 @@ public class Util {
         if (isHoliday()) { 
             String holidayStr = "14.01." + nextYear;
             try { 
-                LocalDate startDate = LocalDate.parse(holidayStr, germanFormatter);  
+                LocalDate startDate = LocalDate.parse(holidayStr, GERMAN_FORMATTER);  
 
                 return new SimpleDateFormat("yyyy-MM-dd").parse(startDate.toString()); 
             } catch (ParseException ex) {
@@ -76,8 +74,8 @@ public class Util {
         String minStr = "30.11." + year;
         String maxStr = "01.01." + nextYear;
          
-        LocalDate minDate = LocalDate.parse(minStr, germanFormatter);  
-        LocalDate maxDate = LocalDate.parse(maxStr, germanFormatter);  
+        LocalDate minDate = LocalDate.parse(minStr, GERMAN_FORMATTER);  
+        LocalDate maxDate = LocalDate.parse(maxStr, GERMAN_FORMATTER);  
         return today.isAfter(minDate) && today.isBefore(maxDate);
     }
     

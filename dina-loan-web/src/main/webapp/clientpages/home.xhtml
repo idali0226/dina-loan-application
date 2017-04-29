@@ -456,6 +456,11 @@
                                         <p:outputLabel value="#{msg.fomr12title}" styleClass="maintext" /> 
                                     </h:panelGroup>
                                     <br />
+                                    <br />
+                                    <h:panelGroup layout="block" >
+                                        <p:outputLabel value="#{msg.form12title1}" styleClass="subtitle" /> 
+                                    </h:panelGroup>
+                                    <br />
                                     <br /> 
                                     <h:panelGroup layout="block" >
                                         <p:outputLabel value="#{msg.page3subtitle}" styleClass="subtitle" /> 
@@ -463,7 +468,11 @@
                                     <br />
                                     <br />  
                                     <h:panelGroup style="padding: 45px;">
-                                        <p:inputTextarea id="descLoanPage3" value="#{onlineForm.descriptionOfLoan}" rows="7" cols="110" styleClass="contactfieldstext" />  
+                                        <p:inputTextarea id="descLoanPage3" value="#{onlineForm.descriptionOfLoan}" 
+                                                         rows="7" cols="110" styleClass="contactfieldstext" >  
+                                            <p:ajax event="blur" listener="#{onlineForm.handleProjectDescription()}" 
+                                                        update="projectDescriptionButtonPanel" />
+                                        </p:inputTextarea>
                                     </h:panelGroup>
                                     
 
@@ -475,17 +484,21 @@
                                            
                                                 <h:panelGrid cellpadding="0" cellspacing="0" >
                                                     <p:fileUpload fileUploadListener="#{onlineForm.handleFileUpload}" 
-                                                                  mode="advanced"   label="#{msg.uploadfile}"  invalidSizeMessage="#{msg.invalidfilesiz}"
-                                                              auto="true" styleClass="originalbutton" sizeLimit="5000000" 
-                                                              update=":onlineform:uploadfilePanel" />  
+                                                                  mode="advanced"   label="#{msg.uploadfile}"  
+                                                                  invalidSizeMessage="#{msg.invalidfilesiz}"
+                                                                  auto="true" styleClass="originalbutton" sizeLimit="5000000" 
+                                                                  update=":onlineform:uploadfilePanel projectDescriptionButtonPanel" />  
                                                 </h:panelGrid> 
                                            
                                             <h:panelGrid  id="uploadedFilePanel" cellpadding="0" cellspacing="0" style="margin-top: -20px; " rendered="#{not empty onlineForm.scPurposeFileName}">
                                                 <p:panel style="border: none; font-size: 12px; " > 
                                                     <p:outputLabel value="#{onlineForm.scPurposeFileName}" /> 
                                                     <p:spacer width="10" />
-                                                    <p:commandLink actionListener="#{onlineForm.removefile(onlineForm.scPurposeFileName)}"  process="uploadfilePanel" 
-                                                                   title="#{msg.btnremovefile}"  update="uploadfilePanel" global="false"  > 
+                                                    <p:commandLink actionListener="#{onlineForm.removefile(onlineForm.scPurposeFileName)}" 
+                                                                   process="uploadfilePanel" 
+                                                                   title="#{msg.btnremovefile}" 
+                                                                   update="uploadfilePanel projectDescriptionButtonPanel" 
+                                                                   global="false"  > 
                                                         <h:graphicImage name="images/button_remove.gif" styleClass="images" /> 
                                                     </p:commandLink> 
                                                 </p:panel>    
@@ -502,11 +515,12 @@
                                     <br />  
                                     <br /> 
 
-                                    <h:panelGroup layout="block" style="width: 150px; float: right;"> 
+                                    <h:panelGroup layout="block" style="width: 150px; float: right;" id="projectDescriptionButtonPanel"> 
                                         <p:commandButton value="#{msg.back}" action="#{onlineForm.gotoPage2}"  global="false" process="@this"
                                                          update="page3panel page2panel breadcrumbpanel imgswitchPanel" />  
                                         <p:spacer width="10" />
-                                        <p:commandButton value="#{msg.next}" action="#{onlineForm.gotoPage4}" process="page3panel"
+                                        <p:commandButton value="#{msg.next}" action="#{onlineForm.gotoPage4}" process="page3panel" 
+                                                         disabled="#{!onlineForm.isProjectDescriptionSet}"
                                                          update="page3panel page4panel breadcrumbpanel imgswitchPanel" global="false" />  
                                     </h:panelGroup>  
 
@@ -1007,7 +1021,9 @@
                                     </h:panelGroup> 
                                     <br /> 
                                     <h:panelGroup layout="block" style="padding-left: 35px; ">
-                                        <p:inputTextarea id="page5additioninfo" value="#{onlineForm.additionInformation}" rows="5" cols="110" styleClass="contactfieldstext" />  
+                                        <p:inputTextarea id="page5additioninfo" value="#{onlineForm.additionInformation}" 
+                                                         rows="5" cols="110" 
+                                                         styleClass="contactfieldstext" />  
                                     </h:panelGroup>  
                                     <br />
                                     <br /> 
@@ -1022,7 +1038,8 @@
                                     <br /> 
                                     <br /> 
                                     <h:panelGroup style="padding-left: 45px; ">
-                                        <p:inputTextarea id="page5desc" value="#{onlineForm.exhPorpuseDesc}" rows="7" cols="110" styleClass="contactfieldstext" />  
+                                        <p:inputTextarea id="page5desc" value="#{onlineForm.exhPorpuseDesc}" 
+                                                         rows="7" cols="110" styleClass="contactfieldstext" />  
                                     </h:panelGroup> 
                                 </h:panelGroup>
                                 <br /> 
