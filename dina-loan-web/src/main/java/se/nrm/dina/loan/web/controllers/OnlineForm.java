@@ -175,6 +175,7 @@ public class OnlineForm implements Serializable {
     private String selectedCollection;
     
     private boolean isProjectDescriptionSet;
+    private boolean isDestractiveLoan;
      
     @Inject
     private BreadCrumbBean breadCrumb;
@@ -362,6 +363,7 @@ public class OnlineForm implements Serializable {
         isAgree = false;
         isPolicyRead = false;
         isDestractive = false;  
+        isDestractiveLoan = false;
         isPhd = false;
         isPolicyLinkEnabled = false;
         isDestructivePolicyLinkEnabled = false;
@@ -668,6 +670,7 @@ public class OnlineForm implements Serializable {
     public void gotoPage6() {
         logger.info("goToPage6 : {} -- {}", step, additionInformation);
 
+        
         if (numOfPages == 9 && RequestType.Information.isInformation(requestType)) {
             if (!validateSampleList()) {
                 addError("Value required", "Type can not be empty!!!");
@@ -678,6 +681,7 @@ public class OnlineForm implements Serializable {
             }
         } else {
             if (numOfPages == 9) {
+                isDestractiveLoan = false;
                 if (!validateSampleList()) {
                     addError("Value required", "Type can not be empty!!!");
                 } else {
@@ -1138,12 +1142,14 @@ public class OnlineForm implements Serializable {
     public void selectDestractive() {
         logger.info("selectDestractive : {} - {}", isDestractiveSelected, destructiveMethod);
          
-        isDestractiveSelected = destractive != null && !destractive.isEmpty(); 
+//        isDestractiveSelected = destractive != null && !destractive.isEmpty(); 
+        isDestractiveSelected = destractive.equals("false");
         isDestractive = destractive.equals("true");
-        
+        isDestractiveLoan = destractive.equals("true");
+         
         logger.info("isDestractive : {} -- {}", isDestractive, destractive);
     }
-    
+     
     public void addPrimaryContact() {
         logger.info("addPrimaryContact : {}", hasPrimaryContact);   
         hasPrimaryContact = true;   
@@ -1505,6 +1511,29 @@ public class OnlineForm implements Serializable {
     public void setDepartment(String department) {
         this.department = department;
     }
+    
+    public void handleDesctractiveMethod() {
+        logger.info("handleProjectDescription : {} -- {}", destructiveMethod, destructiveMethodFileName);
+        
+        setIsDestractiveMethodSet();
+    }
+    
+    private void setIsDestractiveMethodSet() {
+        isDestractiveSelected = false;
+        if(destractive != null && !destractive.isEmpty()) {
+            if(destractive.equals("false")) {
+                isDestractiveSelected = true;
+            } else {
+                 if(destructiveMethodFileName != null) {
+                    isDestractiveSelected = true;
+                } else if(destructiveMethod != null && !destructiveMethod.isEmpty()) {
+                    if(!destructiveMethod.trim().equals("-")) {
+                        isDestractiveSelected = true;
+                    }   
+                }
+            }
+        }  
+    }
 
     public void handleProjectDescription() {
         logger.info("handleProjectDescription : {} -- {}", descriptionOfLoan, scPurposeFileName);
@@ -1566,6 +1595,7 @@ public class OnlineForm implements Serializable {
         try { 
             destructiveMethodFileName = event.getFile().getFileName();  
             fileHander.saveTempFile(event.getFile(), uuid);
+            setIsDestractiveMethodSet();
         } catch (IOException ex) {
             logger.warn(ex.getMessage());
             addError("", NameMapping.getMsgByKey(CommonNames.UploadFileFailed, isSwedish));
@@ -1597,8 +1627,9 @@ public class OnlineForm implements Serializable {
             setIsProjectDescriptionSet();
         } else if(filename.equals(edPurposeFileName)) {
             edPurposeFileName = null;
-        } else if(filename.equals(destructiveMethodFileName)) {
+        } else if(filename.equals(destructiveMethodFileName)) { 
             destructiveMethodFileName = null;
+            setIsDestractiveMethodSet();
         } else if(filename.equals(photoInstructionFileName)) {
             photoInstructionFileName = null;
         }
@@ -2097,6 +2128,14 @@ public class OnlineForm implements Serializable {
 
     public boolean isIsImplemented() {
         return isImplemented;
+    }
+
+    public boolean isIsDestractiveLoan() {
+        return isDestractiveLoan;
+    }
+
+    public void setIsDestractiveLoan(boolean isDestractiveLoan) {
+        this.isDestractiveLoan = isDestractiveLoan;
     }
     
     

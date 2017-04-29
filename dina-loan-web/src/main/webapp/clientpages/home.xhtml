@@ -16,19 +16,19 @@
                         <!--<a href="../templates/masterLayout.xhtml"></a>-->
                     </h:panelGrid>  
                 </p:dialog>
- 
+
                 <h:form id="onlineform" enctype="multipart/form-data" prependId="false">   
-                    
+
                     <h:panelGroup id="openWindow">
                         <h:outputScript rendered="#{languages.openGbif}">
                             window.open('#{onlineForm.gbifUrl}', '_blank')
                         </h:outputScript>
                     </h:panelGroup>
-                      
+
                     <h:panelGrid styleClass="imgswitch" cellpadding="0" cellspacing="0" id="imgswitchPanel"  >
                         <p:graphicImage value="#{imageBeans.image}" styleClass="img"   />  
                     </h:panelGrid>   
- 
+
                     <h:panelGroup styleClass="main" layout="block" id="mainpanel" >   
                         <h:panelGrid id="breadcrumbpanel" >
                             <h:panelGroup  layout="block" rendered="#{breadcrumb.navigationPathEnabled}"   styleClass="breadcrumbpanel"   > 
@@ -77,22 +77,22 @@
                                 </p:breadCrumb>    
                             </h:panelGroup>
                         </h:panelGrid>
-                        
+
                         <h:panelGroup id="idlemonitorpanel"> 
-                                      
+
                             <!--<p:growl id="messages" showDetail="true" sticky="true" />-->
 
                             <!--<p:idleMonitor timeout="1800000">-->
                             <p:idleMonitor timeout="7200000">
-                            <!--<p:idleMonitor timeout="10000">-->
+                                <!--<p:idleMonitor timeout="10000">-->
                                 <p:ajax event="idle" listener="#{idleMonitorView.onIdle}"  />
                                 <p:ajax event="active" listener="#{idleMonitorView.onActive}"   />
                             </p:idleMonitor>
-                        
+
                         </h:panelGroup>
-                        
+
                         <br /> 
-                        
+
                         <!--  home page -->
                         <h:panelGroup id="homepanel">
                             <h:panelGroup layout="block" id="homepanel1" rendered="#{onlineForm.section == 1}" styleClass="sectionstyle1" >
@@ -118,11 +118,11 @@
                                             <p:outputLabel value="#{msg.scientificpurpose}" />
                                             <p:outputLabel value="#{onlineForm.secientificYearCount}" />
                                             <p:outputLabel value="#{onlineForm.secientificTotalCount}" />
-                                             
+
                                             <p:outputLabel value="#{msg.educationexhibition}" />
                                             <p:outputLabel value="#{onlineForm.educationalYearCount}" />
                                             <p:outputLabel value="#{onlineForm.educationalTotalCount}" />
-                                             
+
                                             <p:outputLabel value="#{msg.commercialart}" />
                                             <p:outputLabel value="#{onlineForm.otherYearCount}" /> 
                                             <p:outputLabel value="#{onlineForm.otherTotalCount}" /> 
@@ -198,8 +198,8 @@
                                         </h:panelGroup> 
                                         <br />
                                         <br /> 
- 
-                                   
+
+
                                     </h:panelGroup>
 
                                     <h:panelGroup layout="block" id="esbpanel" rendered="#{onlineForm.section == 111}" styleClass="sectionstyle1" > 
@@ -224,7 +224,7 @@
                                         </h:panelGroup>  
                                         <br />
                                         <br /> 
-                                  
+
                                     </h:panelGroup>
 
                                     <h:panelGroup layout="block" id="geologypanel" rendered="#{onlineForm.section == 112}" styleClass="sectionstyle1" > 
@@ -250,7 +250,7 @@
 
                                         <br />
                                         <br /> 
-                             
+
                                     </h:panelGroup>
 
                                     <h:panelGroup layout="block" id="palaebiologypanel" rendered="#{onlineForm.section == 113}" styleClass="sectionstyle1" > 
@@ -276,7 +276,7 @@
                                         </h:panelGroup> 
                                         <br />
                                         <br /> 
- 
+
                                     </h:panelGroup>
                                 </h:panelGrid>
 
@@ -293,9 +293,9 @@
                                 </h:panelGroup>
                             </h:panelGroup>
                         </h:panelGroup>
-                        
-                        
-                        
+
+
+
                         <!-- page 1 -->
                         <h:panelGroup id="page1panel">
                             <h:panelGroup layout="block" id="page11panel" rendered="#{onlineForm.section == 11}" styleClass="collectionpanel" > 
@@ -310,9 +310,9 @@
                                         <f:selectItem itemValue="scientificpurpose" itemLabel="#{msg.scientificpurpose}" />
                                         <f:selectItem itemValue="educationexhibition" itemLabel="#{msg.educationexhibition}" />	   	
                                         <f:selectItem itemValue="commercialartother" itemLabel="#{msg.commercialart}" />	      
-                                        
+
                                         <p:ajax event="change"  listener="#{onlineForm.selectpurpose()}"  update="breadcrumbpanel " global="false" />  
-                                     </h:selectOneRadio> 
+                                    </h:selectOneRadio> 
                                 </p:panel> 
 
                                 <br />
@@ -327,10 +327,10 @@
                                     </p:commandButton>
                                 </h:panelGroup> 
                             </h:panelGroup> 
-                            
+
                         </h:panelGroup>
-                          
-                        
+
+
                         <!-- page 2 -->
                         <h:panelGroup id="page2panel">
                             <h:panelGroup layout="block" id="page2panel1" rendered="#{onlineForm.step == 3}" styleClass="page2Panel" > 
@@ -352,7 +352,7 @@
                                                 <f:selectItem itemValue="Information" itemLabel="#{msg.information}" />	  
                                                 <p:ajax event="change"  listener="#{onlineForm.sampleTypeChanged()}"  update="breadcrumbpanel " global="false" />  
                                             </h:selectOneRadio> 
-                                             
+
 
                                             <h:panelGrid columns="1" style="padding: 5px; ">
                                                 <p:graphicImage value="/resources/images/icon_question_mark.jpg" styleClass="languageimg"  alt="#{msg.helptext}" id="page2radio1" />  
@@ -365,13 +365,13 @@
 
                                             <p:tooltip for="page2radio2" value="#{msg.photorequesttip}" 
                                                        showEffect="fade" hideEffect="fade" style="font-size: 12px; white-space: normal; width: 250px; "/>  
-                                            
+
                                             <p:tooltip for="page2radio3" value="#{msg.informationrequesttip}" 
                                                        showEffect="fade" hideEffect="fade" style="font-size: 12px; white-space: normal; width: 250px; "/>  
                                         </h:panelGrid>  
                                     </p:panel> 
                                 </h:panelGroup>
-                            
+
                                 <!-- page 2 section 2 -->
                                 <h:panelGroup layout="block" id="page22panel" rendered="#{onlineForm.numOfPages == 7}" styleClass="page2Panel" >  
                                     <h:panelGroup layout="block" >
@@ -398,7 +398,7 @@
                                         <p:outputLabel value="#{msg.observetext2}" styleClass="boldtext"  />  
                                     </h:panelGroup>  
                                 </h:panelGroup>
-                            
+
                                 <!-- page 2 section 3 -->
                                 <h:panelGroup layout="block" id="page23panel" rendered="#{onlineForm.numOfPages == 6}" styleClass="page2Panel" >       
                                     <h:panelGroup layout="block" >
@@ -443,7 +443,7 @@
                                 <br /> 
                             </h:panelGroup>
                         </h:panelGroup>
-                        
+
 
 
 
@@ -471,25 +471,25 @@
                                         <p:inputTextarea id="descLoanPage3" value="#{onlineForm.descriptionOfLoan}" 
                                                          rows="7" cols="110" styleClass="contactfieldstext" >  
                                             <p:ajax event="blur" listener="#{onlineForm.handleProjectDescription()}" 
-                                                        update="projectDescriptionButtonPanel" />
+                                                    update="projectDescriptionButtonPanel" global="false" />
                                         </p:inputTextarea>
                                     </h:panelGroup>
-                                    
+
 
                                     <h:panelGroup style="float: right; " layout="block"  id="uploadfilePanel" >
                                         <h:panelGroup layout="block" style="width: 300px; float: left; ">
                                             <p:outputLabel value="#{msg.optional}:" styleClass="text" /> 
                                             <br />
                                             <p:outputLabel value="#{msg.attachfile}:" styleClass="text" />    
-                                           
-                                                <h:panelGrid cellpadding="0" cellspacing="0" >
-                                                    <p:fileUpload fileUploadListener="#{onlineForm.handleFileUpload}" 
-                                                                  mode="advanced"   label="#{msg.uploadfile}"  
-                                                                  invalidSizeMessage="#{msg.invalidfilesiz}"
-                                                                  auto="true" styleClass="originalbutton" sizeLimit="5000000" 
-                                                                  update=":onlineform:uploadfilePanel projectDescriptionButtonPanel" />  
-                                                </h:panelGrid> 
-                                           
+
+                                            <h:panelGrid cellpadding="0" cellspacing="0" >
+                                                <p:fileUpload fileUploadListener="#{onlineForm.handleFileUpload}" 
+                                                              mode="advanced"   label="#{msg.uploadfile}"  
+                                                              invalidSizeMessage="#{msg.invalidfilesiz}"
+                                                              auto="true" styleClass="originalbutton" sizeLimit="5000000" 
+                                                              update=":onlineform:uploadfilePanel projectDescriptionButtonPanel" />  
+                                            </h:panelGrid> 
+
                                             <h:panelGrid  id="uploadedFilePanel" cellpadding="0" cellspacing="0" style="margin-top: -20px; " rendered="#{not empty onlineForm.scPurposeFileName}">
                                                 <p:panel style="border: none; font-size: 12px; " > 
                                                     <p:outputLabel value="#{onlineForm.scPurposeFileName}" /> 
@@ -528,7 +528,7 @@
                                     <br /> 
                                 </h:panelGroup>
 
-                            
+
                                 <!-- page 3 section 2 -->
                                 <h:panelGroup layout="block" id="page32panel" rendered="#{onlineForm.numOfPages == 7}"   >   
                                     <h:panelGroup layout="block" >
@@ -560,7 +560,7 @@
                                     <br />
                                     <br /> 
                                 </h:panelGroup>
-                            
+
                                 <!-- page 3 section 3 -->
                                 <h:panelGroup layout="block" id="page33panel" rendered="#{onlineForm.numOfPages == 6}"  styleClass="page2Panel"  >       
                                     <h:panelGroup layout="block" >
@@ -582,10 +582,10 @@
                                             </h:panelGroup>
 
                                             <p:tooltip for="page33radio1" value="#{msg.physicalrequesttip}" 
-                                                                   showEffect="fade" hideEffect="fade" style="font-size: 12px; white-space: normal; width: 250px; "/>  
+                                                       showEffect="fade" hideEffect="fade" style="font-size: 12px; white-space: normal; width: 250px; "/>  
 
                                             <p:tooltip for="page33radio2" value="#{msg.photorequesttip}" 
-                                                                   showEffect="fade" hideEffect="fade" style="font-size: 12px; white-space: normal; width: 250px; "/>  
+                                                       showEffect="fade" hideEffect="fade" style="font-size: 12px; white-space: normal; width: 250px; "/>  
                                         </h:panelGrid> 
                                     </p:panel>
                                     <br />
@@ -605,9 +605,9 @@
                                 </h:panelGroup> 
                             </h:panelGroup> 
                         </h:panelGroup>
-                        
-                        
-                         
+
+
+
                         <!-- page 4  -->
                         <h:panelGroup  id="page4panel"> 
                             <h:panelGroup layout="block" id="page4panel1" rendered="#{onlineForm.step == 5}" styleClass="sectionstyle1"  > 
@@ -625,19 +625,19 @@
                                     <h:panelGroup layout="block" id="page4collectionpanel">
                                         <h:selectOneRadio id="console" value="#{onlineForm.selectedCollection}"  layout="pageDirection" styleClass="collectionlistradiofont" >
                                             <f:selectItems value="#{onlineForm.collectionItems}" /> 
-                                            
+
                                             <p:ajax event="change"  listener="#{onlineForm.collectionChanged()}"  update="page41panel " global="false" />  
                                         </h:selectOneRadio> 
                                     </h:panelGroup>   
-                                     
-                                    
-                                    
-                                     
+
+
+
+
                                     <br />
                                     <br />
                                     <br />
-                                    
-                                    
+
+
                                     <br />
 
                                     <h:panelGroup layout="block" style="width: 150px; float: right;  " id="page4buttonpanel1">  
@@ -650,7 +650,7 @@
                                     <br />
                                     <br />
                                 </h:panelGroup>
-                        
+
                                 <!-- page 4 section 2 -->
                                 <h:panelGroup layout="block" id="page42panel" rendered="#{onlineForm.numOfPages != 9}" styleClass="sectionstyle1"  >   
                                     <h:panelGroup layout="block" >
@@ -675,7 +675,7 @@
                                                         id="todate"  value="#{onlineForm.toDate}" pages="3" mindate="#{onlineForm.toMinDate}"  >  
                                             </p:calendar>  
                                         </h:panelGrid>
- 
+
                                         <p:spacer width="5" /> 
                                         <h:panelGrid cellspacing="0" cellpadding="0">
                                             <p:outputLabel value="#{msg.from}" styleClass="text" />  
@@ -685,20 +685,20 @@
                                             <p:outputLabel value="#{msg.to}" styleClass="text" />  
                                         </h:panelGrid>
                                     </h:panelGrid>
- 
+
                                     <h:panelGroup style="float: right; " layout="block"  id="uploadedpfilePanel" >
                                         <h:panelGroup layout="block" style="width: 300px; float: left; ">
                                             <p:outputLabel value="#{msg.optional}:" styleClass="text" /> 
                                             <br />
                                             <p:outputLabel value="#{msg.commonattachment}:" styleClass="text" />    
-                                        
-                                                <h:panelGrid cellpadding="0" cellspacing="0" >
-                                                    <p:fileUpload fileUploadListener="#{onlineForm.handleEDFileUpload}"  
+
+                                            <h:panelGrid cellpadding="0" cellspacing="0" >
+                                                <p:fileUpload fileUploadListener="#{onlineForm.handleEDFileUpload}"  
                                                               mode="advanced"   label="#{msg.uploadfile}" invalidSizeMessage="#{msg.invalidfilesiz}"
                                                               auto="true" styleClass="originalbutton" sizeLimit="5000000" 
                                                               update=":onlineform:uploadedpfilePanel" />  
-                                                </h:panelGrid> 
-                                        
+                                            </h:panelGrid> 
+
                                             <h:panelGrid  id="uploadededpFilePanel" cellpadding="0" cellspacing="0" style="margin-top: -20px; " rendered="#{not empty onlineForm.edPurposeFileName}">
                                                 <p:panel style="border: none; font-size: 12px; " > 
                                                     <p:outputLabel value="#{onlineForm.edPurposeFileName}" /> 
@@ -733,11 +733,11 @@
                                 </h:panelGroup>  
                             </h:panelGroup>
                         </h:panelGroup>
-                         
+
                         <!-- page 5 -->
                         <h:panelGroup id="page5panel" >
                             <h:panelGroup layout="block" id="page5panel1" rendered="#{onlineForm.step == 6}" styleClass="sectionstyle2"  >  
-                             
+
                                 <!-- page 5 section 1 -->
                                 <h:panelGroup layout="block" id="page51panel" rendered="#{onlineForm.numOfPages == 9}" styleClass="sectionstyle2"  >  
                                     <h:panelGrid id="samplelistpanel" rendered="#{onlineForm.samples.size() > 0}">    
@@ -758,7 +758,7 @@
                                             <p:column style="width:45px">
                                                 <p:rowEditor />
                                             </p:column>
-                                        
+
                                             <p:column headerText="#{msg.catalognumber}" width="130" style="font-size: 12px;">      
                                                 <p:cellEditor>
                                                     <f:facet name="output"><p:outputLabel value="#{sample.catalogNumber}"   /></f:facet>
@@ -800,21 +800,21 @@
                                                     <f:facet name="input"><p:inputText id="typestatusInput" value="#{sample.typeStatus}"  style="width:100%"/></f:facet>
                                                 </p:cellEditor>    
                                             </p:column> 
-                                            
+
                                             <p:column headerText="#{msg.localitycountry}" width="140" style="font-size: 12px; ">    
                                                 <p:cellEditor>
                                                     <f:facet name="output"><p:outputLabel value="#{sample.country}"   /></f:facet>
                                                     <f:facet name="input"><p:inputText id="localitycountryInput" value="#{sample.country}"  style="width:100%"/></f:facet>
                                                 </p:cellEditor>    
                                             </p:column> 
-                                            
+
                                             <p:column headerText="#{msg.locality}" width="140" style="font-size: 12px; ">    
                                                 <p:cellEditor>
                                                     <f:facet name="output"><p:outputLabel value="#{sample.locality}"   /></f:facet>
                                                     <f:facet name="input"><p:inputText id="localityInput" value="#{sample.locality}"  style="width:100%"/></f:facet>
                                                 </p:cellEditor>    
                                             </p:column> 
-                                             
+
                                             <p:column headerText="#{msg.collectdyear}" width="80" style="font-size: 12px; ">    
                                                 <p:cellEditor>
                                                     <f:facet name="output"><p:outputLabel value="#{sample.collectedYear}"   /></f:facet>
@@ -829,7 +829,7 @@
                                                 </p:cellEditor>   
                                             </p:column> 
 
-                               
+
 
                                             <p:column headerText="#{msg.typespecimen}" width="120" style="font-size: 12px; ">   
                                                 <p:cellEditor>
@@ -851,14 +851,14 @@
                                         <br />  
                                     </h:panelGrid> 
 
-                                    
+
                                     <h:panelGroup layout="block" >
                                         <p:outputLabel value="#{msg.page5usbtitle}" styleClass="subtitle"  /> 
                                         <br /><br />
                                         <p:outputLabel value="#{msg.page5subtitle2}" styleClass="subsubtitle"  /> 
                                         <br /><br />
                                     </h:panelGroup>
-                                    
+
                                     <h:panelGroup layout="block" style="padding-left: 20px; "> 
                                         <ul>
                                             <li>
@@ -887,7 +887,7 @@
                                             <p:spacer width="5" /> 
                                             <p:outputLabel value="#{msg.tblheader1}" style="font-weight: bold; font-size: 16px;" />
                                             <p:spacer width="5" />
- 
+
                                             <p:outputLabel for="samplecatalognumber" value="#{msg.tblheader2}:"  /> 
                                             <p:inputText id="samplecatalognumber" value="#{onlineForm.sample.catalogNumber}" size="45"> 
                                             </p:inputText>
@@ -901,7 +901,7 @@
                                             <p:outputLabel value="&lt;==&gt;" style="color: #0b5e82; " />
                                             <p:commandButton value="#{msg.dina}" actionListener="#{onlineForm.searchFamilyFromDina()}" process="@this,samplefamily" update="speciesdialog newrequestpanel" />
                                             <p:commandButton value="#{msg.gbif}" actionListener="#{onlineForm.searchFromGbif(onlineForm.sample.family)}" process="@this,samplefamily"  update="openWindow"   /> 
- 
+
                                             <p:outputLabel for="samplegenus" value="#{msg.tblheader4}:"  />
                                             <p:inputText id="samplegenus" value="#{onlineForm.sample.genus}" size="45"> 
                                             </p:inputText>  
@@ -917,22 +917,22 @@
                                             <p:commandButton value="#{msg.dina}" actionListener="#{onlineForm.searchSpeciesFromDina()}" process="@this,samplespecies" update="speciesdialog newrequestpanel" />
                                             <p:commandButton value="#{msg.gbif}" actionListener="#{onlineForm.searchFromGbif(onlineForm.sample.species)}" process="@this,samplespecies"  update="openWindow"   /> 
 
-                                            
-                                            
+
+
                                             <p:outputLabel for="sampleauctor" value="#{msg.tblheader6}:" />   
                                             <p:inputText id="sampleauctor" value="#{onlineForm.sample.auctor}" size="45"> 
                                             </p:inputText>
                                             <p:spacer width="5" />
                                             <p:spacer width="5" />
                                             <p:spacer width="5" /> 
-                                            
+
                                             <p:outputLabel for="sampletypeStatus" value="#{msg.tblheader7}:" />   
                                             <p:inputText id="sampletypeStatus" value="#{onlineForm.sample.typeStatus}" size="45"> 
                                             </p:inputText>
                                             <p:spacer width="5" />
                                             <p:spacer width="5" />
                                             <p:spacer width="5" />
-                                            
+
                                             <p:outputLabel for="samplecountry" value="#{msg.localitycountry}:" /> 
                                             <p:inputText id="samplecountry" value="#{onlineForm.sample.country}" size="45"> 
                                             </p:inputText> 
@@ -946,8 +946,8 @@
                                             <p:spacer width="5" />
                                             <p:spacer width="5" />
                                             <p:spacer width="5" />
-                                            
-                                            
+
+
 
                                             <p:outputLabel for="samplecollectedyear" value="#{msg.collectdyear}:"   />
                                             <p:inputText id="samplecollectedyear" value="#{onlineForm.sample.collectedYear}" size="45"> 
@@ -955,15 +955,15 @@
                                             <p:spacer width="5" />
                                             <p:spacer width="5" />
                                             <p:spacer width="5" />
- 
+
                                             <p:outputLabel for="samplecollector" value="#{msg.collector}:"  /> 
                                             <p:inputText id="samplecollector" value="#{onlineForm.sample.collector}" size="45"> 
                                             </p:inputText>
                                             <p:spacer width="5" />
                                             <p:spacer width="5" />
                                             <p:spacer width="5" />
-  
- 
+
+
                                             <p:outputLabel for="typespecimen" value="#{msg.typespecimen}:" />   
                                             <p:inputText id="typespecimen" value="#{onlineForm.sample.type}" 
                                                          required="#{!onlineForm.isPhoto}" requiredMessage="#{msg.errmsgtypespecimen}"  size="45"> 
@@ -971,7 +971,7 @@
                                             <p:message for="typespecimen" display="icon"   /> 
                                             <p:spacer width="5" />  
                                             <p:spacer width="5" />
-                                             
+
                                             <p:spacer width="5" /> 
                                             <p:outputLabel value="#{msg.typespecimendesc}" style="font-size: 11px;"  />
                                             <p:spacer width="5" />
@@ -1005,11 +1005,11 @@
                                             <h:outputLink value="#{msg.page5additionaltext7}" target="_blank" > 
                                                 <h:outputText value="#{msg.page5additionaltext7}" style="color: #8B8786; font-style: normal; " /> 
                                             </h:outputLink> 
-                                             
-                                      
+
+
                                             <p:outputLabel value="#{msg.page5additionaltext8}" styleClass="defaulttext"  style="font-size: 16px;"  /> 
                                         </h:panelGroup>
-                                         
+
                                         <p:spacer width="10" />
                                         <p:outputLabel value="#{msg.page5additionaltext9}" styleClass="defaulttext" style="font-size: 16px;"  />      
                                     </h:panelGrid>
@@ -1029,7 +1029,7 @@
                                     <br /> 
                                     <br /> 
                                 </h:panelGroup>
-                            
+
                                 <!-- page 5 section 2 -->
                                 <h:panelGroup layout="block" id="page52panel" rendered="#{onlineForm.numOfPages != 9}" styleClass="sectionstyle2"  >      
                                     <h:panelGroup layout="block" >
@@ -1046,7 +1046,7 @@
                                 <br />
                                 <h:panelGroup layout="block" style="width: 150px; float: right;  ">  
                                     <p:commandButton value="#{msg.back}" action="#{onlineForm.gotoPage4}"  process="@this"  
-                                                         update="page4panel page5panel breadcrumbpanel imgswitchPanel" global="false"  />  
+                                                     update="page4panel page5panel breadcrumbpanel imgswitchPanel" global="false"  />  
                                     <p:spacer width="10" />
                                     <p:commandButton value="#{msg.next}" action="#{onlineForm.gotoPage6}"  process="@this,page5additioninfo,page5desc"    
                                                      update="page8panel page6panel page7panel  page5panel policyDialogPanel destructivePolicyDialogPanel breadcrumbpanel imgswitchPanel"  global="false" />
@@ -1055,10 +1055,10 @@
                                 <br />
                             </h:panelGroup> 
                         </h:panelGroup>
-                        
-                        
-                         
-                             
+
+
+
+
 
                         <!-- page 6 -->
                         <h:panelGroup id="page6panel">
@@ -1070,69 +1070,81 @@
                                     </h:panelGroup> 
                                     <br />
                                     <br /> 
+                                    <h:panelGroup layout="block">
+                                        <p:panel header="#{msg.page6checkboxtitle}" >
+                                            <h:selectOneRadio value="#{onlineForm.destractive}" layout="pageDirection" styleClass="collectionlistradiofont">
+                                                <f:selectItem itemValue="false" itemLabel="#{msg.page6radiolabel1}" />
+                                                <f:selectItem itemValue="true" itemLabel="#{msg.page6radiolabel2}" /> 
+                                                <p:ajax listener="#{onlineForm.selectDestractive()}" event="change" 
+                                                        update="distractivePanel page6physicalpanel" global="false" />
+                                            </h:selectOneRadio> 
+                                            <h:panelGrid > 
+                                                <p:outputLabel value="#{msg.page6radiolabel3}" styleClass="textPaddingLeft" />  
+                                            </h:panelGrid>
 
-                                    <h:panelGroup layout="block" >
-                                        <p:outputLabel value="#{msg.page6title2}" styleClass="text" /> 
-                                        <p:outputLabel value="#{msg.page6title3}" styleClass="boldtext"  /> 
-                                        <p:outputLabel value="#{msg.page6title4}" styleClass="text" /> 
-                                        <p:outputLabel value="#{msg.page6title5}" styleClass="boldtext" /> 
-                                        <p:outputLabel value="#{msg.page6title6}" styleClass="text" /> 
-                                    </h:panelGroup> 
-                                    <br /> 
-                                    <h:panelGroup layout="block" style="padding-left: 35px; "> 
-                                        <p:inputTextarea id="page6Desc" value="#{onlineForm.destructiveMethod}" rows="5" cols="110" styleClass="contactfieldstext" />  
-                                    </h:panelGroup>  
+                                            <p:commandLink value="#{msg.policy}"  onclick="PF('destructivePolicyDlg').show();" global="false"  
+                                                           style="float: left; font-size: 12px; font-family: Arial,sans-serif; padding-left: 25px;   " />  
+                                            <p:spacer width="20" />
+                                        </p:panel>  
+                                        <br />
+                                    </h:panelGroup>
+                                    
+                                    <h:panelGroup layout="block" rendered="#{onlineForm.isDestractiveLoan}" id="destractiveDescriptionPanel">
+                                        <h:panelGroup layout="block" >
+                                            <p:spacer width="800" height="20" />
+                                            <p:outputLabel value="#{msg.page6title2}" styleClass="text" /> 
+                                            <p:outputLabel value="#{msg.page6title3}" styleClass="boldtext"  /> 
+                                            <p:outputLabel value="#{msg.page6title4}" styleClass="text" /> 
+                                            <p:outputLabel value="#{msg.page6title5}" styleClass="boldtext" /> 
+                                            <p:outputLabel value="#{msg.page6title6}" styleClass="text" /> 
+                                        </h:panelGroup> 
+                                        <br /> 
+                                        <h:panelGroup layout="block" style="padding-left: 35px; "> 
+                                            <p:inputTextarea id="page6Desc" value="#{onlineForm.destructiveMethod}" 
+                                                             rows="5" cols="110" styleClass="contactfieldstext" >
+                                                <p:ajax event="blur" listener="#{onlineForm.handleDesctractiveMethod()}" 
+                                                        update="distractivePanel" />
+                                            </p:inputTextarea>
+                                        </h:panelGroup>  
 
-                                    <h:panelGroup style="float: right; " layout="block" id="uploaddesfilePanel" >  
-                                         <h:panelGroup layout="block" style="width: 300px; float: left; ">
-                                            <p:outputLabel value="#{msg.optional}:" styleClass="text" /> 
-                                            <br />
-                                            <p:outputLabel value="#{msg.page6attachment}:" styleClass="text" />   
-                                 
+                                        <h:panelGroup style="float: right; " layout="block" id="uploaddesfilePanel" >  
+                                            <h:panelGroup layout="block" style="width: 300px; float: left; ">
+                                                <p:outputLabel value="#{msg.optional}:" styleClass="text" /> 
+                                                <br />
+                                                <p:outputLabel value="#{msg.page6attachment}:" styleClass="text" />   
+
                                                 <h:panelGrid cellpadding="0" cellspacing="0" >
                                                     <p:fileUpload fileUploadListener="#{onlineForm.handleDestructiveFileUpload}"  
                                                                   mode="advanced"   label="#{msg.uploadfile}"  invalidSizeMessage="#{msg.invalidfilesiz}"
-                                                              auto="true" styleClass="originalbutton" sizeLimit="5000000" 
-                                                              update=":onlineform:uploaddesfilePanel" style="font-size: 12px; " />  
+                                                                  auto="true" styleClass="originalbutton" sizeLimit="5000000" 
+                                                                  update=":onlineform:uploaddesfilePanel distractivePanel" style="font-size: 12px; " />  
                                                 </h:panelGrid> 
-                                           
-                                            <h:panelGrid  id="uploadeddespFilePanel" cellpadding="0" cellspacing="0" style="margin-top: -20px; " rendered="#{not empty onlineForm.destructiveMethodFileName}">
-                                                <p:panel style="border: none; font-size: 12px; " > 
-                                                    <p:outputLabel value="#{onlineForm.destructiveMethodFileName}" /> 
-                                                    <p:spacer width="10" />
-                                                    <p:commandLink actionListener="#{onlineForm.removefile(onlineForm.destructiveMethodFileName)}" title="#{msg.btnremovefile}"  
-                                                                   update="uploaddesfilePanel"  global="false"  process="uploaddesfilePanel"> 
-                                                        <h:graphicImage name="images/button_remove.gif" styleClass="images" /> 
-                                                    </p:commandLink> 
-                                                    
-                                                     
-                                                </p:panel>    
-                                            </h:panelGrid>
-                                        </h:panelGroup> 
-                                    </h:panelGroup>    
 
+                                                <h:panelGrid  id="uploadeddespFilePanel" cellpadding="0" cellspacing="0" style="margin-top: -20px; " rendered="#{not empty onlineForm.destructiveMethodFileName}">
+                                                    <p:panel style="border: none; font-size: 12px; " > 
+                                                        <p:outputLabel value="#{onlineForm.destructiveMethodFileName}" /> 
+                                                        <p:spacer width="10" />
+                                                        <p:commandLink actionListener="#{onlineForm.removefile(onlineForm.destructiveMethodFileName)}" title="#{msg.btnremovefile}"  
+                                                                       update="uploaddesfilePanel distractivePanel"  global="false"  process="uploaddesfilePanel"> 
+                                                            <h:graphicImage name="images/button_remove.gif" styleClass="images" /> 
+                                                        </p:commandLink> 
+
+
+                                                    </p:panel>    
+                                                </h:panelGrid>
+                                            </h:panelGroup> 
+                                        </h:panelGroup>    
+                                    </h:panelGroup>
                                     <br />
                                     <br /> 
                                     <br /> 
 
                                     <h:panelGroup layout="block" id="distractivePanel"  > 
-                                        <p:spacer width="500" height="50" />
-                                        <p:panel header="#{msg.page6checkboxtitle}" >
-                                            <h:selectOneRadio value="#{onlineForm.destractive}" layout="pageDirection" styleClass="collectionlistradiofont">
-                                                <f:selectItem itemValue="false" itemLabel="#{msg.page6radiolabel1}" />
-                                                <f:selectItem itemValue="true" itemLabel="#{msg.page6radiolabel2}" /> 
-                                                <p:ajax listener="#{onlineForm.selectDestractive()}" event="change" update="distractivePanel" global="false" />
-                                            </h:selectOneRadio> 
-
-                                            <p:commandLink value="#{msg.policy}"  onclick="PF('destructivePolicyDlg').show();" global="false"  
-                                                           style="float: left; font-size: 12px; font-family: Arial,sans-serif; padding-left: 25px;   " />  
-                                            <p:spacer width="20" />
-                                        </p:panel>   
-
+                                        <p:spacer width="500" height="50" /> 
                                         <p:panel> 
                                             <h:panelGroup layout="block" style="width: 150px; float: right;    ">    
                                                 <p:commandButton value="#{msg.back}" action="#{onlineForm.gotoPage5}" process="@this"  
-                                                             update="page5panel page6panel breadcrumbpanel imgswitchPanel" global="false"  />  
+                                                                 update="page5panel page6panel breadcrumbpanel imgswitchPanel" global="false"  />  
                                                 <p:spacer width="10" />
                                                 <p:commandButton value="#{msg.next}" action="#{onlineForm.gotoPage7}" disabled="#{!onlineForm.isDestractiveSelected}" 
                                                                  update="page7panel page6panel breadcrumbpanel imgswitchPanel"  
@@ -1144,7 +1156,7 @@
                                     <br /> 
                                     <br /> 
                                 </h:panelGroup>
-                            
+
                                 <!-- page 6 photo -->
                                 <h:panelGroup layout="block" id="page6photopanel" rendered="#{onlineForm.isPhoto}"   > 
                                     <h:panelGroup layout="block" >
@@ -1160,20 +1172,20 @@
                                     <h:panelGroup layout="block" style="padding-left: 15px; " >
                                         <p:inputTextarea id="page6photoInst" value="#{onlineForm.photoInstruction}" rows="5" cols="110" styleClass="contactfieldstext" />  
                                     </h:panelGroup> 
-                                 
+
                                     <h:panelGroup style="float: right; " layout="block" >  
                                         <h:panelGroup layout="block" style="width: 300px; float: left; " id="uploadphotodesfilePanel">
                                             <p:outputLabel value="#{msg.optional}:" styleClass="text" /> 
                                             <br />
                                             <p:outputLabel value="#{msg.attachfile}:" styleClass="text" />   
-                                    
-                                                <h:panelGrid cellpadding="0" cellspacing="0" >
-                                                    <p:fileUpload fileUploadListener="#{onlineForm.handlePhotoInstFileUpload}"  
-                                                                  mode="advanced"   label="#{msg.uploadfile}"  invalidSizeMessage="#{msg.invalidfilesiz}"
-                                                                auto="true" styleClass="originalbutton"  sizeLimit="5000000" 
-                                                                update=":onlineform:uploadphotodesfilePanel" />  
-                                                </h:panelGrid> 
-                                       
+
+                                            <h:panelGrid cellpadding="0" cellspacing="0" >
+                                                <p:fileUpload fileUploadListener="#{onlineForm.handlePhotoInstFileUpload}"  
+                                                              mode="advanced"   label="#{msg.uploadfile}"  invalidSizeMessage="#{msg.invalidfilesiz}"
+                                                              auto="true" styleClass="originalbutton"  sizeLimit="5000000" 
+                                                              update=":onlineform:uploadphotodesfilePanel" />  
+                                            </h:panelGrid> 
+
                                             <h:panelGrid  id="uploadedphotodespFilePanel" cellpadding="0" cellspacing="0" style="margin-top: -20px; " rendered="#{not empty onlineForm.photoInstructionFileName}">
                                                 <p:panel style="border: none; font-size: 12px; " > 
                                                     <p:outputLabel value="#{onlineForm.photoInstructionFileName}" /> 
@@ -1211,7 +1223,7 @@
                                 </h:panelGroup>  
                             </h:panelGroup>
                         </h:panelGroup>
-                        
+
 
                         <!-- page 7 -->
                         <h:panelGroup id="page7panel" >
@@ -1227,13 +1239,13 @@
                                     <p:outputLabel value="#{msg.page7title21}" styleClass="text" /> 
                                 </h:panelGroup> 
                                 <br /> 
-     
-                                
+
+
                                 <h:panelGrid columns="2" columnClasses="column4,column6" >
                                     <p:outputLabel value="#{msg.registnumber}" styleClass="defaulttext" />  
                                     <p:inputText id="citesnum" value="#{onlineForm.citesNumber}" styleClass="defaulttext" size="50" disabled="#{onlineForm.disableCITE}"/>   
-                                   
-                                    
+
+
                                     <p:spacer width="5" /> 
                                     <h:panelGrid columns="3">
                                         <h:selectBooleanCheckbox  value="#{onlineForm.noCITE}" > 
@@ -1243,7 +1255,7 @@
                                         <p:outputLabel value="#{msg.nocites}" styleClass="defaulttext" /> 
                                     </h:panelGrid> 
                                 </h:panelGrid>
-                                
+
 
 
                                 <br />
@@ -1265,7 +1277,7 @@
                                 <br />
                                 <h:panelGroup layout="block" style="width: 150px; float: right;  ">  
                                     <p:commandButton value="#{msg.back}" action="#{onlineForm.gotoPage6}" process="@this"  
-                                                             update="page7panel page6panel breadcrumbpanel imgswitchPanel" global="false"  />  
+                                                     update="page7panel page6panel breadcrumbpanel imgswitchPanel" global="false"  />  
                                     <p:spacer width="10" />
                                     <p:commandButton value="#{msg.next}" action="#{onlineForm.gotoPage8}" 
                                                      update="page7panel page8panel breadcrumbpanel imgswitchPanel" global="false" process="page7panel" />
@@ -1275,12 +1287,12 @@
                                 <br />
                             </h:panelGroup> 
                         </h:panelGroup>
-                        
-                        
+
+
                         <!-- page 8 -->
                         <h:panelGroup id="page8panel" >
                             <h:panelGroup layout="block"     id="page8panel1" rendered="#{onlineForm.step == 9}"  styleClass="sectionstyle2"  > 
-                            
+
                                 <p:messages id="page8panelmsg" autoUpdate="false"   showDetail="true" showSummary="false" closable="true"   showIcon="true"  />
 
                                 <h:panelGrid columns="2"  columnClasses="col1,alignBottom" id="page8contactpanel">
@@ -1294,20 +1306,20 @@
                                             <br /> 
                                             <h:panelGrid cellpadding="0" cellspacing="0" rendered="#{!onlineForm.isPhd}" id="removeContactlinkPanel">
                                                 <p:commandLink value="#{msg.removeprimaryborrow}:" action="#{onlineForm.removePrimaryContact()}" update="contact2Panel contactlinksPanel"  
-                                                           rendered="#{onlineForm.hasPrimaryContact}" styleClass="contactfieldstext"  global="false" process="@this" disabled="#{onlineForm.isPhd} "/> 
+                                                               rendered="#{onlineForm.hasPrimaryContact}" styleClass="contactfieldstext"  global="false" process="@this" disabled="#{onlineForm.isPhd} "/> 
                                             </h:panelGrid> 
                                         </h:panelGroup> 
-                                
+
                                         <h:panelGroup rendered="#{!onlineForm.isPhysical}">
                                             <p:spacer width="10" />
                                         </h:panelGroup>
                                     </h:panelGroup>
 
-                                    
+
                                     <h:panelGroup rendered="#{onlineForm.numOfPages != 9}">
                                         <p:spacer width="10" />
                                     </h:panelGroup>
-                                
+
                                     <h:panelGrid columns="3" id="contact1Panel" style=" font-size:  11px; font-family: Arial,sans-serif;">
                                         <p:outputLabel value="#{msg.title}"  /> 
                                         <p:selectOneMenu value="#{onlineForm.contact1.title}" id="contact1title" style="width:185px; font-size:  11px; font-family: Arial,sans-serif;">  
@@ -1335,14 +1347,14 @@
 
                                         <h:outputLabel for="contact1lastname" value="#{msg.lastname}:" />
                                         <p:inputText id="contact1lastname" value="#{onlineForm.contact1.lastname}" size="30" required="true" 
-                                                        requiredMessage="#{msg.errmsglastname}" styleClass="contactfieldstext" >   
+                                                     requiredMessage="#{msg.errmsglastname}" styleClass="contactfieldstext" >   
                                             <p:ajax event="blur"  listener="#{onlineForm.saveText()}" global="false" process="@this,contact1lastname"   />
                                         </p:inputText> 
                                         <p:message for="contact1lastname"  display="icon"  />
-                                     
+
                                         <h:outputLabel for="contact1institution" value="#{msg.institution}:" />
                                         <p:inputText id="contact1institution" value="#{onlineForm.contact1.institution}" size="30" required="true" 
-                                                        requiredMessage="#{msg.errmsginstitution}" styleClass="contactfieldstext" >    
+                                                     requiredMessage="#{msg.errmsginstitution}" styleClass="contactfieldstext" >    
                                             <p:ajax event="blur"  listener="#{onlineForm.saveText()}" global="false" process="@this,contact1institution"  />
                                         </p:inputText> 
                                         <p:message for="contact1institution" display="icon"  />
@@ -1355,14 +1367,14 @@
 
                                         <h:outputLabel for="contact1address" value="#{msg.address}:" />
                                         <p:inputText id="contact1address" value="#{onlineForm.contact1.address.address}" size="30" requiredMessage="#{msg.errmsgaddress}" 
-                                                        required="true" styleClass="contactfieldstext" >  
+                                                     required="true" styleClass="contactfieldstext" >  
                                             <p:ajax event="blur"  listener="#{onlineForm.saveText()}" global="false" process="@this,contact1address"   />
                                         </p:inputText> 
                                         <p:message for="contact1address" display="icon"   />
 
                                         <h:outputLabel for="contact1city" value="#{msg.city}:" />
                                         <p:inputText id="contact1city" value="#{onlineForm.contact1.address.city}" size="30" required="true" 
-                                                        requiredMessage="#{msg.errmsgcity}"  styleClass="contactfieldstext" >   
+                                                     requiredMessage="#{msg.errmsgcity}"  styleClass="contactfieldstext" >   
                                             <p:ajax event="blur"  listener="#{onlineForm.saveText()}" global="false" process="@this,contact1city"  />
                                         </p:inputText> 
                                         <p:message for="contact1city" display="icon"   /> 
@@ -1392,10 +1404,10 @@
 
                                         <h:outputLabel for="contact1email" value="#{msg.email}:" />
                                         <p:inputText id="contact1email" required="true"   size="30"
-                                                requiredMessage="#{msg.errmsgemail}"
-                                                validatorMessage="#{msg.errmsgemailvalidation}"  styleClass="contactfieldstext" 
-                                                value="#{onlineForm.contact1.email}"> 
-                                            
+                                                     requiredMessage="#{msg.errmsgemail}"
+                                                     validatorMessage="#{msg.errmsgemailvalidation}"  styleClass="contactfieldstext" 
+                                                     value="#{onlineForm.contact1.email}"> 
+
                                             <ui:remove>
                                                 <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />  
                                             </ui:remove>
@@ -1412,12 +1424,12 @@
                                             <f:validateRegex pattern="^[+ ]?([0-9]+([- .]+)?)*" />  
                                             <p:ajax event="blur"  listener="#{onlineForm.saveText()}" global="false" process="@this,contact1phone" />
                                         </p:inputText> 
-                                  
-                                        
-                                        
+
+
+
                                         <p:message for="contact1phone" display="icon"  />  
                                     </h:panelGrid>  
-                                
+
                                     <h:panelGroup  id="contact2Panel" style=" font-size:  11px; font-family: Arial,sans-serif;">
                                         <h:panelGrid columns="3" rendered="#{onlineForm.hasPrimaryContact}" >
                                             <p:outputLabel value="#{msg.title}" />  
@@ -1434,7 +1446,7 @@
                                                 <p:ajax event="change" listener="#{onlineForm.saveText()}"   global="false" process="@this,contact2title"  /> 
                                             </p:selectOneMenu>   
                                             <p:spacer width="5" /> 
-                                            
+
                                             <h:outputLabel for="contact2firstname" value="#{msg.firstname}:" />
                                             <p:inputText id="contact2firstname" value="#{onlineForm.contact2.firstname}" requiredMessage="#{msg.errmsgfirstname}" 
                                                          size="30" required="#{onlineForm.hasPrimaryContact}" styleClass="contactfieldstext" > 
@@ -1444,14 +1456,14 @@
 
                                             <h:outputLabel for="contact2lastname" value="#{msg.lastname}:" />
                                             <p:inputText id="contact2lastname" value="#{onlineForm.contact2.lastname}" size="30" required="#{onlineForm.hasPrimaryContact}" 
-                                                            requiredMessage="#{msg.errmsglastname}" styleClass="contactfieldstext" >  
+                                                         requiredMessage="#{msg.errmsglastname}" styleClass="contactfieldstext" >  
                                                 <p:ajax event="blur"  listener="#{onlineForm.saveText()}" global="false" process="@this,contact2lastname"  />
                                             </p:inputText> 
                                             <p:message for="contact2lastname" display="icon"  />
 
                                             <h:outputLabel for="contact2institution" value="#{msg.institution}:" />
                                             <p:inputText id="contact2institution" value="#{onlineForm.contact2.institution}" size="30" required="#{onlineForm.hasPrimaryContact}" 
-                                                            requiredMessage="#{msg.errmsginstitution}" styleClass="contactfieldstext" >   
+                                                         requiredMessage="#{msg.errmsginstitution}" styleClass="contactfieldstext" >   
                                                 <p:ajax event="blur"  listener="#{onlineForm.saveText()}" global="false" process="@this,contact2institution" />
                                             </p:inputText> 
                                             <p:message for="contact2institution" display="icon"  />
@@ -1464,14 +1476,14 @@
 
                                             <h:outputLabel for="contact2address" value="#{msg.address}:" />
                                             <p:inputText id="contact2address" value="#{onlineForm.contact2.address.address}" size="30" requiredMessage="#{msg.errmsgaddress}" 
-                                                            required="#{onlineForm.hasPrimaryContact}" styleClass="contactfieldstext" >   
+                                                         required="#{onlineForm.hasPrimaryContact}" styleClass="contactfieldstext" >   
                                                 <p:ajax event="blur"  listener="#{onlineForm.saveText()}" global="false" process="@this,contact2address" />
                                             </p:inputText> 
                                             <p:message for="contact2address"  display="icon"  />
 
                                             <h:outputLabel for="contact2city" value="#{msg.city}:" />
                                             <p:inputText id="contact2city" value="#{onlineForm.contact2.address.city}" size="30" required="#{onlineForm.hasPrimaryContact}" 
-                                                            requiredMessage="#{msg.errmsgcity}"  styleClass="contactfieldstext"  >   
+                                                         requiredMessage="#{msg.errmsgcity}"  styleClass="contactfieldstext"  >   
                                                 <p:ajax event="blur"  listener="#{onlineForm.saveText()}" global="false" process="@this,contact2city" />
                                             </p:inputText> 
                                             <p:message for="contact2city"  display="icon"  /> 
@@ -1500,17 +1512,17 @@
 
                                             <h:outputLabel for="contact2email" value="#{msg.email}:" />
                                             <p:inputText id="contact2email" required="#{onlineForm.hasPrimaryContact}"    size="30"
-                                                    requiredMessage="#{msg.errmsgemail}"
-                                                    validatorMessage="#{msg.errmsgemailvalidation}"  styleClass="contactfieldstext" 
-                                                    value="#{onlineForm.contact2.email}"> 
-                                                
-                                                
-                                                
+                                                         requiredMessage="#{msg.errmsgemail}"
+                                                         validatorMessage="#{msg.errmsgemailvalidation}"  styleClass="contactfieldstext" 
+                                                         value="#{onlineForm.contact2.email}"> 
+
+
+
                                                 <ui:remove>
                                                     <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />  
                                                 </ui:remove> 
                                                 <f:validateRegex pattern="([^.@]+)(\.[^.@]+)*@([^.@]+\.)+([^.@]+)" />   
-                                                 
+
                                                 <p:ajax event="blur"  listener="#{onlineForm.saveText()}" global="false" process="@this,contact2email" /> 
                                             </p:inputText> 
                                             <p:message for="contact2email" display="icon"  />
@@ -1529,10 +1541,10 @@
                                             <p:spacer width="10" />
                                         </h:panelGroup>
                                     </h:panelGroup>
-                                    
+
 
                                 </h:panelGrid>
-                             
+
                                 <br />
                                 <br />
 
@@ -1543,13 +1555,13 @@
                                     </h:selectBooleanCheckbox>  
                                     <p:spacer width="5" />
 
-                                    
+
                                     <ui:remove>
                                         <p:outputLabel value="#{msg.page8agreementcheck}" styleClass="defaulttext" rendered="#{onlineForm.numOfPages != 9}" /> 
 
                                         <p:outputLabel value="#{msg.page8agreementcheck2}" styleClass="defaulttext" rendered="#{onlineForm.numOfPages == 9}" /> 
                                     </ui:remove>
-                                    
+
                                     <p:outputLabel value="#{msg.page8agreementcheck2}" styleClass="defaulttext"  /> 
                                 </h:panelGrid>
 
@@ -1559,19 +1571,19 @@
                                         <p:outputLabel value="#{msg.informationsubmissiontext}" styleClass="defaulttext"   />  
                                     </h:panelGrid>
                                 </ui:remove>
-                                
-                                
+
+
 
                                 <h:panelGroup layout="block" style="width: 150px; float: right;  " id="page8buttonpanel">  
                                     <p:commandButton value="#{msg.back}" action="#{onlineForm.gotoPage7}" process="@this"  
-                                                                 update="page4panel page5panel  
-                                                                 page7panel page8panel breadcrumbpanel imgswitchPanel" global="false"   >  
+                                                     update="page4panel page5panel  
+                                                     page7panel page8panel breadcrumbpanel imgswitchPanel" global="false"   >  
                                         <p:resetInput target=":onlineform:page8panel1" />
                                     </p:commandButton>
                                     <p:spacer width="10" />
                                     <p:commandButton value="#{msg.next}" action="#{onlineForm.gotoPage9}"  
                                                      update="lastpagepanel page8panel policyDialogPanel destructivePolicyDialogPanel breadcrumbpanel imgswitchPanel"  
-                                                                     global="false" process="page8panel" disabled="#{!onlineForm.isAgree}" > 
+                                                     global="false" process="page8panel" disabled="#{!onlineForm.isAgree}" > 
                                     </p:commandButton>
                                 </h:panelGroup> 
 
@@ -1579,16 +1591,16 @@
                                 <br />
                             </h:panelGroup>
                         </h:panelGroup>
-                        
-                        
-                        
+
+
+
                         <!-- last page -->
                         <h:panelGroup id="lastpagepanel"> 
                             <h:panelGroup layout="block" id="lastpagepanel1" rendered="#{onlineForm.step == 10}"  styleClass="sectionstyle1"  > 
-                                
+
                                 <p:messages id="lastpagepanelmsg" autoUpdate="true" showDetail="true" showSummary="false" closable="true"   showIcon="true" />
-                                
-                                
+
+
                                 <h:panelGroup layout="block" rendered="#{!onlineForm.isInformation}">
                                     <p:outputLabel value="#{msg.lastpagetitle}" styleClass="maintext" /> 
                                 </h:panelGroup> 
@@ -1612,9 +1624,9 @@
                                 <br />
 
                                 <h:panelGroup id="summaryPanel" layout="block" rendered="#{onlineForm.openSummary}"> 
-                                     
+
                                     <p:panel style="width: 700px; " header="#{msg.contactdetail} (#{msg.inplaceedit})" > 
- 
+
                                         <h:panelGrid  rendered="#{onlineForm.hasPrimaryContact}" styleClass="defaulttext">  
                                             <p:spacer width="5" /> 
                                             <h:panelGrid  styleClass="defaultboldtext" >
@@ -1649,8 +1661,8 @@
 
                                             <p:inplace editor="true"  styleClass="originalbutton"> 
                                                 <p:inputText value="#{onlineForm.contact2.phone}" required="#{onlineForm.hasPrimaryContact}" label="text"  
-                                                         validatorMessage="#{msg.invalidphone}"  styleClass="contactfieldstext" >  
-                                                        <f:validateRegex pattern="^[+ ]?([0-9]+([- .]+)?)*" />  
+                                                             validatorMessage="#{msg.invalidphone}"  styleClass="contactfieldstext" >  
+                                                    <f:validateRegex pattern="^[+ ]?([0-9]+([- .]+)?)*" />  
                                                 </p:inputText> 
                                             </p:inplace>
 
@@ -1690,14 +1702,14 @@
 
                                         <br />
                                         <br />
-                                        
+
                                         <h:panelGrid rendered="#{onlineForm.hasPrimaryContact}" styleClass="defaultboldtext" >
                                             <p:outputLabel value="#{msg.secondaryborrower}"  />
                                         </h:panelGrid> 
                                         <h:panelGrid rendered="#{!onlineForm.hasPrimaryContact}" styleClass="defaultboldtext" >
                                             <p:outputLabel value="#{msg.contactdetail}"  />
                                         </h:panelGrid> 
-                                        
+
                                         <h:panelGrid styleClass="defaulttext" >      
 
                                             <h:panelGrid columns="5" cellpadding="0" cellspacing="0" >
@@ -1724,15 +1736,15 @@
                                                     <p:inputText value="#{onlineForm.contact1.lastname}" required="true" label="text" />
                                                 </p:inplace> 
                                             </h:panelGrid>
-                                        
+
                                             <p:inplace editor="true"  styleClass="originalbutton">
                                                 <p:inputText value="#{onlineForm.contact1.email}" required="true" label="text" />
                                             </p:inplace>
 
                                             <p:inplace editor="true"  styleClass="originalbutton">  
                                                 <p:inputText value="#{onlineForm.contact1.phone}" required="true" label="text"  
-                                                         validatorMessage="#{msg.invalidphone}"  styleClass="contactfieldstext" >  
-                                                        <f:validateRegex pattern="^[+ ]?([0-9]+([- .]+)?)*" />  
+                                                             validatorMessage="#{msg.invalidphone}"  styleClass="contactfieldstext" >  
+                                                    <f:validateRegex pattern="^[+ ]?([0-9]+([- .]+)?)*" />  
                                                 </p:inputText> 
                                             </p:inplace>
 
@@ -1767,9 +1779,9 @@
                                                 </h:selectOneMenu>
                                             </p:inplace>
                                         </h:panelGrid>   
-                                   
+
                                     </p:panel> 
-                                    
+
                                     <br />
                                     <br />
 
@@ -1791,7 +1803,7 @@
                                             <p:spacer width="5" />
                                             <p:outputLabel value="#{onlineForm.selectedCollection}" style="color: #8B8786;" /> 
                                         </h:panelGrid> 
-                                        
+
                                         <br /> 
 
                                         <h:panelGrid  style="font-size: 12px; font-family:  Arial,sans-serif; padding-top: 10px;  " rendered="#{!onlineForm.isInformation}"  > 
@@ -1799,10 +1811,10 @@
                                             <p:inplace editor="true"  styleClass="originalbutton" rendered="#{not empty onlineForm.descriptionOfLoan}">
                                                 <p:inputTextarea rows="5" cols="90" value="#{onlineForm.descriptionOfLoan}"   />
                                             </p:inplace> 
-                                            
+
                                             <p:outputLabel value=" -- " style="color: #8B8786;" rendered="#{empty onlineForm.descriptionOfLoan}" />   
-                                            
-                                            
+
+
                                             <h:panelGrid columns="5" style="font-size: 12px; font-family:  Arial,sans-serif;   " rendered="#{not empty onlineForm.scPurposeFileName}" >
                                                 <p:outputLabel value="#{msg.attachment}:"  /> 
                                                 <p:spacer width="5" />
@@ -1847,19 +1859,19 @@
                                                             <p:inputText value="#{sample.species}"  />
                                                         </p:inplace>   
                                                         <p:spacer width="5" />
-                                                        
+
                                                         <p:outputLabel value="#{msg.tblheader6}:" />  
                                                         <p:inplace editor="true"  styleClass="originalbutton">
                                                             <p:inputText value="#{sample.auctor}"  />
                                                         </p:inplace>    
                                                         <p:spacer width="5" />
-                                                        
+
                                                         <p:outputLabel value="#{msg.tblheader7}:" />  
                                                         <p:inplace editor="true"  styleClass="originalbutton">
                                                             <p:inputText value="#{sample.typeStatus}"  />
                                                         </p:inplace>   
                                                         <p:spacer width="5" />
-                                                        
+
                                                         <p:outputLabel value="#{msg.localitycountry}:" />  
                                                         <p:inplace editor="true"  styleClass="originalbutton">
                                                             <p:inputText value="#{sample.country}"  />
@@ -1871,21 +1883,21 @@
                                                             <p:inputText value="#{sample.locality}"  />
                                                         </p:inplace>   
                                                         <p:spacer width="5" />
-                                                        
-                                                        
+
+
 
                                                         <p:outputLabel value="#{msg.collectdyear}:" />  
                                                         <p:inplace editor="true"  styleClass="originalbutton">
                                                             <p:inputText value="#{sample.collectedYear}"  />
                                                         </p:inplace>   
                                                         <p:spacer width="5" />
- 
+
                                                         <p:outputLabel value="#{msg.collector}:" />  
                                                         <p:inplace editor="true"  styleClass="originalbutton">
                                                             <p:inputText value="#{sample.collector}"  />
                                                         </p:inplace>     
                                                         <p:spacer width="5" />
- 
+
                                                         <p:outputLabel value="#{msg.typespecimen}:" />  
                                                         <p:inplace editor="true"  styleClass="originalbutton">
                                                             <p:inputText value="#{sample.type}" required="#{!onlineForm.isPhoto}" requiredMessage="#{msg.errmsgtypespecimen}"  />
@@ -1902,7 +1914,7 @@
                                                 <br />
                                                 <br />
                                             </h:panelGrid>
-                                                 
+
 
                                             <h:panelGrid style="font-size: 12px; font-family:  Arial,sans-serif;   "  columns="1" rendered="#{not empty onlineForm.additionInformation}">
                                                 <p:outputLabel value="#{msg.additioninfor}:" />   
@@ -1916,12 +1928,12 @@
                                             </h:panelGrid> 
                                         </h:panelGroup>  
                                     </p:panel>
-                                
+
                                     <h:panelGrid rendered="#{!onlineForm.isPhoto}" >
-                                        
+
                                         <h:panelGrid rendered="#{!onlineForm.isInformation}">
                                             <p:panel header="#{msg.destructivehandling} (#{msg.inplaceedit})"  rendered="#{onlineForm.numOfPages == 9}" id="summarydestructivehandlingpanel">  
-                                        
+
                                                 <h:panelGrid rendered="#{onlineForm.isDestractive}" >
                                                     <h:panelGrid style="font-size: 12px; font-family:  Arial,sans-serif;   " >
                                                         <p:outputLabel value="#{msg.destructive}" />   
@@ -1958,28 +1970,28 @@
                                                 </h:panelGrid> 
                                             </p:panel>
                                         </h:panelGrid>
-                                        
+
                                     </h:panelGrid>
-                                    
-                                    
-                                    
-                                
+
+
+
+
                                     <p:panel header="#{msg.photoinstruction} (#{msg.inplaceedit})"  rendered="#{onlineForm.isPhoto}" id="summaryphotoinstractionpanel" >  
                                         <h:panelGrid columns="1" style="font-size: 12px; font-family:  Arial,sans-serif;  " rendered="#{not empty onlineForm.photoInstruction}">
                                             <p:outputLabel value="#{msg.photoinstruction}:" /> 
-                                            
+
                                             <p:inplace editor="true"  styleClass="originalbutton"  >
                                                 <p:inputTextarea rows="5" cols="90" value="#{onlineForm.photoInstruction}"  />
                                             </p:inplace>  
                                         </h:panelGrid> 
 
-                                        
+
                                         <h:panelGrid columns="1" style="font-size: 12px; font-family:  Arial,sans-serif;  " rendered="#{empty onlineForm.photoInstruction}">
                                             <p:outputLabel value="#{msg.photoinstruction}:" /> 
                                             <p:outputLabel value=" -- " style="color: #8B8786;" />
                                         </h:panelGrid> 
-                                         
-                                        
+
+
                                         <h:panelGrid columns="5" style="font-size: 12px; font-family:  Arial,sans-serif;   "   rendered="#{not empty onlineForm.photoInstructionFileName}" >
                                             <p:outputLabel  value="#{msg.attachment}:"/>
                                             <p:spacer width="5" />
@@ -2024,7 +2036,7 @@
                                                 <p:inputTextarea rows="5" cols="90" value="#{onlineForm.page4Description}"   />
                                             </p:inplace> 
                                         </h:panelGrid> 
-                                        
+
                                         <h:panelGrid  style="font-size: 12px; font-family:  Arial,sans-serif; padding-top: 10px;  " rendered="#{empty onlineForm.page4Description}"  > 
                                             <p:outputLabel value="#{msg.description}:" /> 
                                             <p:outputLabel value=" -- " style="color: #8B8786;" />  
@@ -2041,17 +2053,17 @@
                                                 <h:graphicImage name="images/button_remove.gif" styleClass="images" /> 
                                             </p:commandLink>  
                                         </h:panelGrid>
-                                    
+
                                         <h:panelGrid columns="3" style="font-size: 12px; font-family:  Arial,sans-serif;   "  > 
                                             <p:outputLabel  value="#{onlineForm.loanRequestPeriod}: "/>
                                             <p:spacer width="5" />  
                                             <h:panelGrid  style="font-size: 12px; font-family:  Arial,sans-serif;   " columns="5" cellpadding="0" cellspacing="0">
-                                                
+
                                                 <p:inplace editor="true"  styleClass="originalbutton" >
                                                     <p:calendar pattern="yyyy-MM-dd" showButtonPanel="true" navigator="true"  
-                                                         value="#{onlineForm.fromDate}"   mindate="#{onlineForm.minDate}"    showOn="button" >
+                                                                value="#{onlineForm.fromDate}"   mindate="#{onlineForm.minDate}"    showOn="button" >
                                                         <!--<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+3" />-->
-                                                         <f:convertDateTime pattern="yyyy-MM-dd"  />
+                                                        <f:convertDateTime pattern="yyyy-MM-dd"  />
                                                     </p:calendar>  
                                                 </p:inplace> 
                                                 <p:spacer width="5" />
@@ -2061,7 +2073,7 @@
                                                     <p:calendar pattern="yyyy-MM-dd" showButtonPanel="true" navigator="true"  
                                                                 value="#{onlineForm.toDate}"   mindate="#{onlineForm.toMinDate}"    showOn="button" >
                                                         <!--<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+3" />-->
-                                                         <f:convertDateTime pattern="yyyy-MM-dd"  />
+                                                        <f:convertDateTime pattern="yyyy-MM-dd"  />
                                                     </p:calendar>  
                                                 </p:inplace>
                                             </h:panelGrid> 
@@ -2073,7 +2085,7 @@
                                                 <p:inputTextarea rows="5" cols="90" value="#{onlineForm.exhPorpuseDesc}"   />
                                             </p:inplace> 
                                         </h:panelGrid>  
-                                        
+
                                         <h:panelGrid  style="font-size: 12px; font-family:  Arial,sans-serif; padding-top: 10px;  "  rendered="#{empty onlineForm.exhPorpuseDesc}" > 
                                             <p:outputLabel value="#{msg.exhibitiondesc}:" /> 
                                             <p:outputLabel value=" -- " style="color: #8B8786;" />  
@@ -2081,7 +2093,7 @@
                                     </p:panel>
 
                                     <p:panel header="#{msg.commercialart} (#{msg.inplaceedit})"  rendered="#{onlineForm.numOfPages == 6}" >    
-                                         <h:panelGrid columns="3" style="font-size: 12px; font-family:  Arial,sans-serif;   " >
+                                        <h:panelGrid columns="3" style="font-size: 12px; font-family:  Arial,sans-serif;   " >
                                             <p:outputLabel value="#{msg.typeofrequest}:" style="color: #C5C4C4;"  />
                                             <p:spacer width="5" />
                                             <p:outputLabel value="#{onlineForm.page3requestType}" style="color: #8B8786;"  />  
@@ -2092,12 +2104,12 @@
                                                 <p:inputTextarea rows="5" cols="90" value="#{onlineForm.page4Description}"   />
                                             </p:inplace> 
                                         </h:panelGrid>
-                                    
+
                                         <h:panelGrid  style="font-size: 12px; font-family:  Arial,sans-serif; padding-top: 10px;  " rendered="#{empty onlineForm.page4Description}"> 
                                             <p:outputLabel value="#{msg.description}:" /> 
                                             <p:outputLabel value=" -- " style="color: #8B8786;" /> 
                                         </h:panelGrid>
-                                        
+
                                         <h:panelGrid columns="5" style="font-size: 12px; font-family:  Arial,sans-serif;   "  rendered="#{not empty onlineForm.edPurposeFileName}" >
                                             <p:outputLabel  value="#{msg.attachment}:"/>
                                             <p:spacer width="5" />
@@ -2109,28 +2121,28 @@
                                             </p:commandLink>  
                                         </h:panelGrid>
 
-                                       <h:panelGrid columns="3" style="font-size: 12px; font-family:  Arial,sans-serif;   "  > 
+                                        <h:panelGrid columns="3" style="font-size: 12px; font-family:  Arial,sans-serif;   "  > 
 
                                             <p:outputLabel  value="#{onlineForm.loanRequestPeriod}:"/>
                                             <p:spacer width="5" />  
                                             <h:panelGrid  style="font-size: 12px; font-family:  Arial,sans-serif;   " columns="5" cellpadding="0" cellspacing="0">  
-                                            
+
                                                 <p:inplace editor="true"  styleClass="originalbutton" >
                                                     <p:calendar pattern="yyyy-MM-dd" showButtonPanel="true" navigator="true"  
-                                                         value="#{onlineForm.fromDate}"   mindate="#{onlineForm.minDate}"    showOn="button" >
+                                                                value="#{onlineForm.fromDate}"   mindate="#{onlineForm.minDate}"    showOn="button" >
                                                         <!--<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+3" />-->
                                                         <f:convertDateTime pattern="yyyy-MM-dd"  />
                                                     </p:calendar>  
                                                 </p:inplace>
-                                                
-                                                 
-                                                
+
+
+
                                                 <p:spacer width="5" />
                                                 <p:outputLabel  value=" - "/>
                                                 <p:spacer width="5" />  
                                                 <p:inplace editor="true"  styleClass="originalbutton" >
                                                     <p:calendar pattern="yyyy-MM-dd" showButtonPanel="true" navigator="true"  
-                                                         value="#{onlineForm.toDate}"   mindate="#{onlineForm.minDate}"    showOn="button" >
+                                                                value="#{onlineForm.toDate}"   mindate="#{onlineForm.minDate}"    showOn="button" >
                                                         <!--<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+3" />-->
                                                         <f:convertDateTime pattern="yyyy-MM-dd"  />
                                                     </p:calendar>  
@@ -2145,7 +2157,7 @@
                                 <h:panelGrid rendered="#{!onlineForm.isInformation}">
                                     <h:panelGrid > 
                                         <p:commandLink value="#{msg.policytitle}"  onclick="PF('policyDlg').show();" global="false"
-                                                               style="float: left; font-size: 12px; font-family: Arial,sans-serif; padding-left: 25px;   " />
+                                                       style="float: left; font-size: 12px; font-family: Arial,sans-serif; padding-left: 25px;   " />
                                         <br />
                                     </h:panelGrid>
                                     <h:panelGrid columns="3" columnClasses="aligntop,aligntop,aligntop"    >
@@ -2156,7 +2168,7 @@
                                         <p:outputLabel value="#{msg.policylbl}"  styleClass="defaulttext"  />
                                     </h:panelGrid>
                                 </h:panelGrid>
-                                
+
 
                                 <br />
                                 <br />
@@ -2166,29 +2178,29 @@
                                     </p:commandButton> 
                                     <p:spacer width="10" />
                                     <p:commandButton value="#{msg.submitloan}" action="#{onlineForm.gotoConfirmationPage}" styleClass="largebutton"
-                                                        update=":onlineform:lastpagepanel :onlineform:confirmationpagepanel  breadcrumbpanel imgswitchPanel" disabled="#{!onlineForm.isPolicyRead}"   />
+                                                     update=":onlineform:lastpagepanel :onlineform:confirmationpagepanel  breadcrumbpanel imgswitchPanel" disabled="#{!onlineForm.isPolicyRead}"   />
                                 </h:panelGroup> 
 
                                 <br /> 
                                 <br />
                             </h:panelGroup> 
                         </h:panelGroup>
-                 
-                        
+
+
                         <!-- confirmation page -->
                         <h:panelGroup  id="confirmationpagepanel" >
                             <h:panelGroup layout="block" id="confirmationpagepanel1" rendered="#{onlineForm.step == 100}" styleClass="sectionstyle1"   > 
-                                
-                                
+
+
                                 <h:panelGroup layout="block" style="background-color: #036fab; color: #FFFFFF; text-align: center; padding: 10px 10px 10px 10px; " > 
                                     <p:outputLabel value="#{msg.requestnumber}" styleClass="subtitle" /> 
                                     <p:spacer width="5" />
                                     <p:outputLabel value="#{onlineForm.loanId}" />
                                 </h:panelGroup> 
-                                
-                                
-                                
-                                
+
+
+
+
                                 <h:panelGroup layout="block" style="background-color: #036fab; color: #FFFFFF; text-align: center; padding: 10px 10px 10px 10px; " > 
                                     <p:outputLabel value="#{msg.confirmationtext}" styleClass="subtitle" /> 
                                 </h:panelGroup> 
@@ -2203,13 +2215,13 @@
                                 <br />
                             </h:panelGroup> 
                         </h:panelGroup>
-                        
+
                         <h:panelGroup id="aboutPanel">  
                             <h:panelGroup layout="block"  rendered="#{onlineForm.section == 2}" styleClass="sectionstyle1"  >
-                                
+
                                 <h:panelGrid styleClass="backtofomrlink" >
                                     <p:commandLink actionListener="#{onlineForm.backtoform}" value="#{msg.backtoloanform}"  style="color: #8B8786; " 
-                                                           process="@this" global="false" update="@all"  oncomplete="drawRegionsMap();"  />   
+                                                   process="@this" global="false" update="@all"  oncomplete="drawRegionsMap();"  />   
                                 </h:panelGrid>
                                 <br /><br /><br />
                                 <h:panelGroup id="svaboutpanel" rendered="#{languages.isSwedish}"> 
@@ -2226,11 +2238,11 @@
                                         <br /><br />
                                         Om du har några frågor om formuläret eller dess användande, eller upplever 
                                         <p:commandLink actionListener="#{onlineForm.contact}" value="problem"  process="@this" global="false" update="@all"  style="color: #8B8786; " />    
-                                         med användandet, tveka inte att kontakta vår 
+                                        med användandet, tveka inte att kontakta vår 
                                         <h:outputLink value="mailto:stefan.daume@nrm.se"  style="color: #8B8786; " >web-ansvariga</h:outputLink>  
                                     </p:outputLabel> 
                                 </h:panelGroup> 
-                                
+
                                 <h:panelGroup id="enaboutpanel" rendered="#{!languages.isSwedish}"> 
                                     <h:panelGroup layout="block" >
                                         <p:outputLabel value="About the Information/Loan Request Form" styleClass="maintext" /> 
@@ -2240,30 +2252,30 @@
                                         This request form is for making information, photo or loan requests of specimens from our collections more complete and easy to handle by our staff.  For the borrower this will make the handling time shorter, and it will make the value of the request easier to assess for our collection managers.
                                         <br /><br />
                                         The request form is built like a questionnaire including information fields and with ability to upload information files that can be of use for our assessment.  The form should for fastest handling be filed and answered as completely as possible.  It integrates searches against our collection database (DINA-Specify) for easy access to specimen information, as well as against GBIF for taxonomic information.
-                                        
+
                                         <br /><br />
                                         The request form is developed by the Department of Zoology and the Department of Bioinformatics.
                                         <br /><br />
                                         If you have any questions about the use of this service, or if you experience any  
                                         <p:commandLink actionListener="#{onlineForm.contact}" value="problems"  style="color: #8B8786; " 
-                                                           process="@this" global="false" update="@all"  />   
-                                         with the request form don't hesitate to contact our 
-                                         <h:outputLink value="mailto:stefan.daume@nrm.se" style="color: #8B8786; " >webmaster</h:outputLink>. 
+                                                       process="@this" global="false" update="@all"  />   
+                                        with the request form don't hesitate to contact our 
+                                        <h:outputLink value="mailto:stefan.daume@nrm.se" style="color: #8B8786; " >webmaster</h:outputLink>. 
                                     </h:panelGroup>
                                 </h:panelGroup> 
                             </h:panelGroup>
                         </h:panelGroup>
-                         
+
                         <h:panelGroup id="readpolicyPanel">    
                             <h:panelGroup layout="block"  rendered="#{onlineForm.section == 3}" styleClass="sectionstyle1"  >
 
                                 <h:panelGrid styleClass="backtofomrlink">
                                     <p:commandLink actionListener="#{onlineForm.backtoform}" value="#{msg.backtoloanform}"  style="color: #8B8786; " 
-                                                           process="@this" global="false" update="@all"  oncomplete="drawRegionsMap();"  />   
+                                                   process="@this" global="false" update="@all"  oncomplete="drawRegionsMap();"  />   
                                 </h:panelGrid>
-                                 
+
                                 <br /><br /><br />
-                                
+
                                 <h:panelGroup layout="block" >
                                     <p:outputLabel value="#{msg.downloadpolicy}" styleClass="subtitle" />  
                                 </h:panelGroup>
@@ -2271,7 +2283,7 @@
                                 <br />
                                 <br />
                                 <br />
-                                
+
                                 <p:commandButton id="scPolicyBtn"  value="#{msg.scientificloanpolicy}" type="button"  />
                                 <p:overlayPanel id="currentScPolicyPanel" for="scPolicyBtn" hideEffect="fade" dynamic="true"  >
                                     <object type="application/pdf" data="#{onlineForm.scPolicy}" height="750px" width="800px"    /> 
@@ -2286,17 +2298,17 @@
 
                             </h:panelGroup>
                         </h:panelGroup>
-                        
+
                         <h:panelGroup id="contactPanel">    
                             <h:panelGroup layout="block"  rendered="#{onlineForm.section == 4}" styleClass="sectionstyle1"  >
-                                
+
                                 <h:panelGrid styleClass="backtofomrlink">
                                     <p:commandLink actionListener="#{onlineForm.backtoform}" value="#{msg.backtoloanform}"  style="color: #8B8786; " 
-                                                           process="@this" global="false" update="@all"  oncomplete="drawRegionsMap();"  />   
+                                                   process="@this" global="false" update="@all"  oncomplete="drawRegionsMap();"  />   
                                 </h:panelGrid>
-                                 
+
                                 <br /><br /><br />
-                                
+
                                 <h:panelGroup id="svcontactpanel" rendered="#{languages.isSwedish}"> 
                                     <h:panelGroup layout="block" style="padding-left: 40px;">
                                         <h:panelGroup  layout="block" >
@@ -2314,8 +2326,8 @@
                                         <h:panelGroup styleClass="subtitle"> 
                                             Postadress och kontaktuppgifter<br /> 
                                         </h:panelGroup>
-                             
-                                        
+
+
                                         <h:panelGroup styleClass="defaulttext"> 
                                             För vetenskapliga frågor, vänligen kontakta relevant enhet. 
                                         </h:panelGroup>
@@ -2343,7 +2355,7 @@
                                         </h:panelGroup>   
                                     </h:panelGroup> 
                                 </h:panelGroup>
-                                
+
                                 <h:panelGroup id="encontactpanel" rendered="#{!languages.isSwedish}"> 
                                     <h:panelGroup layout="block" style="padding-left: 40px;">
                                         <h:panelGroup  layout="block" >
@@ -2364,7 +2376,7 @@
                                         <h:panelGroup styleClass="text"> 
                                             For scientific questions, please contact the relevant department.
                                         </h:panelGroup>
-                                        
+
                                         <br />
                                         <br />
                                         <h:panelGroup styleClass="defaulttext"> 
@@ -2377,11 +2389,11 @@
                                         </h:panelGroup>
                                         <br />
                                         <br />  
-                                        
+
                                         <h:panelGrid columns="2" styleClass="defaulttext">
                                             <p:outputLabel  value="Phone (exchange):"  style="font-weight: bold; padding-right: 10px; " />  
                                             <p:outputLabel value="08-519 540 66"  />  
-                                            
+
                                             <p:outputLabel style="font-weight: bold; padding-right: 10px; ">
                                                 E-mail:
                                             </p:outputLabel> 
@@ -2389,16 +2401,16 @@
                                         </h:panelGrid>
 
                                         <h:panelGroup styleClass="defaulttext"  layout="block" > 
-                                            
+
                                         </h:panelGroup>   
                                         <h:panelGroup styleClass="defaulttext"  layout="block" >
-                                            
+
                                         </h:panelGroup>   
                                     </h:panelGroup> 
                                 </h:panelGroup>
                             </h:panelGroup>
                         </h:panelGroup>
-                        
+
                         <p:dialog id="policyDialog" header="#{msg.loanpolicy}" widgetVar="policyDlg" style="width: 820px; height: 700px;">
                             <p:panel  id="policyDialogPanel" > 
                                 <h:panelGrid rendered="#{onlineForm.numOfPages == 9}">   
@@ -2422,7 +2434,7 @@
                                 </h:panelGrid> 
                             </p:panel>
                         </p:dialog>
-                        
+
                         <p:dialog id="destructivePolicyDialog" header="#{msg.loanpolicy}" widgetVar="destructivePolicyDlg" style="width: 820px; height: 700px;">
                             <p:panel  id="destructivePolicyDialogPanel">   
                                 <object type="application/pdf" data="//#{onlineForm.host}/dina-external-datasource/pdf?pdf=Loanpolicyforscientificpurposes.pdf#page=2" height="750px" width="820px"  rendered="#{onlineForm.isDestructivePolicyLinkEnabled}">
@@ -2434,19 +2446,19 @@
                                 </object> 
                             </p:panel>
                         </p:dialog>
- 
-                        
 
-                         
-                        
+
+
+
+
                         <p:dialog id="speciesdialog" header="#{msg.searchreault}" widgetVar="speciesDlg" style="width: 920px; font-size: 24px; font-weight: bold; " draggable="false"> 
                             <p:panel style="width: 920px; height: 800px; font-size: 10px; font-weight: normal; " > 
                                 <p:dataTable id="records" var="record" value="#{onlineForm.records}" rowKey="#{record.catalogNum}"  
                                              selection="#{onlineForm.selectedRecord}" selectionMode="single"  scrollable="true" scrollWidth="920" >
-                                     
+
                                     <p:ajax event="rowSelect" listener="#{onlineForm.onRowSelect}" update=":onlineform:newrequestpanel" 
-                                                                global="false" process="@widgetVar(speciesDlg)" />
-   
+                                            global="false" process="@widgetVar(speciesDlg)" />
+
                                     <p:column headerText="#{msg.tblheader2}" width="120">
                                         #{record.catalogNum}
                                     </p:column>
@@ -2462,41 +2474,41 @@
                                     <p:column headerText="#{msg.tblheader5}" width="80">
                                         #{record.fullname}
                                     </p:column>
-                                    
+
                                     <p:column headerText="#{msg.tblheader6}" width="80">
                                         #{record.auth}
                                     </p:column>
-                                     
+
                                     <p:column headerText="#{msg.localitycountry}" width="80">
                                         #{record.country}
                                     </p:column>
-                                    
+
                                     <p:column headerText="#{msg.locality}" width="125">
                                         #{record.locality}
                                     </p:column>
-                                    
-                                    
-                                    
+
+
+
                                     <p:column headerText="#{msg.collectdyear}" width="70">
                                         #{record.collectedYear}
                                     </p:column>
 
-                                    
-                                    
+
+
                                     <p:column headerText="#{msg.collector}" width="80">
                                         #{record.collectors}
                                     </p:column>
-                                    
+
                                     <p:column headerText="#{msg.typespecimen}" width="100">
                                         #{record.preparationString}
                                     </p:column> 
-                                      
+
                                 </p:dataTable>
                             </p:panel>
                         </p:dialog>
                     </h:panelGroup> 
                 </h:form>
-                 
+
             </ui:define>
         </ui:composition>
     </body>
