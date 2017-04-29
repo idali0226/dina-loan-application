@@ -132,11 +132,16 @@ public class SearchLoanController implements Serializable {
             loans = new ArrayList<>();
             loans = mongo.findAllLoans();
         }
-        
+         
         if(curators == null || curators.isEmpty()) {
             curators = new ArrayList();
-            curators = mongo.findUniqueCuratorsEmails(DEFAULT_DEPARTMENT); 
-      
+            curators = loans.stream() 
+                        .filter(l -> l.getCurator() != null)
+                        .map(l -> l.getCurator())
+                        .distinct()
+                        .sorted()
+                        .collect(Collectors.toList()); 
+             
             curatorOptions = new SelectItem[curators.size() + 1];
             curatorOptions[0] = new SelectItem("", "Select");
             
@@ -144,8 +149,8 @@ public class SearchLoanController implements Serializable {
                         .forEach(i -> { 
                             curatorOptions[i + 1] = new SelectItem(curators.get(i), curators.get(i)); 
                         }); 
-        } 
- 
+        }
+         
         if(collections == null || collections.isEmpty()) {
             collections = new ArrayList<>();
             collections = mongo.findAllCollectionNameListByDepartmentName(DEFAULT_DEPARTMENT);

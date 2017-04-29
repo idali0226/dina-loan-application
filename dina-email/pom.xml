@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     
     <parent>
-        <artifactId>dinaproject</artifactId>
+        <artifactId>dina-loan</artifactId>
         <groupId>se.nrm.dina</groupId>
         <version>0.1-SNAPSHOT</version>
     </parent>
