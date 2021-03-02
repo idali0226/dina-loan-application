@@ -545,14 +545,16 @@ a {
 }
 
 
-#map_canvas {
-    width:395px;  
-    overflow:hidden; 
+#chart_div {
+    width:700px;  
+    height: 400px;
+    border: solid 1px;
+    overflow: hidden; 
     float: left
 }
-#map_canvas svg {
-     margin-left: -200px;
-    margin-right: 350px;   
+#chart_div svg {  
+    width:700px;  
+    height: 400px;
     overflow: hidden;
 } 
 
