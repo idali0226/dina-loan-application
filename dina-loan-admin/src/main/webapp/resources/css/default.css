@@ -6,121 +6,132 @@
     Stylesheet for dina-loan-admin, NRM
 */
 
+html, body {
+  height: 100%;
+  min-width: 1100px;
+  margin: 0;
+}
+
 
 .body{
-    font-family: "Arial",sans-serif;
-    position: relative; 
-    min-height: 100%; 
-    top: 0px;
+  font-family: "Arial",sans-serif;
+  position: relative; 
+  min-height: 900px; 
+  top: 0px;
 }
 
 /*back*/
 .background{
-    background-color:#ebede8;
-    /*background-image:url(/images/18.67f7c5a013d827ecb4c32f/1367827613667/bg.gif);*/
-    background-repeat:no-repeat;
-    margin:0 0 0 0;
+  background-color:#ebede8;
+  /*background-image:url(/images/18.67f7c5a013d827ecb4c32f/1367827613667/bg.gif);*/
+  background-repeat:no-repeat;
+  margin: 0 0 0 0;  
 }
 
 
 .templet {
-    width: 960px; 
-    margin: auto;
+  /*width: 960px;*/ 
+  width: 100%;
+  margin: auto;
 }
 
 .inprocess {
-    font-size: 16px; 
-    font-weight: bold;
+  font-size: 16px; 
+  font-weight: bold;
 }
 
 
 
 /* header */ 
 .headertitle {
-    font-size: 46px;
-    color: #FFFFFF;
-    text-align: left;
-    margin-left: 20px;
-    font-family:   serif; 
+  font-size: 46px;
+  color: #FFFFFF;
+  text-align: left;
+  margin-left: 20px;
+  font-family:   serif; 
 }
- 
+
 
 .header {
-    font-size: 20px;
-    margin-top:10px;
-    margin-bottom: 30px;
-    color: #5e5e5e; 
-    font-family: "Arial",sans-serif;
+  font-size: 20px;
+  margin-top:10px;
+  margin-bottom: 30px;
+  color: #5e5e5e; 
+  font-family: "Arial",sans-serif;
+}
+
+.footer { 
+  margin-top:10px; 
+  font-family: "Arial",sans-serif;
 }
 
 .back{
-    border:none;
-    width:100%;
-    min-width:0;
-    padding:0;
-    margin:0;
-    padding-top:7px;
-    padding-bottom:0px;
-    border-radius: 10px 10px 0 0;
-    float:none !important;
+  border:none;
+  width:100%;
+  min-width:0; 
+  margin:0; 
+  padding: 0px 10px 0px 10px; 
+  border-radius: 10px 10px 0 0;
+  float:none !important;
 }
 
 
 
 /* footer */ 
-#foot {
-    position: absoulte;
-    bottom: 0;
-    height: 125px;
-}
+/*#foot {
+  position: absoulte;
+  bottom: 0;
+  height: 100px;
+}*/
 
- 
+
 
 .footstyle{
-    background-color:#686868;
-    margin:0 auto;
-    max-width:940px;
-    padding-bottom:20px;
-    padding-left:10px;
-    padding-right:10px;
-    -webkit-border-radius: 0px 0px 15px 15px;
-    border-radius: 0px 0px 15px 15px; 
-    float: left;
-    width: 100%;
+  background-color:#686868;
+  margin:0 auto;
+  /*max-width:940px;*/ 
+  padding-bottom:20px;
+  padding-left:10px;
+  padding-right:30px;
+  -webkit-border-radius: 0px 0px 15px 15px;
+  border-radius: 0px 0px 15px 15px; 
+  float: left;
+  width: 100%;
+  font-size: 10px;
+  color:#ffffff;
+  font-family: "Arial",sans-serif;   
 }
 
 .textfoot{ 
-    font-size: 10px;
-    color:#ffffff;
-    font-family: "Arial",sans-serif;   
+  font-size: 10px;
+  color:#ffffff;
+  font-family: "Arial",sans-serif;   
+  width: 100%;
 }
 
-
-
-
 .cgcol1 {
-    width: 150px;
+  width: 150px;
 }
 
 .cgcol2 {
-    width: 10px;
+  width: 10px;
 }
 
 .cgcol3 {
-    width: 200px;
+  width: 200px;
 }
 
 .cgcol4 {
-    width: 50px;
+  width: 50px;
 }
 
 .cgcol5 {
-    width: 100px;
+  width: 100px;
 }
- 
+
 
 .cgcol {
-    width: 300px;
+  width: 300px;
 }
 
 
@@ -131,398 +142,442 @@
 }
 
 .top {
-    background-color:#0b5e82; 
-    margin:0 auto;
-    max-width:960px;
-    padding-left:10px;
-    padding-right:10px;
-    padding-bottom: 20px;
-    padding-top: 20px;
-    
+  background-color:#0b5e82; 
+  margin:0 auto;
+  /*max-width:960px;*/ 
+  width: 100%;
+  padding-left:10px;
+  padding-right:10px;
+  padding-bottom: 20px;
+  padding-top: 20px; 
 }
 
 .topmenu {
-    background-color:#072735; 
-    /*margin-left:-10px;*/ 
-    width:960px;
+  background-color:#072735; 
+  /*margin-left:-10px;*/ 
+  /*width:960px;*/
+  width: 100%;
 }
 
 
 .topmenu a.current {
-    background: none repeat scroll 0 0 #036fab;  
+  background: none repeat scroll 0 0 #036fab;  
 }
 
 .topmenu a {
-   width: auto;
-   padding: 12px 10px;
-   border-right: none;
-   border-right: 1px solid #0b5e82;
-   color: #FFFFFF;
-   display: block;
-   font-family: "Arial",sans-serif;
-   font-size: 14px;
-   text-align: center;
-   text-decoration: none;
-   text-shadow: 1px 2px 1px #436b16; 
-    /*filter: dropshadow(color=#2e5900, offx=1, offy=1);*/
+  width: auto;
+  padding: 12px 10px;
+  border-right: none;
+  border-right: 1px solid #0b5e82;
+  color: #FFFFFF;
+  display: block;
+  font-family: "Arial",sans-serif;
+  font-size: 14px;
+  text-align: center;
+  text-decoration: none;
+  text-shadow: 1px 2px 1px #436b16; 
+  /*filter: dropshadow(color=#2e5900, offx=1, offy=1);*/
 }
 
- 
+
 .topmenu li {
-   overflow: hidden;
-   position: relative;
-   float: left;
-   display: block;
-   width: auto;
+  overflow: hidden;
+  position: relative;
+  float: left;
+  display: block;
+  width: auto;
 }
 
 .topmenu ul {
-    list-style-type: none;
-    margin: 0;
-    overflow: auto;
-    padding: 0;
+  list-style-type: none;
+  margin: 0;
+  overflow: auto;
+  padding: 0;
 }
 
- 
+
 
 .main {
-    background-color:#ffffff;
-    margin:0 auto;
-    max-width:960px; 
-    padding:30px 0 30px 0;
+  background-color:#ffffff; 
+  min-height: 450px;
+  overflow: auto;
+  /*margin:0 auto;*/
+  /*max-width:960px;*/ 
+  margin-left: 10px;
+  margin-right: 10px;
+  max-width:100%;
+  padding:30px;
 }
 
- 
+
 
 .login {   
-    padding: 10px 10px 20px 20px;
-    margin-left: auto; 
-    margin-right: auto;
-    text-align: center;
-    font-size: 12px;
-    font-weight: bold; 
+  padding: 10px 10px 20px 20px;
+  margin-left: auto; 
+  margin-right: auto;
+  text-align: center;
+  font-size: 12px;
+  font-weight: bold; 
 }
 
 .loginbox { 
-    margin-left: auto; 
-    margin-right: auto; 
-    text-align: center;
+  margin-left: auto; 
+  margin-right: auto; 
+  text-align: center;
 }
 
 .logonrm {   
-    margin-right: 20px;
-    float: right;
-    border-style: none;
+  margin-right: 20px;
+  float: right;
+  border-style: none;
 }
 
 
 /* admin page */ 
 .centralpanel {
-    width: 600px;  
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 40px;
+  width: 100%;  
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 40px;
+  /*padding: 0px 10px 0px 10px;*/
 }
 
 /* admin page */ 
 .policypanel {
-    width: 800px;  
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 40px;
+  width: 800px;  
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 40px;
 }
- 
+
 /* admin page */ 
 .profilepanel {
-    width: 850px;  
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 40px;
-    font-size: 12px;
+  width: 850px;  
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 40px;
+  font-size: 12px;
 }
 
 
 
 .text {
-    font-size: 12px;
-    font-family: "Arial",sans-serif;
+  font-size: 12px;
+  font-family: "Arial",sans-serif;
 }
 
 
 
 .createUserAccountPanel {
-    padding-left: 50px;
-    font-size: 12px;
-    font-family: "Arial",sans-serif;
+  padding-left: 50px;
+  font-size: 12px;
+  font-family: "Arial",sans-serif;
 }
 
 
 
 .defaultboldtext {
-    font-weight: bold;
-    font-size: 12px;
-    font-family: "Arial",sans-serif;
+  font-weight: bold;
+  font-size: 12px;
+  font-family: "Arial",sans-serif;
 }
 
 
 
 a {
-    color: #000000;
-    font-family: arial,helvetica,sans-serif;
-    font-size: 1em;
-    font-style: normal;
-    font-weight: normal;
-    line-height: normal; 
+  color: #000000;
+  font-family: arial,helvetica,sans-serif;
+  font-size: 1em;
+  font-style: normal;
+  font-weight: normal;
+  line-height: normal; 
 }
 
 
 .clink { 
-    font-family: arial,helvetica,sans-serif;
-    color: #686868;
-    font-size: 12px;
-    text-decoration: none;
+  font-family: arial,helvetica,sans-serif;
+  color: #686868;
+  font-size: 12px;
+  text-decoration: none;
 }
 
 
 .subcollectionPanel {
-    width: 860px;
-    margin-right: auto;
-    margin-left: auto; 
+  width: 860px;
+  margin-right: auto;
+  margin-left: auto; 
 }
 
 
 
 
 .collectionCol1 {
-    width: 200px;
-    text-align: left;
+  width: 200px;
+  text-align: left;
 }
 
 
 .collectionCol2 {
-    width: 200px;
-    text-align: left;
+  width: 200px;
+  text-align: left;
 }
 
 .collectionCol3 {
-    width: 100px;
-    text-align: left;
+  width: 100px;
+  text-align: left;
 }
 
 .collectionCol4 {
-    width: 200px;
-    text-align: left;
+  width: 200px;
+  text-align: left;
 }
 
 .collectionCol5 {
-    width: 50px;
+  width: 50px;
 }
 
 .collectionCol6 {
-    width:  50px;
+  width:  50px;
+}
+
+.collectionCol7 {
+  width:  600px;
+}
+
+.collectionCol8 {
+  width: 150px;
+  text-align: left;
+}
+
+.collectionCol9 {
+  width: 30px;
+}
+
+.collectionCol10 {
+  width: 150px;
+  text-align: left;
 }
 
 .oddpanel {
-    font-size: 12px; 
-    font-family:  Arial,sans-serif; 
-    background-color: #EDF6FA;
-    width: 690px;
+  font-size: 12px; 
+  font-family:  Arial,sans-serif; 
+  background-color: #EDF6FA;
+  width: 690px;
 }
 
 .evenpanel {
-    font-size: 12px; 
-    font-family:  Arial,sans-serif; 
-    background-color: #FFFFFF; 
-    width: 690px;
+  font-size: 12px; 
+  font-family:  Arial,sans-serif; 
+  background-color: #FFFFFF; 
+  width: 690px;
 }
 
- 
- 
- 
+
+
+
 .collectiongrouplist {
-    width:250px; 
-    font-size:  11px; 
-    font-family: Arial,sans-serif;
+  width:250px; 
+  font-size:  11px; 
+  font-family: Arial,sans-serif;
 }
 
 
 .loanspanel {
-    width: 920px;
-    margin-right: auto;
-    margin-left: auto; 
-    font-size: 12px;
-    font-family: Arial,sans-serif;
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto; 
+  font-size: 12px;
+  font-family: Arial,sans-serif;
 }
 
 
 
 .ui-widget-header {
-    background:  #EDF6FA; 
+  background:  #EDF6FA; 
 }
 
 
 .ui-widget-content { 
-    /*border: none !important;*/
-    font-size: 12px !important;
-    font-family:  Arial,sans-serif !important; 
+  /*border: none !important;*/
+  font-size: 12px !important;
+  font-family:  Arial,sans-serif !important; 
 }
 
 .nobord.ui-widget-content {
-    border: none !important;
+  border: none !important;
 }
 
 .nobord.ui-widget-header {
-    border: none !important;
+  border: none !important;
 }
 
 
- 
+
 
 /* button */
 
 .ui-button-text {
-    background-color:  #0b5e82;
+  background-color:  #0b5e82;
 }
 .ui-button-text-only .ui-button-text {
-    font-size: 9pt; 
-    color: #FFFFFF;
+  font-size: 9pt; 
+  color: #FFFFFF;
 }
 
 .originalbutton .ui-button-text {
-    background:  #D2CFCF;
+  background:  #D2CFCF;
 }
 
 
 .errormsg {
-    color: #FF0000; 
-    font-size: 12px;
-    font-family: "Arial",sans-serif;
+  color: #FF0000; 
+  font-size: 12px;
+  font-family: "Arial",sans-serif;
 }
 
 
 .requestPending {
-    background-color: #FFFFCC; 
+  background-color: #FFFFCC; 
 }
 
 .loanSent {
-    background-color: #99FFFF;
+  background-color: #99FFFF;
 }
 
 .loanDenied {
-    background-color: #FF0000;
-    color: #FFFFFF;
+  background-color: #FF0000;
+  color: #FFFFFF;
 }
 
 .loanAccepted {
-    background-color: #BEF781;
-    color: #000000;
+  background-color: #BEF781;
+  color: #000000;
+}
+
+.loanFailedSendEmail { 
+  background-color: #FF8000;
+  color: #000000;
 }
 
 
 
 .ui-accordion-header  {
-    background: transparent;
-    font-size: 12px;
-    font-weight: bold;   
+  background: transparent;
+  font-size: 12px;
+  font-weight: bold;   
 }
 
 .ui-panel-titlebar  { 
-    font-size: 12px;
-    font-weight: bold;  
-    border: none;
+  font-size: 12px;
+  font-weight: bold;  
+  border: none !important;
 }
 
 .imgswitch {
-    width: 960px; 
-    margin-bottom: -5px; 
+  /*width: 960px;*/ 
+  width: 100%;
+  margin-bottom: -5px; 
 }
 
 .menubutton {
-    color:#ffffff;
-    margin-top:-4px;
-    padding-bottom:5px;
-    padding-left:10px;
+  color:#ffffff;
+  margin-top:-4px;
+  padding-bottom:5px;
+  padding-left:10px;
 }
 
 .images {  
-    border: none;  
+  border: none;  
 }
 
 
 /** to take away select all **/
 .ui-selectcheckboxmenu-header .ui-chkbox .ui-chkbox-box {
-    visibility: hidden;
+  visibility: hidden;
 }
- 
+
 
 
 .alignTop {
-    vertical-align:top;
+  vertical-align:top;
 }
 
 
 .calendarFilter .ui-inputfield {
-    width:70px !important;
-    margin: 0 0.2em !important;
+  width:70px !important;
+  margin: 0 0.2em !important;
 }
 
 
 
- 
+
 
 
 .loginPanel .ui-widget-header {
-    background-color: #686868;
-    color: #FFFFFF;
-    text-align: center;
-    font-size: 14px;
-    font-weight: bold; 
+  background-color: #686868;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold; 
 }
 
 
 
 .loginPanel .ui-widget-content { 
-    background-color: #D2CFCF; 
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
-    font-size: 12px; 
+  background-color: #D2CFCF; 
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  font-size: 12px; 
 }
 
 .loginmainpanel {
-    padding: 10px 10px 20px 20px;
-    margin-left: auto;
-    margin-right: auto; 
-    width: 500px;
+  padding: 10px 10px 20px 20px;
+  margin-left: auto;
+  margin-right: auto;  
 }
-
 
 .userAccountPanel {
-    padding: 10px 10px 20px 20px;
-    margin-left: auto;
-    margin-right: auto; 
-    width: 600px;
+  padding: 10px 10px 20px 20px;
+  margin-left: auto;
+  margin-right: auto; 
+  width: 600px;
 }
-
-
- 
 
 /* text wrap in datatable */
 .fixed-size {
-    table-layout: fixed;
-    word-wrap: break-word;
+  /*table-layout: fixed;*/
+  table-layout: auto;
+  word-wrap: break-word;
 }
-
 
 .ui-datatable table {
-   table-layout: auto !important;
+  table-layout: auto !important;
 }
 
+.ui-datatable .ui-paginator {
+  border-top: none !important; 
+}
+
+.datalist-noborder .ui-widget-content {
+  border: none !important;
+}
 
 #loans .ui-selectonemenu .ui-selectonemenu-trigger {
-    right: -10px !important;
+  right: -10px !important;
 }
 
+.notificationSection {
+  width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.notificationTitle {
+  font-size: 18px;
+  font-weight: bold;
+  font-family: "Arial",sans-serif;
+}
 
 
 

@@ -490,6 +490,15 @@ a {
 /* -- */
 }
 
+.dottop {
+    vertical-align: top;
+    padding-top: 5px;
+}
+
+
+.dotimages {  
+    border: none;    
+}
 
 .images {  
     border: none;  
@@ -530,7 +539,6 @@ a {
 
 
 
-
 .aligntop {
     vertical-align: top;
 }
@@ -558,6 +566,7 @@ a {
     overflow: hidden;
 } 
 
+ 
 .ui-tabs-nav {
     font-size: 11px !important; 
 } 

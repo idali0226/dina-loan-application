@@ -28,7 +28,8 @@ public class EmailWithAttachment {
     
     
     private static final String SMTP_HOST_NAME = "smtp.gmail.com";
-    private static final int SMTP_HOST_PORT = 465;
+//    private static final int SMTP_HOST_PORT = 465;
+    private static final int SMTP_HOST_PORT = 587;
     private static final String SMTP_AUTH_USER = "dinanrm@gmail.com";
     private static final String SMTP_AUTH_PWD = "dina2012";
     
@@ -165,13 +166,7 @@ public class EmailWithAttachment {
         
         
         
-        
-        
-        
-        
-        
-        
-        
+         
         
           
         document.close();

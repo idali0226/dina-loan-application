@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package se.nrm.dina.loan.admin.controllers;
 
 import java.io.Serializable;
@@ -17,7 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory; 
+import org.slf4j.LoggerFactory;
 import se.nrm.dina.manager.dao.AccountDao;
 import se.nrm.dina.manager.entities.TblUsers;
 
@@ -30,88 +24,85 @@ import se.nrm.dina.manager.entities.TblUsers;
 @SessionScoped
 public class Login implements Serializable {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+  private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private static final String HOME_PATH = "/secure/home?faces-redirect=true";
-    private static final String LOGOUT_PATH = "/secure/start?faces-redirect=true";
-    
-    private final HttpSession session; 
+  private static final String HOME_PATH = "/secure/home?faces-redirect=true";
+  private static final String LOGOUT_PATH = "/secure/start?faces-redirect=true";
 
-    private String username;
-    private String password;
-    
-    @EJB
-    private AccountDao dao;
-    
-    public Login() { 
-        session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+  private final HttpSession session;
+
+  private String username;
+  private String password;
+
+  @EJB
+  private AccountDao dao;
+
+  public Login() {
+    session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+  }
+
+  public String login() { 
+    logger.info("login");
+
+    FacesContext context = FacesContext.getCurrentInstance();
+    HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+
+    try {
+      request.login(username, password); 
+      if (request.isUserInRole("inventory") || request.isUserInRole("scientist")) { 
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Authentication failed!", null));
+        try {
+          request.logout();
+        } catch (ServletException e) {
+          logger.warn("Failed to logout user!", e);
+        }
+        return "";
+      }
+
+      TblUsers user = dao.findByUserName(username);
+      session.setAttribute("loginuser", user);
+    } catch (ServletException e) {
+      logger.warn(e.getMessage());
+      if (e.getMessage().equals("Attempt to re-login while the user identity already exists")) {
+        return "";
+      }
+      context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Incorrect Username or Password!", null));
+      return "";
     }
 
-    public String login() {
-
-        logger.info("login"); 
-        
-        FacesContext context = FacesContext.getCurrentInstance();
-        HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
-
-        try {
-            request.login(username, password);    
-            
-            if( request.isUserInRole("inventory") || request.isUserInRole("scientist")) {
-                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Authentication failed!", null));
-                try {
-                    request.logout();
-                } catch (ServletException e) {
-                    logger.warn("Failed to logout user!", e);
-                }
-                return ""; 
-            }
-            
-            TblUsers user = dao.findByUserName(username); 
-            session.setAttribute("loginuser", user);
-        } catch (ServletException e) {
-            logger.warn(e.getMessage());
-            if (e.getMessage().equals("Attempt to re-login while the user identity already exists")) {
-                return "";
-            }
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Incorrect Username or Password!", null));
-            return "";
-        }
-        
 //        String user = request.getUserPrincipal().getName(); 
 //        session.setAttribute("user", user);
 //        
-        
-        return HOME_PATH;
-    }
-    
-    public String logout() { 
-        logger.info("logout");
-        FacesContext context = FacesContext.getCurrentInstance();
-        HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
-         
-        try {
-            request.logout(); 
-        } catch (ServletException e) {
-            logger.warn("Failed to logout user!", e);
-        } 
-        session.invalidate();
-        return LOGOUT_PATH;
-    }
+    return HOME_PATH;
+  }
 
-    public String getUsername() {
-        return username;
-    }
+  public String logout() {
+    logger.info("logout");
+    FacesContext context = FacesContext.getCurrentInstance();
+    HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
 
-    public void setUsername(String username) {
-        this.username = username;
+    try {
+      request.logout();
+    } catch (ServletException e) {
+      logger.warn("Failed to logout user!", e);
     }
+    session.invalidate();
+    return LOGOUT_PATH;
+  }
 
-    public String getPassword() {
-        return password;
-    }
+  public String getUsername() {
+    return username;
+  }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }  
+  public void setUsername(String username) {
+    this.username = username;
+  }
+
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
+  }
 }

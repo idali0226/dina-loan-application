@@ -1,0 +1,43 @@
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:p="http://primefaces.org/ui"   
+      xmlns:h="http://java.sun.com/jsf/html"    > 
+  <body>
+    <ui:composition>     
+      <h:panelGrid id="policypage" styleClass="sectionstyle1" rendered="#{onlineForm.section == 3}"  > 
+
+        <h:panelGroup id="readpolicyPanel">    
+          <h:panelGroup layout="block"  rendered="#{onlineForm.section == 3}" styleClass="sectionstyle1"  >
+
+            <h:panelGrid styleClass="backtofomrlink">
+              <p:commandLink actionListener="#{onlineForm.backtoform}" value="#{msg.backtoloanform}"  style="color: #8B8786; " 
+                             process="@this" global="false" update="@all"  oncomplete="drawRegionsMap();"  />   
+            </h:panelGrid>
+
+            <br /><br /><br />
+
+            <h:panelGroup layout="block" >
+              <p:outputLabel value="#{msg.downloadpolicy}" styleClass="subtitle" />  
+            </h:panelGroup>
+            <br />
+            <br />
+            <br />
+            <br /> 
+            <p:commandButton id="scPolicyBtn"  value="#{msg.scientificloanpolicy}" type="button"  />
+            <p:overlayPanel id="currentScPolicyPanel" for="scPolicyBtn" hideEffect="fade" dynamic="true"  >
+              <object type="application/pdf" data="#{onlineForm.scPolicy}" height="750px" width="800px"    /> 
+            </p:overlayPanel>  
+            <br />
+            <br />
+            <p:commandButton id="edPolicyBtn" value="#{msg.educationalloanpolicy}" type="button" />
+            <p:overlayPanel id="currentEdPolicyPanel" for="edPolicyBtn" hideEffect="fade" dynamic="true"  >
+              <object type="application/pdf" data="#{onlineForm.edPolicy}" height="750px" width="800px"  />  
+            </p:overlayPanel>
+      
+          </h:panelGroup>
+        </h:panelGroup>
+
+      </h:panelGrid>
+    </ui:composition>
+  </body>
+</html>

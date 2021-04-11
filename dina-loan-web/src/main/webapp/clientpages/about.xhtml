@@ -1,0 +1,57 @@
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:p="http://primefaces.org/ui"   
+      xmlns:h="http://java.sun.com/jsf/html"    > 
+  <body>
+    <ui:composition>     
+      <h:panelGrid id="aboutpage" styleClass="sectionstyle1"    rendered="#{onlineForm.section == 2}"  > 
+        <h:panelGroup id="aboutPanel"   >    
+          <h:panelGrid styleClass="backtofomrlink" >
+            <p:commandLink actionListener="#{onlineForm.backtoform}" value="#{msg.backtoloanform}"  style="color: #8B8786; " 
+                           process="@this" global="false" update="@all"  oncomplete="drawRegionsMap();"  />   
+          </h:panelGrid>
+          <br /><br /><br />
+          <h:panelGroup id="svaboutpanel" rendered="#{languages.isSwedish}"> 
+            <h:panelGroup layout="block" >
+              <p:outputLabel value="Om Informations-/Låneansökan" styleClass="maintext" /> 
+            </h:panelGroup>
+            <br /><br /><br />
+            <p:outputLabel styleClass="defaulttext">
+              Detta ansökansformulär är till för att göra informations-, foto eller låneförfrågningar av föremål från våra samlingar mer kompletta och lättarbetade. Du som sökande får direkt ett kvitto på att förfrågan mottagits, samtidigt som det underlättar för våra samlingsansvariga att hantera ärendet.
+              <br /><br />
+              Ansökanssystemet är uppbyggt som ett frågeformulär med informationsfält, och inkluderar möjlighet att ladda upp informationsfiler som är av nytta för vår bedömning. Formuläret bör svaras på i bästa mån, för att snabba på hanteringen av din ansökan. Den integrerar sökning mot NRM's samlingsdatabas (DINA-Specify) för lätt åtkomst av föremålsinformation, samt mot GBIF för information om taxonomiska namn.
+              <br /><br />
+              Formuläret år utvecklad av Enheten för Zoologi samt Enheten för Bioinformatik.
+              <br /><br />
+              Om du har några frågor om formuläret eller dess användande, eller upplever 
+              <p:commandLink actionListener="#{onlineForm.contact}" value="problem"  process="@this" global="false" update="@all"  style="color: #8B8786; " />    
+              med användandet, tveka inte att kontakta vår 
+              <h:outputLink value="mailto:stefan.daume@nrm.se"  style="color: #8B8786; " >web-ansvariga</h:outputLink>  
+            </p:outputLabel> 
+          </h:panelGroup> 
+
+          <h:panelGroup id="enaboutpanel" rendered="#{!languages.isSwedish}"> 
+            <h:panelGroup layout="block" >
+              <p:outputLabel value="About the Information/Loan Request Form" styleClass="maintext" /> 
+            </h:panelGroup>
+            <br /><br /><br />
+            <h:panelGroup styleClass="defaulttext">
+              This request form is for making information, photo or loan requests of specimens from our collections more complete and easy to handle by our staff.  For the borrower this will make the handling time shorter, and it will make the value of the request easier to assess for our collection managers.
+              <br /><br />
+              The request form is built like a questionnaire including information fields and with ability to upload information files that can be of use for our assessment.  The form should for fastest handling be filed and answered as completely as possible.  It integrates searches against our collection database (DINA-Specify) for easy access to specimen information, as well as against GBIF for taxonomic information.
+
+              <br /><br />
+              The request form is developed by the Department of Zoology and the Department of Bioinformatics.
+              <br /><br />
+              If you have any questions about the use of this service, or if you experience any  
+              <p:commandLink actionListener="#{onlineForm.contact}" value="problems"  style="color: #8B8786; " 
+                             process="@this" global="false" update="@all"  />   
+              with the request form don't hesitate to contact our 
+              <h:outputLink value="mailto:team@mail.dina-web.net" style="color: #8B8786; " >webmaster</h:outputLink>. 
+            </h:panelGroup>
+          </h:panelGroup>  
+        </h:panelGroup>
+      </h:panelGrid>
+    </ui:composition>
+  </body>
+</html>

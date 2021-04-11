@@ -33,6 +33,7 @@ public class AccountDao implements Serializable {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     
     List<String> excludeGroups = new ArrayList();
+    List<String> loanGroup = new ArrayList();
     
     @PersistenceContext(unitName = "userPU")                  //  persistence unit connect to test database
     private EntityManager entityManager;
@@ -42,6 +43,11 @@ public class AccountDao implements Serializable {
         excludeGroups.add("inventory");
         excludeGroups.add("superuser");
         excludeGroups.add("vegadare");
+        
+        loanGroup = new ArrayList();
+        loanGroup.add("user");
+        loanGroup.add("admin");
+        loanGroup.add("manager"); 
     }
     
     public List<String> findAllCuratorsEmailList() {
@@ -173,12 +179,15 @@ public class AccountDao implements Serializable {
         return null;
     }
     
-    public boolean validateEmail(String email) { 
-        Query query = entityManager.createNamedQuery("TblUsers.validateEmail");
-        
+    public boolean validateEmail(String email) {   
+        String strSql = "SELECT Count(u) FROM TblUsers u JOIN u.tblGroupsList g WHERE g.username = u.username AND g.groupname IN (:group_params) AND u.email = :email";
+         
+        Query query = entityManager.createQuery(strSql);
+        query.setParameter("group_params", loanGroup); 
         query.setParameter("email", email);
         Number number = (Number) query.getSingleResult(); 
-        return number.intValue() < 1;  
+        logger.info("number : {}", number);
+        return number.intValue() < 1;   
     }
 
     public boolean validateUserName(String username) {  

@@ -307,5 +307,6 @@ public class MailHandler implements Serializable {
  
     public static void main(String[] args) throws MessagingException {
         MailHandler handler = new MailHandler();  
+      
     }  
 }

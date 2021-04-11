@@ -23,40 +23,40 @@ public class SolrRecord implements Serializable {
     @Field("id")
     String id;
       
-    @Field("cn")
+    @Field("catalogNumber")
     String catalogNum;
        
-    @Field("sp")
+    @Field("species")
     String fullname; 
     
-    @Field("fm")
+    @Field("family")
     String family; 
     
-    @Field("gn")
+    @Field("genus")
     String genus; 
     
-    @Field("lc")
+    @Field("locality")
     String locality;
     
-    @Field("cy") 
+    @Field("country") 
     String country;
     
-    @Field("col") 
+    @Field("collector") 
     String[] collector;
     
-    @Field("auth")
+    @Field("author")
     String[] author;
     
-    @Field("pr")
+    @Field("prepration")
     String[] preparations;
     
-    @Field("sto")
+    @Field("storage")
     String[] storage;
  
-    @Field("tsn")
+    @Field("typeStatus")
     String type; 
     
-    @Field("sd")
+    @Field("startDate")
     Date startDate;
     
 //    @Field("img")

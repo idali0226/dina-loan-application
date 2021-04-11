@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package se.nrm.dina.loan.web.beans;
 
 import java.io.Serializable;
@@ -38,7 +33,7 @@ public class MapBean implements Serializable {
     @PostConstruct
     public void init() {  
          
-        Map<String, Integer> map = mongo.getMapDataForLoans();  
+        Map<String, Integer> map = mongo.getMapDataForLoans();   
         mapList = new ArrayList<>();
         map.entrySet().stream().forEach((entry) -> {
             mapList.add(new MapVO(entry.getKey(), String.valueOf(entry.getValue())));
@@ -58,6 +53,7 @@ public class MapBean implements Serializable {
 
     public List<MapVO> getMapList() {
         logger.info("getMapList -- {}", mapList.size()); 
+        logger.info("map: {}", mapList);
         return mapList;
     }
 

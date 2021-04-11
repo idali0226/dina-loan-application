@@ -1,0 +1,117 @@
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:p="http://primefaces.org/ui"   
+      xmlns:h="http://java.sun.com/jsf/html"    > 
+  <body>
+    <ui:composition>     
+      <h:panelGrid id="contactpage" styleClass="sectionstyle1" rendered="#{onlineForm.section == 4}"  > 
+        <h:panelGroup id="contactPanel">     
+          <h:panelGrid styleClass="backtofomrlink">
+            <p:commandLink actionListener="#{onlineForm.backtoform}" value="#{msg.backtoloanform}"  style="color: #8B8786; " 
+                           process="@this" global="false" update="@all"  oncomplete="drawRegionsMap();"  />   
+          </h:panelGrid>
+
+          <br /><br /><br />
+
+          <h:panelGroup id="svcontactpanel" rendered="#{languages.isSwedish}"> 
+            <h:panelGroup layout="block" style="padding-left: 40px;">
+              <h:panelGroup  layout="block" >
+                <p:outputLabel value="Kontakta oss"  styleClass="maintext" />  
+              </h:panelGroup>  
+              <br /><br />
+              <h:panelGroup styleClass="subtitle"> 
+                Hör gärna av dig till oss med frågor, tips och kommentarer. Vi försöker alltid hjälpa till så gott vi kan. 
+              </h:panelGroup>
+
+              <br />
+              <br />
+              <br />
+
+              <h:panelGroup styleClass="subtitle"> 
+                Postadress och kontaktuppgifter<br /> 
+              </h:panelGroup>
+
+
+              <h:panelGroup styleClass="defaulttext"> 
+                För vetenskapliga frågor, vänligen kontakta relevant enhet. 
+              </h:panelGroup>
+              <br />
+              <br />
+              <h:panelGroup styleClass="defaulttext"> 
+                NRM Låneansökan<br /> 
+                Naturhistoriska riksmuseet<br />
+                Box 50007<br />
+                104 05 Stockholm 
+              </h:panelGroup>
+              <br />
+              <br />  
+
+              <h:panelGroup styleClass="defaulttext"  layout="block" > 
+                <p:outputLabel  value="Telefon (växel):"  style="font-weight: bold; padding-right: 10px; " />  
+                <p:outputLabel value="08-519 540 00 (fråga efter Bioinformatik och Genetik avdelening)"  />  
+              </h:panelGroup>   
+              <h:panelGroup styleClass="defaulttext"  layout="block" >
+                <p:outputLabel style="font-weight: bold;">
+                  E-post:
+                </p:outputLabel> 
+                <h:outputLink value="mailto:team@mail.dina-web.net" style="padding-left: 60px;">team@mail.dina-web.net</h:outputLink>
+              </h:panelGroup>   
+            </h:panelGroup> 
+          </h:panelGroup>
+
+          <h:panelGroup id="encontactpanel" rendered="#{!languages.isSwedish}"> 
+            <h:panelGroup layout="block" style="padding-left: 40px;">
+              <h:panelGroup  layout="block" >
+                <p:outputLabel value="Contact us"  styleClass="maintext" />  
+              </h:panelGroup>  
+              <br /><br />
+              <h:panelGroup styleClass="subtitle"> 
+                You are welcome to contact us with questions, recommendations and comments.  We always try to help or improve best we can.
+              </h:panelGroup>
+
+              <br />
+              <br />
+              <br />
+
+              <h:panelGroup styleClass="subtitle"> 
+                Postal address and contact information<br /> 
+              </h:panelGroup>
+              <h:panelGroup styleClass="text"> 
+                For scientific questions, please contact the relevant department.
+              </h:panelGroup>
+
+              <br />
+              <br />
+              <h:panelGroup styleClass="defaulttext"> 
+                NRM loan request form<br /> 
+                Swedish Museum of Natural History<br />
+                Box 50007<br />
+                104 05 Stockholm <br />
+                Sweden
+              </h:panelGroup>
+              <br />
+              <br />  
+
+              <h:panelGrid columns="2" styleClass="defaulttext">
+                <p:outputLabel  value="Phone (exchange):"  style="font-weight: bold; padding-right: 10px; " />  
+                <p:outputLabel value="08-519 540 00 (ask for Bioinformatics and Genetics)"  />  
+
+                <p:outputLabel style="font-weight: bold; padding-right: 10px; ">
+                  E-mail:
+                </p:outputLabel> 
+                <h:outputLink value="mailto:team@mail.dina-web.net" >team@mail.dina-web.net</h:outputLink>
+              </h:panelGrid>
+
+              <h:panelGroup styleClass="defaulttext"  layout="block" > 
+
+              </h:panelGroup>   
+              <h:panelGroup styleClass="defaulttext"  layout="block" >
+
+              </h:panelGroup>   
+            </h:panelGroup> 
+          </h:panelGroup> 
+        </h:panelGroup>
+      </h:panelGrid>
+    </ui:composition>
+  </body>
+</html>

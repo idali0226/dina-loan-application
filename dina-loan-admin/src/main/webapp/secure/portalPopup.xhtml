@@ -1,0 +1,140 @@
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:ui="http://java.sun.com/jsf/facelets"  
+      xmlns:p="http://primefaces.org/ui"   
+      xmlns:h="http://java.sun.com/jsf/html"    > 
+  <body>
+    <ui:composition>   
+      <!--<h:form id="notificationForm" enctype="multipart/form-data" prependId="false">-->
+      <h:panelGroup layout="block"  styleClass="notificationSection" id="notificationPanel"> 
+        <p:accordionPanel  dynamic="true" cache="true"  id="accordionNotificationPanel" >
+          <p:ajax event="tabChange" listener="#{notification.onTabChange}" />
+    
+          <p:tab title="Edit notifications"  id="editNotificationTab" > 
+            <h:outputLabel for="ungroupedManager" styleClass="defaultboldtext"
+                           value="Click on the text to edit: " />
+            <div class="datalist-noborder" id="notificationEditDiv">
+              <p:messages id="page5panelmsg" autoUpdate="true" showDetail="true"
+                          showSummary="false" closable="true"   showIcon="true" />
+              <p:dataScroller id="dataScroller" value="#{notification.notifications}" 
+                              var="note" chunkSize="5"> 
+                <h:panelGroup id="viewNotificationPanel" layout="block"  >
+                  <h:panelGrid columns="3" columnClasses="collectionCol8,cgcol2,collectionCol7"
+                               style="border-top: solid 1px; width: 900px; padding: 5px;" >
+                    <p:outputLabel value="Activate/deactivate notification: " />
+                    <p:spacer width="10" />   
+                    <p:inputSwitch value="#{note.isActive}">
+                      <p:ajax update="dataScroller" 
+                              listener="#{notification.changeNotification(note)}" />
+                    </p:inputSwitch>
+
+                    <p:outputLabel value="Order: " />
+                    <p:spacer width="10" /> 
+                    <p:inplace id="orderNumber">
+                      <p:inputText value="#{note.orderNumber}"  size="50"
+                                   onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));" />
+                    </p:inplace>
+
+                    <p:outputLabel value="Title: " />
+                    <p:spacer width="10" /> 
+                    <p:inplace id="title">
+                      <p:inputText value="#{note.title}" size="50" />
+                    </p:inplace>
+
+                    <p:outputLabel value="Description in English: " /> 
+                    <p:spacer width="10" /> 
+                    <p:inplace id="descriptionEn">
+                      <p:inputTextarea value="#{note.descriptionEn}" rows="5" cols="90" />
+                    </p:inplace>
+                    
+                    <p:outputLabel value="Description in Swedish: " />
+                    <p:spacer width="10" /> 
+                    <p:inplace id="descriptionSv">
+                      <p:inputTextarea value="#{note.descriptionSv}" rows="5" cols="90" />
+                    </p:inplace>
+                  </h:panelGrid> 
+                  <h:panelGrid id="editBtnPanel" style=" float: right; text-align: right;" 
+                               columns="3" columnClasses="collectionCol7,collectionCol3,collectionCol3"> 
+                    <p:spacer width="10" />
+                    <p:commandButton value="Update" 
+                                     process="dataScroller"  
+                                     update="dataScroller"
+                                     actionListener="#{notification.editNotification(note)}"
+                                     global="false"  />
+                    <p:commandButton value="delete" 
+                                     process="dataScroller"
+                                     update="dataScroller"
+                                     actionListener="#{notification.deleteNotification(note)}" 
+                                     global="false"  />
+                  </h:panelGrid>
+                </h:panelGroup> 
+              </p:dataScroller> 
+            </div>
+          </p:tab>
+
+          <p:tab title="Create New notification" id="addNotificationTab"> 
+            <h:panelGroup style="width: 680px; margin-left: auto; margin-right: auto;" 
+                          id="addNotificationPanel" >
+              <h:panelGrid columns="5" id="notificationActivePanel">
+                <h:outputText value="Activate/deactivate notification: " />
+                <p:spacer width="5" />  
+
+                <p:inputSwitch value="#{notification.isActive}">
+                  <p:ajax update="notificationActivePanel" 
+                          listener="#{notification.activateNotification()}" />
+                </p:inputSwitch>
+
+                <p:spacer width="5" /> 
+                <h:outputText value="Click to activate/deactivate" /> 
+              </h:panelGrid> 
+              
+              <h:panelGrid columns="2" style="width: 650px; " >
+                <h:outputLabel for="notificationOrder:" value="Order"   />
+                <p:inputText id="notificationOrder" value="#{notification.orderNumber}" 
+                             onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));" size="60" />   
+              </h:panelGrid>
+              <p:spacer width="10" />
+              <p:spacer width="10" />
+
+              <h:panelGrid columns="2" style="width: 650px; " >
+                <h:outputLabel for="notificationTitle" value="Tital:"   />
+                <p:inputText id="notificationTitle" value="#{notification.title}" size="60" />   
+              </h:panelGrid>
+              <p:spacer width="10" />
+              <p:spacer width="10" />
+              <h:panelGroup style="width: 650px;" layout="block">
+                <h:panelGroup layout="block" style="width: 650px; ">
+                  <p:outputLabel value="Description in English:" styleClass="notificationTitle" /> 
+                </h:panelGroup>
+                <p:inputTextarea id="descEn" value="#{notification.descriptionEn}" 
+                                 rows="7" cols="110" styleClass="contactfieldstext" >    
+                </p:inputTextarea>
+              </h:panelGroup>
+
+              <p:spacer width="10" />
+              <p:spacer width="10" />
+              <h:panelGroup style="width: 650px; ">
+                <h:panelGroup layout="block" style="width: 650px;" >
+                  <p:outputLabel value="Description in Swedish" styleClass="notificationTitle" /> 
+                </h:panelGroup>
+                <p:inputTextarea id="descSv" value="#{notification.descriptionSv}" 
+                                 rows="7" cols="110" styleClass="contactfieldstext" >   
+                </p:inputTextarea>
+              </h:panelGroup>
+              <p:spacer width="10" />
+              <p:spacer width="10" />
+              <p:spacer width="10" />
+              <p:spacer width="10" />
+              <h:panelGrid style="width: 650px; float: right; text-align: right;"> 
+                <p:commandButton value="Save notifications" 
+                                 process="addNotificationPanel"
+                                 update="accordionNotificationPanel"
+                                 action="#{notification.addNotification()}" global="false"  />
+              </h:panelGrid>
+            </h:panelGroup>
+          </p:tab>
+        </p:accordionPanel> 
+      </h:panelGroup> 
+      <!--</h:form>-->
+    </ui:composition>
+  </body>
+</html>

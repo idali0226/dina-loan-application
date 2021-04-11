@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package se.nrm.dina.email.model.loan.util;
 
 import java.util.regex.Matcher;
@@ -15,23 +9,23 @@ import java.util.regex.Pattern;
  */
 public class EmailValidator {
 
-    private final Pattern pattern;
-    private Matcher matcher;
+  private final Pattern pattern;
+  private Matcher matcher;
 
-    private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+  private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
-    public EmailValidator() {
-        pattern = Pattern.compile(EMAIL_PATTERN);
-    }
+  public EmailValidator() {
+    pattern = Pattern.compile(EMAIL_PATTERN);
+  }
 
-    /**
-     * Validate hex with regular expression
-     *
-     * @param email 
-     * @return true valid hex, false invalid hex
-     */
-    public boolean validate(final String email) { 
-        matcher = pattern.matcher(email);
-        return matcher.matches(); 
-    }
+  /**
+   * Validate hex with regular expression
+   *
+   * @param email
+   * @return true valid hex, false invalid hex
+   */
+  public boolean validate(final String email) {
+    matcher = pattern.matcher(email);
+    return matcher.matches();
+  }
 }
