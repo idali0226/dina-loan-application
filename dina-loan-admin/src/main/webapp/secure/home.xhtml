@@ -746,7 +746,13 @@
                         </h:panelGroup> 
                         <br /> 
                       </h:panelGroup>  
-                      <object type="application/pdf" data="#{admin.pdf(loan)}" height="750px" width="820px"  />  
+                      <ui:remove>
+                        <object type="application/pdf" data="#{admin.pdf(loan)}" height="750px" width="820px"  /> 
+                      </ui:remove>
+                      <p:media value="#{admin.pdf(loan)}" height="750px" width="820px"  player="pdf">
+                        Your browser can't display pdf, <h:outputLink
+                          value="#{admin.pdf(loan)}">click</h:outputLink> to download pdf instead.
+                      </p:media>
                     </p:panel> 
                   </p:rowExpansion> 
                 </p:dataTable>   
@@ -768,9 +774,20 @@
                   <br />
                   <br />  
                   <p:commandButton id="currentScPolicyBtn"  value="Current loan policy for scientific purpose" type="button"  />
-                  <p:overlayPanel id="currentScPolicyPanel" for="currentScPolicyBtn" hideEffect="fade" dynamic="true"  >
-                    <object type="application/pdf" data="#{admin.scPolicy}" height="750px" width="800px"    /> 
+                  <ui:remove>
+                    <p:overlayPanel id="currentScPolicyPanel" for="currentScPolicyBtn" hideEffect="fade" dynamic="true"  >
+                      <object type="application/pdf" data="#{admin.scPolicy}" height="750px" width="800px"    /> 
+                    </p:overlayPanel> 
+                  </ui:remove>
+
+                  <p:overlayPanel id="currentScPolicyPanel1" for="currentScPolicyBtn" hideEffect="fade" dynamic="true"  >
+                    <p:media value="#{admin.scPolicy}" height="750px" width="800px"  player="pdf">
+                      Your browser can't display pdf, <h:outputLink
+                        value="#{admin.scPolicy}">click</h:outputLink> to download pdf instead.
+                    </p:media>
                   </p:overlayPanel> 
+
+
                   <br />
                   <br />  
                   <br />
@@ -788,10 +805,20 @@
                   <br />
                   <br /> 
                   <p:commandButton id="currentEdPolicyBtn" value="Current loan policy for educational purpose" type="button" />
+                  <ui:remove>
+                    <p:overlayPanel id="currentEdPolicyPanel" for="currentEdPolicyBtn" hideEffect="fade" dynamic="true"  >
+                      <object type="application/pdf" data="#{admin.edPolicy}" height="750px" width="800px"  />  
+                    </p:overlayPanel>
+                  </ui:remove>
                   <p:overlayPanel id="currentEdPolicyPanel" for="currentEdPolicyBtn" hideEffect="fade" dynamic="true"  >
-                    <object type="application/pdf" data="#{admin.edPolicy}" height="750px" width="800px"  />  
+              
+                    <p:media value="#{admin.edPolicy}" height="750px" width="800px"  player="pdf">
+                      Your browser can't display pdf, <h:outputLink
+                        value="#{admin.edPolicy}">click</h:outputLink> to download pdf instead.
+                    </p:media>
+                  <br /> 
                   </p:overlayPanel>
-                  <br />
+                 
                   <br />  
                   <br />
                   <br />  

@@ -2240,38 +2240,68 @@
             <p:dialog id="policyDialog" header="#{msg.loanpolicy}" 
                       widgetVar="policyDlg" style="width: 820px; height: 700px;">
               <p:panel  id="policyDialogPanel" > 
-                <h:panelGrid rendered="#{onlineForm.numOfPages == 9}">   
-                  <object type="application/pdf" data="https://#{onlineForm.host}/dina-external-datasource/pdf?pdf=Loanpolicyforscientificpurposes.pdf#page=1"  height="750px" width="820px" rendered="#{onlineForm.isPolicyLinkEnabled}">
+                <h:panelGrid rendered="#{onlineForm.numOfPages == 9}">  
+                  <ui:remove>
+                    <object type="application/pdf" data="https://#{onlineForm.host}/dina-external-datasource/pdf?pdf=Loanpolicyforscientificpurposes.pdf#page=1"  
+                            height="750px" width="820px" rendered="#{onlineForm.isPolicyLinkEnabled}">
+                      Your browser can't display pdf, 
+                      <h:outputLink value="https://#{onlineForm.host}/dina-external-datasource/pdf?pdf=Loanpolicyforscientificpurposes.pdf#page=1"   > 
+                        click
+                      </h:outputLink>
+                      to download pdf instead.
+                    </object> 
+                  </ui:remove>
+                                  
+                  <p:media value="#{onlineForm.scPolicy}#page=1" 
+                           height="750px" width="820px" rendered="#{onlineForm.isPolicyLinkEnabled}" player="pdf">
                     Your browser can't display pdf, 
-                    <h:outputLink value="https://#{onlineForm.host}/dina-external-datasource/pdf?pdf=Loanpolicyforscientificpurposes.pdf#page=1"   > 
-                      click
-                    </h:outputLink>
-                    to download pdf instead.
-                  </object>   
+                    <h:outputLink
+                      value="#{onlineForm.scPolicy}#page=1">
+                      click</h:outputLink> to download pdf instead.
+                  </p:media> 
                 </h:panelGrid>
 
                 <h:panelGrid rendered="#{onlineForm.numOfPages != 9}"> 
-                  <object type="application/pdf" data="https://#{onlineForm.host}/dina-external-datasource/pdf?pdf=Loanpolicycommon.pdf#page=1"  height="750px" width="820px" rendered="#{onlineForm.isPolicyLinkEnabled}">
+                  <ui:remove>
+                    <object type="application/pdf" data="https://#{onlineForm.host}/dina-external-datasource/pdf?pdf=Loanpolicycommon.pdf#page=1" 
+                            height="750px" width="820px" rendered="#{onlineForm.isPolicyLinkEnabled}">
+                      Your browser can't display pdf, 
+                      <h:outputLink value="https://#{onlineForm.host}/dina-external-datasource/pdf?pdf=Loanpolicycommon.pdf#page=1"  > 
+                        click
+                      </h:outputLink>
+                      to download pdf instead.
+                    </object> 
+                  </ui:remove>
+                                     
+                  <p:media value="#{onlineForm.edPolicy}#page=1"
+                           height="750px" width="820px" rendered="#{onlineForm.isPolicyLinkEnabled}" player="pdf">
                     Your browser can't display pdf, 
-                    <h:outputLink value="https://#{onlineForm.host}/dina-external-datasource/pdf?pdf=Loanpolicycommon.pdf#page=1"  > 
-                      click
-                    </h:outputLink>
-                    to download pdf instead.
-                  </object>   
+                    <h:outputLink
+                      value="#{onlineForm.edPolicy}#page=1">
+                      click</h:outputLink> to download pdf instead.
+                  </p:media> 
                 </h:panelGrid> 
               </p:panel>
             </p:dialog>
 
             <p:dialog id="destructivePolicyDialog" header="#{msg.loanpolicy}" widgetVar="destructivePolicyDlg" style="width: 820px; height: 700px;">
               <p:panel  id="destructivePolicyDialogPanel">   
-                <object type="application/pdf" height="750px" width="820px"  rendered="#{onlineForm.isDestructivePolicyLinkEnabled}"
+                <ui:remove>
+                  <object type="application/pdf" height="750px" width="820px"  rendered="#{onlineForm.isDestructivePolicyLinkEnabled}"
                         data="https://#{onlineForm.host}/dina-external-datasource/pdf?pdf=Loanpolicyforscientificpurposes.pdf#page=2" >
-                  Your browser can't display pdf, 
-                  <h:outputLink value="https://#{onlineForm.host}/dina-external-datasource/pdf?pdf=Loanpolicyforscientificpurposes.pdf#page=2"  > 
-                    click 
-                  </h:outputLink>
-                  to download pdf instead.
-                </object> 
+                    Your browser can't display pdf, 
+                    <h:outputLink value="https://#{onlineForm.host}/dina-external-datasource/pdf?pdf=Loanpolicyforscientificpurposes.pdf#page=2"  > 
+                      click 
+                    </h:outputLink>
+                    to download pdf instead.
+                  </object>
+                </ui:remove>
+                
+                <p:media value="#{onlineForm.scPolicy}#page=2" height="750px" width="820px" player="pdf">
+                        Your browser can't display pdf, <h:outputLink
+                          value="#{onlineForm.scPolicy}#page=2">click</h:outputLink> to download pdf instead.
+                </p:media>
+                  
               </p:panel>
             </p:dialog>
  

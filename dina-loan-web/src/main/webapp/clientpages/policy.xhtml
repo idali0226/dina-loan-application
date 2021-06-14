@@ -24,14 +24,29 @@
             <br />
             <br /> 
             <p:commandButton id="scPolicyBtn"  value="#{msg.scientificloanpolicy}" type="button"  />
+            
             <p:overlayPanel id="currentScPolicyPanel" for="scPolicyBtn" hideEffect="fade" dynamic="true"  >
-              <object type="application/pdf" data="#{onlineForm.scPolicy}" height="750px" width="800px"    /> 
+              <ui:remove>
+                <object type="application/pdf" data="#{onlineForm.scPolicy}" height="750px" width="800px"    />
+              </ui:remove>
+               
+              <p:media value="#{onlineForm.scPolicy}" height="750px" width="820px" player="pdf">
+                        Your browser can't display pdf, <h:outputLink
+                          value="#{onlineForm.scPolicy}">click</h:outputLink> to download pdf instead.
+              </p:media>
             </p:overlayPanel>  
             <br />
             <br />
             <p:commandButton id="edPolicyBtn" value="#{msg.educationalloanpolicy}" type="button" />
             <p:overlayPanel id="currentEdPolicyPanel" for="edPolicyBtn" hideEffect="fade" dynamic="true"  >
-              <object type="application/pdf" data="#{onlineForm.edPolicy}" height="750px" width="800px"  />  
+              <ui:remove>
+                <object type="application/pdf" data="#{onlineForm.edPolicy}" height="750px" width="800px"  />  
+              </ui:remove>
+           
+              <p:media value="#{onlineForm.edPolicy}" height="750px" width="820px" player="pdf">
+                        Your browser can't display pdf, <h:outputLink
+                          value="#{onlineForm.edPolicy}">click</h:outputLink> to download pdf instead.
+              </p:media>
             </p:overlayPanel>
       
           </h:panelGroup>

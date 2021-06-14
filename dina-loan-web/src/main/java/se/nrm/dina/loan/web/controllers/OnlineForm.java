@@ -221,6 +221,7 @@ public class OnlineForm implements Serializable {
 
     String basePath;
     servername = ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getServerName();
+    
     if (servername.contains(LOCALHOST)) {
       basePath = LOCAL_EXTERNAL_FILES;
       server = "localhost";
