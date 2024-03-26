@@ -1,6 +1,7 @@
 package se.nrm.dina.mongodb.loan.vo;
 
 import java.io.Serializable;
+import org.apache.commons.lang.StringUtils;
 
 /**
  *
@@ -143,7 +144,35 @@ public class Sample implements Serializable {
   }
 
   public void setCountry(String country) {
-    this.country = country;
+    this.country = country; 
+  }
+  
+  public boolean isEmptySample() { 
+      if(StringUtils.isNotBlank(catalogNumber)) {
+          return false;
+      } 
+      if(StringUtils.isNotBlank(family)) {
+          return false;
+      }
+      if(StringUtils.isNotBlank(genus)) {
+          return false;
+      }
+      if(StringUtils.isNotBlank(species)) {
+          return false;
+      }
+      if(StringUtils.isNotBlank(locality)) {
+          return false;
+      }  
+      if(StringUtils.isNotBlank(auctor)) {
+          return false;
+      }
+      if(StringUtils.isNotBlank(collector)) {
+          return false;
+      } 
+      if(StringUtils.isNotBlank(typeStatus)) {
+          return false;
+      } 
+      return !StringUtils.isNotBlank(other);
   }
 
   @Override

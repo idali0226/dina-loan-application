@@ -16,6 +16,8 @@ public class User implements Serializable {
   private Address address;
   private String phone;
   private String email;
+  
+  private final String emptySpace = " ";
 
   public User() {
     address = new Address();
@@ -92,16 +94,18 @@ public class User implements Serializable {
   public String getName() {
 
     StringBuilder sb = new StringBuilder();
-    sb.append(title);
-    sb.append(" ");
+    if(title != null) {
+        sb.append(title  );
+        sb.append(emptySpace);
+    } 
     sb.append(firstname);
-    sb.append(" ");
+    sb.append(emptySpace);
     sb.append(lastname);
     return sb.toString().trim();
   }
 
   @Override
   public String toString() {
-    return "User : [" + firstname + " " + lastname + "] email [" + email;
+    return "User : [" + title + emptySpace + firstname +  emptySpace + lastname + "] email [" + email;
   }
 }
