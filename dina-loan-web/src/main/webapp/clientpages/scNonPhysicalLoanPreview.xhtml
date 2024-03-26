@@ -1,0 +1,204 @@
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:p="http://primefaces.org/ui"     
+      xmlns:h="http://java.sun.com/jsf/html"    
+      xmlns:f="http://xmlns.jcp.org/jsf/core"> 
+    <head>
+        <title>Scientific non physical loan preview</title>
+    </head>
+    <body>    
+        <ui:composition  template="/templates/masterLayout.xhtml">     
+            <ui:define name="content"  >   
+                <h:panelGroup styleClass="main" layout="block" id="nonPhysicalLoanPrieview"  > 
+                    <ui:include src="/clientpages/breadcrumb.xhtml" />  
+                    <h:form id="nonPhysicalLoanPrieviewForm">   
+                        <h:panelGroup layout="block" id="nonPhysicalLoanPreviewPanel"
+                                      styleClass="sectionstyle2"  > 
+
+                            <p:messages id="previewmsg" showDetail="true" 
+                                        showSummary="false" closable="true" showIcon="true" />
+
+
+                            <h:panelGroup layout="block"  >
+                                <p:outputLabel value="#{msg.lastpagetitle}" 
+                                               style="font-size: 20px; font-weight: bold;"/> 
+                                <br />
+                                <br /> 
+                                <br /> 
+                                <p:outputLabel value="#{msg.review}" styleClass="subtitle" /> 
+                            </h:panelGroup> 
+
+
+                            <br />
+                            <h:panelGroup layout="block" id="summaryViewBtnPanel">  
+                                <p:commandButton value="#{msg.closerequest}" 
+                                                 action="#{loan.closesummary()}" 
+                                                 rendered="#{loan.openSummary}"  
+                                                 update="summaryPanel summaryViewBtnPanel"  
+                                                 global="false" process="@this" /> 
+
+                                <p:commandButton value="#{msg.reviewrequest}" 
+                                                 action="#{loan.reviewrequest()}" 
+                                                 update="summaryPanel summaryViewBtnPanel" 
+                                                 rendered="#{!loan.openSummary}" 
+                                                 global="false" process="@this" /> 
+                            </h:panelGroup> 
+                            <br />
+                            <br />  
+
+                            <h:panelGroup id="summaryPanel" layout="block" > 
+                                <h:panelGroup rendered="#{loan.openSummary}">
+
+                                    <p:panel style="width: 700px; " 
+                                             header="#{msg.contactdetail} (#{msg.inplaceedit})" > 
+
+                                        <h:panelGroup layout="block" styleClass="defaultboldtext" >
+                                            <p:outputLabel value="#{msg.contactdetail}"  />
+                                        </h:panelGroup>  
+                                        <br />
+                                        <ui:include src="/clientpages/mainUserPreview.xhtml" />   
+                                    </p:panel> 
+
+                                    <br />
+                                    <br />
+
+                                    <p:panel header="#{otherForm.loanPreviewHeader} (#{msg.inplaceedit})"  >  
+
+                                        <h:panelGrid columns="3" rendered="#{!otherForm.isEducationalLoan}"
+                                                     style="font-size: 12px; font-family:  Arial,sans-serif;" >
+                                            <p:outputLabel value="#{msg.typeofrequest}:" style="color: #C5C4C4;"  />
+                                            <p:spacer width="5" />
+                                            <p:outputLabel value="#{otherForm.loanType}" style="color: #8B8786;"  />  
+                                        </h:panelGrid> 
+
+                                        <h:panelGroup layout="block"  
+                                            style="font-size: 12px; font-family: Arial,sans-serif; padding-top: 10px; ">  
+                                            <p:outputLabel value="#{msg.description}:" /> 
+                                            <p:inplace editor="true"  styleClass="originalbutton" >
+                                                <p:inputTextarea rows="5" cols="90" 
+                                                                 value="#{otherForm.loanDetailDescription}"   />
+                                            </p:inplace> 
+                                        </h:panelGroup>
+
+                                 
+
+                                        <h:panelGrid columns="5" style="font-size: 12px; font-family:  Arial,sans-serif;   "  
+                                                     rendered="#{not empty files.loanDetailFile}" >
+                                            <p:outputLabel  value="#{msg.attachment}:"/>
+                                            <p:spacer width="5" />
+                                            <p:outputLabel value="#{files.loanDetailFileName}" /> 
+                                            <p:spacer width="20" />
+                                            <p:commandLink actionListener="#{files.removeLoanDetailFile()}"  
+                                                           title="#{msg.btnremovefile}"  
+                                                           update=":informationLoanPreviewForm:summaryPanel" 
+                                                           global="false"  > 
+                                                <h:graphicImage name="images/button_remove.gif" styleClass="images" /> 
+                                            </p:commandLink>  
+                                        </h:panelGrid>
+
+                                        <h:panelGrid columns="3" style="font-size: 12px; font-family:  Arial,sans-serif;   "  > 
+
+                                            <p:outputLabel  value="#{msg.requestloanperiod}:"/>
+                                            <p:spacer width="5" />  
+                                            <h:panelGrid  style="font-size: 12px; font-family:  Arial,sans-serif;   " 
+                                                          columns="5" cellpadding="0" cellspacing="0">  
+
+                                                <p:inplace editor="true"  styleClass="originalbutton" >
+                                                    <p:calendar pattern="yyyy-MM-dd" 
+                                                                showButtonPanel="true" 
+                                                                navigator="true"  
+                                                                value="#{otherForm.fromDate}"   
+                                                                mindate="#{otherForm.minDate}" 
+                                                                showOn="button" > 
+                                                        <f:convertDateTime pattern="yyyy-MM-dd"  /> 
+                                                    </p:calendar>  
+                                                </p:inplace>
+ 
+                                                <p:spacer width="5" />
+                                                <p:outputLabel  value=" - "/>
+                                                <p:spacer width="5" />  
+                                                <p:inplace editor="true"  styleClass="originalbutton" >
+                                                    <p:calendar pattern="yyyy-MM-dd" 
+                                                                showButtonPanel="true" 
+                                                                navigator="true"  
+                                                                value="#{otherForm.toDate}"  
+                                                                mindate="#{otherForm.minDate}"   
+                                                                showOn="button" > 
+                                                        <f:convertDateTime pattern="yyyy-MM-dd"  />
+                                                    </p:calendar>  
+                                                </p:inplace>
+
+                                            </h:panelGrid> 
+                                        </h:panelGrid>  
+ 
+                                        <h:panelGroup layout="block" rendered="#{otherForm.isEducationalLoan}"
+                                                     style="font-size: 12px; font-family:  Arial,sans-serif;" >
+
+                                            <h:panelGroup layout="block"
+                                                style="font-size: 12px; font-family: Arial,sans-serif; padding-top: 10px; "  > 
+                                                <p:outputLabel value="#{msg.exhibitiondesc}:" /> 
+                                                <p:inplace editor="true"  styleClass="originalbutton" >
+                                                    <p:inputTextarea rows="5" cols="90" 
+                                                                     value="#{otherForm.storageDescription}"   />
+                                                </p:inplace> 
+                                            </h:panelGroup>   
+                                        </h:panelGroup> 
+                                    </p:panel> 
+                                </h:panelGroup> 
+                                <br />
+                                <br />
+
+                                <hr /> 
+                            </h:panelGroup>
+ 
+                            <h:panelGroup layout="block"  >
+                                <h:panelGroup layout="block"> 
+                                    <p:commandLink value="#{msg.policytitle}"  
+                                                   onclick="PF('policyDlg').show();" global="false"
+                                                   style="float: left; font-size: 12px; font-family: Arial,sans-serif; padding-left: 25px;   " />
+                                    <br />
+                                </h:panelGroup>
+                                <h:panelGrid columns="3" columnClasses="aligntop,aligntop,aligntop"    >
+                                    <h:selectBooleanCheckbox   value="#{otherForm.isPolicyRead}" > 
+                                        <p:ajax listener="#{otherForm.onIsPolicyReadStatusChange}" 
+                                                update="previewBtnPanel" global="false"  />
+                                    </h:selectBooleanCheckbox> 
+                                    <p:spacer width="5" />
+                                    <p:outputLabel value="#{msg.policylbl}"  styleClass="defaulttext"  />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                            <br />  
+                            <br />
+                            <h:panelGroup id="previewBtnPanel" layout="block" 
+                                          style="width: 300px; float: right;  ">  
+                                <p:commandButton value="#{msg.back}" action="#{viewBean.navigateIndexBorrowWithPurpose()}" 
+                                                 process="@this" global="false"  >  
+                                </p:commandButton> 
+                                <p:spacer width="10" />
+                                <p:commandButton value="#{msg.submitloan}" 
+                                                 action="#{viewBean.gotoInformationConfirmationPage()}" 
+                                                 styleClass="largebutton"
+                                                 disabled="#{!otherForm.isPolicyRead}"   />
+                            </h:panelGroup> 
+
+                            <br /> 
+                            <br /> 
+                        </h:panelGroup>
+                        <p:dialog id="policyDialog" header="#{msg.loanpolicy}" 
+                                  widgetVar="policyDlg" style="width: 820px; height: 700px;">
+                            <p:panel  id="policyDialogPanel" >  
+                                <p:media value="#{policy.educationPolicyPdfFile}"  
+                                         height="750px" width="820px" player="pdf">
+                                    Your browser can't display pdf, 
+                                    <h:outputLink value="#{policy.educationPolicyPdfFile}" >
+                                        click
+                                    </h:outputLink> to download pdf instead.
+                                </p:media>   
+                            </p:panel>
+                        </p:dialog> 
+                    </h:form>
+                </h:panelGroup>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

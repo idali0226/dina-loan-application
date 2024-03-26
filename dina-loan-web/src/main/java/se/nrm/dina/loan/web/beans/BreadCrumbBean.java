@@ -1,676 +1,926 @@
 package se.nrm.dina.loan.web.beans;
- 
-import java.io.Serializable;  
-import javax.enterprise.context.SessionScoped;  
+
+import java.io.Serializable;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
-import javax.inject.Named; 
+import javax.inject.Named;
+import lombok.extern.slf4j.Slf4j;
 import org.primefaces.model.menu.DefaultMenuItem;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import se.nrm.dina.loan.web.controllers.Languages;
 import se.nrm.dina.loan.web.util.BreadCrumbElement;
 import se.nrm.dina.loan.web.util.LoanPurpose;
- 
+
 /**
  *
  * @author idali
  */
 @Named(value = "breadcrumb")
 @SessionScoped
+@Slf4j
 public class BreadCrumbBean implements Serializable {
+
+    private final String unActiveTab = "unactiveTab";
+    private final String activeTab = "activeTab";
+
+    private final DefaultMenuItem notImplementItem;
     
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    
-    private final String UNACTIVE_TAB = "unactiveTab";
-    private final String ACTIVE_TAB = "activeTab";
-     
     private final DefaultMenuItem homeItem;
-    private final DefaultMenuItem onlineFormItem; 
-    private final DefaultMenuItem page1Item;
-    private final DefaultMenuItem page2Item;
-    private final DefaultMenuItem page3Item;
-    private final DefaultMenuItem page4Item;
-    private final DefaultMenuItem page5Item;
-    private final DefaultMenuItem page6Item;
-    private final DefaultMenuItem page7Item;
-    private final DefaultMenuItem page8Item;
-    private final DefaultMenuItem page9Item;
-     
+    private final DefaultMenuItem departmentItem;
+    private final DefaultMenuItem purposeItem;
+    private final DefaultMenuItem requestTypeItem;
+    private final DefaultMenuItem projectItem;
+    private final DefaultMenuItem collectionItem;
+    private final DefaultMenuItem specimentsItem;
+    private final DefaultMenuItem desctructiveItem;
+    private final DefaultMenuItem photoItem;
+    private final DefaultMenuItem citesItem;
+    private final DefaultMenuItem contactItem;
+    private final DefaultMenuItem reviewItem;
+    
+    private final DefaultMenuItem informationItem;
+    private final DefaultMenuItem purposeOfUesItem;
+    private final DefaultMenuItem loanDetailItem;
+    private final DefaultMenuItem storageItem;
+    
+    private final DefaultMenuItem loanTypeItem;
+
     private DefaultMenuItem activeItem;
-    
-    private boolean navigationPathEnabled;  
-   
-    
+
+    private boolean navigationPathEnabled;
+
     @Inject
     private Languages language;
-             
-    public BreadCrumbBean() { 
-          
+
+    public BreadCrumbBean() {
+
         homeItem = new DefaultMenuItem();
-        onlineFormItem = new DefaultMenuItem(); 
-        page1Item = new DefaultMenuItem();
-        page2Item = new DefaultMenuItem();
-        page3Item = new DefaultMenuItem();
-        page4Item = new DefaultMenuItem();
-        page5Item = new DefaultMenuItem();
-        page6Item = new DefaultMenuItem();
-        page7Item = new DefaultMenuItem(); 
-        page8Item = new DefaultMenuItem();
-        page9Item = new DefaultMenuItem();
-          
+        departmentItem = new DefaultMenuItem();
+        purposeItem = new DefaultMenuItem();
+        requestTypeItem = new DefaultMenuItem();
+        projectItem = new DefaultMenuItem();
+        collectionItem = new DefaultMenuItem();
+        specimentsItem = new DefaultMenuItem();
+        desctructiveItem = new DefaultMenuItem();
+        photoItem = new DefaultMenuItem();
+        citesItem = new DefaultMenuItem();
+        contactItem = new DefaultMenuItem();
+        reviewItem = new DefaultMenuItem();
+        
+        informationItem = new DefaultMenuItem();
+        purposeOfUesItem = new DefaultMenuItem();
+        loanDetailItem = new DefaultMenuItem();
+        storageItem = new DefaultMenuItem();
+        notImplementItem = new DefaultMenuItem();
+        
+        loanTypeItem = new DefaultMenuItem();
+
         homeItem.setId(BreadCrumbElement.Home.getText());
         homeItem.setValue(BreadCrumbElement.Home.getMainMenuTextByLocale(false));
-        homeItem.setDisabled(false); 
-        homeItem.setStyle(UNACTIVE_TAB);
-          
-        onlineFormItem.setId(BreadCrumbElement.OnlineForm.getText());
-        onlineFormItem.setValue(BreadCrumbElement.OnlineForm.getMainMenuTextByLocale(false));
-        onlineFormItem.setDisabled(true);  
-        onlineFormItem.setStyle(UNACTIVE_TAB);
-          
-        page1Item.setValue(BreadCrumbElement.Page1.getMainMenuTextByLocale(false));
-        page1Item.setId(BreadCrumbElement.Page1.getText());
-        page1Item.setDisabled(true); 
-        page1Item.setStyle(UNACTIVE_TAB);
-         
-        page2Item.setValue(BreadCrumbElement.Page2.getMainMenuTextByLocale(false));
-        page2Item.setId(BreadCrumbElement.Page2.getText());
-        page2Item.setDisabled(true); 
-        page2Item.setStyle(UNACTIVE_TAB);
-         
-        page3Item.setValue(BreadCrumbElement.Page3.getMainMenuTextByLocale(false));
-        page3Item.setId(BreadCrumbElement.Page3.getText()); 
-        page3Item.setDisabled(true);
-        page3Item.setStyle(UNACTIVE_TAB);
-         
-        page4Item.setValue(BreadCrumbElement.Page4.getMainMenuTextByLocale(false));
-        page4Item.setId(BreadCrumbElement.Page4.getText());
-        page4Item.setDisabled(true); 
-        page4Item.setStyle(UNACTIVE_TAB);
-          
-        page5Item.setValue(BreadCrumbElement.Page5.getMainMenuTextByLocale(false));
-        page5Item.setId(BreadCrumbElement.Page5.getText());
-        page5Item.setDisabled(true); 
-        page5Item.setStyle(UNACTIVE_TAB);
-         
-        page6Item.setValue(BreadCrumbElement.Page6.getMainMenuTextByLocale(false));
-        page6Item.setId(BreadCrumbElement.Page6.getText());
-        page6Item.setDisabled(true); 
-        page6Item.setStyle(UNACTIVE_TAB);
-         
-        page7Item.setValue(BreadCrumbElement.Page7.getMainMenuTextByLocale(false));
-        page7Item.setId(BreadCrumbElement.Page7.getText());
-        page7Item.setDisabled(true); 
-        page7Item.setStyle(UNACTIVE_TAB);
-         
-        page8Item.setValue(BreadCrumbElement.Page8.getMainMenuTextByLocale(false));
-        page8Item.setId(BreadCrumbElement.Page8.getText());
-        page8Item.setDisabled(true); 
-        page8Item.setStyle(UNACTIVE_TAB);
-         
-        page9Item.setValue(BreadCrumbElement.Page9.getMainMenuTextByLocale(false));
-        page9Item.setId(BreadCrumbElement.Page9.getText());
-        page9Item.setDisabled(true); 
-        page9Item.setStyle(UNACTIVE_TAB);
+        homeItem.setDisabled(false);
+        homeItem.setStyle(unActiveTab);
+
+        departmentItem.setId(BreadCrumbElement.Department.getText());
+        departmentItem.setValue(BreadCrumbElement.Department.getMainMenuTextByLocale(false));
+        departmentItem.setDisabled(true);
+        departmentItem.setStyle(unActiveTab);
+
+        purposeItem.setValue(BreadCrumbElement.Purpose.getMainMenuTextByLocale(false));
+        purposeItem.setId(BreadCrumbElement.Purpose.getText());
+        purposeItem.setDisabled(true);
+        purposeItem.setStyle(unActiveTab);
+
+        requestTypeItem.setValue(BreadCrumbElement.RequestType.getMainMenuTextByLocale(false));
+        requestTypeItem.setId(BreadCrumbElement.RequestType.getText());
+        requestTypeItem.setDisabled(true);
+        requestTypeItem.setStyle(unActiveTab);
+
+        projectItem.setValue(BreadCrumbElement.Project.getMainMenuTextByLocale(false));
+        projectItem.setId(BreadCrumbElement.Project.getText());
+        projectItem.setDisabled(true);
+        projectItem.setStyle(unActiveTab);
+
+        collectionItem.setValue(BreadCrumbElement.Collection.getMainMenuTextByLocale(false));
+        collectionItem.setId(BreadCrumbElement.Collection.getText());
+        collectionItem.setDisabled(true);
+        collectionItem.setStyle(unActiveTab);
+
+        specimentsItem.setValue(BreadCrumbElement.Speciments.getMainMenuTextByLocale(false));
+        specimentsItem.setId(BreadCrumbElement.Speciments.getText());
+        specimentsItem.setDisabled(true);
+        specimentsItem.setStyle(unActiveTab);
+
+        desctructiveItem.setValue(BreadCrumbElement.Desctructive.getMainMenuTextByLocale(false));
+        desctructiveItem.setId(BreadCrumbElement.Desctructive.getText());
+        desctructiveItem.setDisabled(true);
+        desctructiveItem.setStyle(unActiveTab);
         
-        navigationPathEnabled = false; 
+        photoItem.setValue(BreadCrumbElement.Photo.getMainMenuTextByLocale(false));
+        photoItem.setId(BreadCrumbElement.Photo.getText());
+        photoItem.setDisabled(true);
+        photoItem.setStyle(unActiveTab);
+        photoItem.setRendered(false);
+
+        citesItem.setValue(BreadCrumbElement.Cites.getMainMenuTextByLocale(false));
+        citesItem.setId(BreadCrumbElement.Cites.getText());
+        citesItem.setDisabled(true);
+        citesItem.setStyle(unActiveTab);
+
+        contactItem.setValue(BreadCrumbElement.Contact.getMainMenuTextByLocale(false));
+        contactItem.setId(BreadCrumbElement.Contact.getText());
+        contactItem.setDisabled(true);
+        contactItem.setStyle(unActiveTab);
+
+        reviewItem.setValue(BreadCrumbElement.Review.getMainMenuTextByLocale(false));
+        reviewItem.setId(BreadCrumbElement.Review.getText());
+        reviewItem.setDisabled(true);
+        reviewItem.setStyle(unActiveTab);
+        
+        
+        informationItem.setValue(BreadCrumbElement.LoanInformation.getEduMenuTextByLocale(false)); 
+        informationItem.setId(BreadCrumbElement.LoanInformation.getText());
+        informationItem.setDisabled(true);
+        informationItem.setStyle(unActiveTab);
+        informationItem.setRendered(false);
+        
+        purposeOfUesItem.setValue(BreadCrumbElement.PurposeOfUse.getEduMenuTextByLocale(false)); 
+        purposeOfUesItem.setId(BreadCrumbElement.PurposeOfUse.getText());
+        purposeOfUesItem.setDisabled(true);
+        purposeOfUesItem.setStyle(unActiveTab);
+        purposeOfUesItem.setRendered(false);
+        
+        loanDetailItem.setValue(BreadCrumbElement.LoanDetail.getEduMenuTextByLocale(false)); 
+        loanDetailItem.setId(BreadCrumbElement.LoanDetail.getText());
+        loanDetailItem.setDisabled(true);
+        loanDetailItem.setStyle(unActiveTab);
+        loanDetailItem.setRendered(false);
+        
+        storageItem.setValue(BreadCrumbElement.Storage.getEduMenuTextByLocale(false)); 
+        storageItem.setId(BreadCrumbElement.Storage.getText());
+        storageItem.setDisabled(true);
+        storageItem.setStyle(unActiveTab);
+        storageItem.setRendered(false);
+         
+        loanTypeItem.setValue(BreadCrumbElement.LoanType.getArtMenuTextByLocale(false)); 
+        loanTypeItem.setId(BreadCrumbElement.LoanType.getText());
+        loanTypeItem.setDisabled(true);
+        loanTypeItem.setStyle(unActiveTab);
+        loanTypeItem.setRendered(false);
+        
+        notImplementItem.setValue(
+                    BreadCrumbElement.NoImplement.getMainMenuTextByLocale(false));
+        notImplementItem.setId(BreadCrumbElement.NoImplement.getText());
+        notImplementItem.setDisabled(true);
+        notImplementItem.setStyle(unActiveTab);
+        notImplementItem.setRendered(false);
+   
+        navigationPathEnabled = false;
         activeItem = homeItem;
     }
     
-    
-    
-    
     /**
+     * To change navigation path language
+     *
+     * @param isSwedish 
+     */
+    public void resetLocale(boolean isSwedish) { 
+        log.info("resetLocale : {}", isSwedish);
+
+        homeItem.setValue(BreadCrumbElement.Home.getMainMenuTextByLocale(isSwedish));
+        departmentItem.setValue(BreadCrumbElement.Department.getMainMenuTextByLocale(isSwedish));
+        purposeItem.setValue(BreadCrumbElement.Purpose.getMainMenuTextByLocale(isSwedish));
+        requestTypeItem.setValue(BreadCrumbElement.RequestType.getMainMenuTextByLocale(isSwedish));
+        projectItem.setValue(BreadCrumbElement.Project.getMainMenuTextByLocale(isSwedish));
+        collectionItem.setValue(BreadCrumbElement.Collection.getMainMenuTextByLocale(isSwedish));
+        specimentsItem.setValue(BreadCrumbElement.Speciments.getMainMenuTextByLocale(isSwedish));
+        desctructiveItem.setValue(BreadCrumbElement.Desctructive.getMainMenuTextByLocale(isSwedish));
+        photoItem.setValue(BreadCrumbElement.Photo.getMainMenuTextByLocale(isSwedish));
+        citesItem.setValue(BreadCrumbElement.Cites.getMainMenuTextByLocale(isSwedish));
+        contactItem.setValue(BreadCrumbElement.Contact.getMainMenuTextByLocale(isSwedish));
+        reviewItem.setValue(BreadCrumbElement.Review.getMainMenuTextByLocale(isSwedish));
+        
+        loanTypeItem.setValue(BreadCrumbElement.LoanType.getArtMenuTextByLocale(isSwedish));
+        informationItem.setValue(BreadCrumbElement.LoanInformation.getEduMenuTextByLocale(isSwedish));
+        storageItem.setValue(BreadCrumbElement.Storage.getEduMenuTextByLocale(isSwedish));
+        loanDetailItem.setValue(BreadCrumbElement.LoanDetail.getEduMenuTextByLocale(isSwedish));
+        purposeOfUesItem.setValue(BreadCrumbElement.PurposeOfUse.getEduMenuTextByLocale(isSwedish));
+        informationItem.setValue(BreadCrumbElement.LoanInformation.getEduMenuTextByLocale(isSwedish));
+        
+        notImplementItem.setValue(BreadCrumbElement.NoImplement.getMainMenuTextByLocale(isSwedish)); 
+    }
+    
+    public void setIsImplementDepartmentPath(boolean isImplemented) {
+        log.info("setNotImplementDepartmentPath : {}", isImplemented);
+ 
+        notImplementItem.setRendered(!isImplemented);
+        
+        requestTypeItem.setRendered(isImplemented);
+        purposeItem.setRendered(isImplemented);
+        projectItem.setRendered(isImplemented);
+        collectionItem.setRendered(isImplemented);
+        specimentsItem.setRendered(isImplemented);
+        desctructiveItem.setRendered(isImplemented);
+        photoItem.setRendered(false);
+        citesItem.setRendered(isImplemented);
+        contactItem.setRendered(isImplemented);
+        reviewItem.setRendered(isImplemented);
+        
+        loanTypeItem.setRendered(false);
+        informationItem.setRendered(false);
+        storageItem.setRendered(false);
+        loanDetailItem.setRendered(false);
+        purposeOfUesItem.setRendered(false);
+        informationItem.setRendered(false);
+
+        purposeItem.setDisabled(true);
+        requestTypeItem.setDisabled(true);
+        projectItem.setDisabled(true);
+        collectionItem.setDisabled(true);
+        specimentsItem.setDisabled(true);
+        desctructiveItem.setDisabled(true);
+        photoItem.setDisabled(true);
+        citesItem.setDisabled(true);
+        contactItem.setDisabled(true);
+        reviewItem.setDisabled(true);
+        
+        loanTypeItem.setDisabled(true);
+        informationItem.setDisabled(true);
+        storageItem.setDisabled(true);
+        loanDetailItem.setDisabled(true);
+        purposeOfUesItem.setDisabled(true);
+        informationItem.setDisabled(true);
+    }
+    
+     /**
      * To reset navigation path to home page
      */
     public void resetNavigationPathToHomePage() {
-        logger.info("resetNavigationPathToHomePage");
-        
-        homeItem.setStyle(UNACTIVE_TAB); 
+        log.info("resetNavigationPathToHomePage");
+
+        homeItem.setStyle(unActiveTab);
         activeItem = homeItem;
-        
-        onlineFormItem.setStyle(UNACTIVE_TAB); 
-        page1Item.setStyle(UNACTIVE_TAB);
-        page2Item.setStyle(UNACTIVE_TAB);
-        page3Item.setStyle(UNACTIVE_TAB);
-        page4Item.setStyle(UNACTIVE_TAB);
-        page5Item.setStyle(UNACTIVE_TAB);
-        page6Item.setStyle(UNACTIVE_TAB);
-        page7Item.setStyle(UNACTIVE_TAB);
-        page8Item.setStyle(UNACTIVE_TAB);
-        page9Item.setStyle(UNACTIVE_TAB);
-        
-        onlineFormItem.setDisabled(true); 
-        page1Item.setDisabled(true); 
-        page2Item.setDisabled(true); 
-        page3Item.setDisabled(true); 
-        page4Item.setDisabled(true); 
-        page5Item.setDisabled(true); 
-        page6Item.setDisabled(true); 
-        page7Item.setDisabled(true); 
-        page8Item.setDisabled(true); 
-        page9Item.setDisabled(true); 
-        
-        onlineFormItem.setRendered(true); 
-        page1Item.setRendered(true); 
-        page2Item.setRendered(true); 
-        page3Item.setRendered(true); 
-        page4Item.setRendered(true); 
-        page5Item.setRendered(true); 
-        page6Item.setRendered(true); 
-        page7Item.setRendered(true); 
-        page8Item.setRendered(true); 
-        page9Item.setRendered(true); 
 
-        boolean isSwedish = language.isIsSwedish();
-        page1Item.setValue(BreadCrumbElement.Page1.getMainMenuTextByLocale(isSwedish)); 
-        page2Item.setValue(BreadCrumbElement.Page2.getMainMenuTextByLocale(isSwedish));
-        page3Item.setValue(BreadCrumbElement.Page3.getMainMenuTextByLocale(isSwedish));
-        page4Item.setValue(BreadCrumbElement.Page4.getMainMenuTextByLocale(isSwedish));
-        page5Item.setValue(BreadCrumbElement.Page5.getMainMenuTextByLocale(isSwedish));
-        page6Item.setValue(BreadCrumbElement.Page6.getMainMenuTextByLocale(isSwedish));
-        page7Item.setValue(BreadCrumbElement.Page7.getMainMenuTextByLocale(isSwedish));
-        page8Item.setValue(BreadCrumbElement.Page8.getMainMenuTextByLocale(isSwedish));
-        page9Item.setValue(BreadCrumbElement.Page9.getMainMenuTextByLocale(isSwedish));
+        departmentItem.setStyle(unActiveTab);
+        purposeItem.setStyle(unActiveTab);
+        requestTypeItem.setStyle(unActiveTab);
+        projectItem.setStyle(unActiveTab);
+        collectionItem.setStyle(unActiveTab);
+        specimentsItem.setStyle(unActiveTab);
+        desctructiveItem.setStyle(unActiveTab);
+        photoItem.setStyle(unActiveTab);
+        citesItem.setStyle(unActiveTab);
+        contactItem.setStyle(unActiveTab);
+        reviewItem.setStyle(unActiveTab);
 
+        departmentItem.setDisabled(true);
+        purposeItem.setDisabled(true);
+        requestTypeItem.setDisabled(true);
+        projectItem.setDisabled(true);
+        collectionItem.setDisabled(true);
+        specimentsItem.setDisabled(true);
+        desctructiveItem.setDisabled(true);
+        photoItem.setDisabled(true);
+        citesItem.setDisabled(true);
+        contactItem.setDisabled(true);
+        reviewItem.setDisabled(true);
+
+        departmentItem.setRendered(true);
+        purposeItem.setRendered(true);
+        requestTypeItem.setRendered(true);
+        projectItem.setRendered(true);
+        collectionItem.setRendered(true);
+        specimentsItem.setRendered(true);
+        desctructiveItem.setRendered(true);
+        photoItem.setRendered(false);
+        citesItem.setRendered(true);
+        contactItem.setRendered(true);
+        reviewItem.setRendered(true);
+        
+        loanTypeItem.setRendered(false);
+        informationItem.setRendered(false);
+        storageItem.setRendered(false);
+        loanDetailItem.setRendered(false);
+        purposeOfUesItem.setRendered(false);
+        informationItem.setRendered(false);
+        
+        loanTypeItem.setDisabled(true);
+        informationItem.setDisabled(true);
+        storageItem.setDisabled(true);
+        loanDetailItem.setDisabled(true);
+        purposeOfUesItem.setDisabled(true);
+        informationItem.setDisabled(true);
+        
+        notImplementItem.setRendered(false);
+ 
         navigationPathEnabled = false;
     }
-     
-    public void setPrevious(DefaultMenuItem item) {
-        logger.info("setPrevious");
+    
+    public void resetNavigationPathForPurpose(LoanPurpose loanPurpose) { 
+        log.info("resetNavigationPath : {}", loanPurpose);
 
-        navigationPathEnabled = true;
-
-        item.setStyle(UNACTIVE_TAB); 
-        item.setDisabled(false);
-        setPreviousItem(item);
-    }
-
-    public void setNext(DefaultMenuItem item) {
+//        boolean isSwedish = language.isIsSwedish();
         
-        logger.info("setNext : {}", item.getId());
-        
-        if (item == null) {
-            resetNavigationPathToHomePage();
+        informationItem.setRendered(false);
+        purposeOfUesItem.setRendered(false);
+        loanDetailItem.setRendered(false);
+        storageItem.setRendered(false);
+        loanTypeItem.setRendered(false);
+
+        desctructiveItem.setRendered(false);
+        photoItem.setRendered(false);
+        citesItem.setRendered(false);
+        requestTypeItem.setRendered(false);
+        projectItem.setRendered(false);
+        collectionItem.setRendered(false);
+        specimentsItem.setRendered(false);
+        desctructiveItem.setRendered(false);
+        citesItem.setRendered(false);
+
+        if(loanPurpose.isScientificPurpose()) {
+            desctructiveItem.setRendered(true);
+            citesItem.setRendered(true);
+            requestTypeItem.setRendered(true);
+            projectItem.setRendered(true);
+            collectionItem.setRendered(true);
+            specimentsItem.setRendered(true);
+            desctructiveItem.setRendered(true);
+            citesItem.setRendered(true);
         } else {
-            navigationPathEnabled = true;
-            
-            item.setStyle(UNACTIVE_TAB);
-            item.setDisabled(false);
-            setNextItem(item); 
+            informationItem.setRendered(true); 
+            loanDetailItem.setRendered(true);
+             
+            if(loanPurpose.isEducation()) {
+                purposeOfUesItem.setRendered(true);
+                storageItem.setRendered(true);
+            } else {
+                loanTypeItem.setRendered(true);
+            } 
         }
-    } 
-    
-    private void setNextItem(DefaultMenuItem item) {
-        logger.info("setNextItem : {}", item.getId());
-        switch (item.getId()) {
-            case "home" :   
-                onlineFormItem.setDisabled(true); 
-                onlineFormItem.setStyle(ACTIVE_TAB);
-                activeItem = onlineFormItem;
-                break;
-            case "onlineform" :   
-                page1Item.setDisabled(true); 
-                page1Item.setStyle(ACTIVE_TAB);
-                activeItem = page1Item;
-                break;
-            case "page1":  
-                page2Item.setDisabled(true); 
-                page2Item.setStyle(ACTIVE_TAB);
-                activeItem = page2Item;
-                break;
-            case "page2":  
-                page3Item.setDisabled(true); 
-                page3Item.setStyle(ACTIVE_TAB);
-                activeItem = page3Item;
-                break;
-            case "page3":  
-                page4Item.setDisabled(true); 
-                page4Item.setStyle(ACTIVE_TAB);
-                activeItem = page4Item;
-                break;
-            case "page4":  
-                page5Item.setDisabled(true); 
-                page5Item.setStyle(ACTIVE_TAB);
-                activeItem = page5Item;
-                break;
-            case "page5":  
-                page6Item.setDisabled(true); 
-                page6Item.setStyle(ACTIVE_TAB);
-                activeItem = page6Item;
-                break;
-            case "page6":  
-                page7Item.setDisabled(true); 
-                page7Item.setStyle(ACTIVE_TAB);
-                activeItem = page7Item;
-                break;
-            case "page7":  
-                page8Item.setDisabled(true); 
-                page8Item.setStyle(ACTIVE_TAB);
-                activeItem = page8Item;
-                break;
-            case "page8":  
-                page9Item.setDisabled(true); 
-                page9Item.setStyle(ACTIVE_TAB);
-                activeItem = page9Item;
-                break;
-            case "page9":   
-                break;
-        } 
-    }
-      
-    private void setPreviousItem(DefaultMenuItem item) {
         
-        logger.info("setPreviousItem : {}", item.getId());
-        switch (item.getId()) {
-            case "home" :  
-            case "onlineform":   
-                navigationPathEnabled = false;
-                break;
-            case "page1":  
-                onlineFormItem.setDisabled(true); 
-                onlineFormItem.setStyle(ACTIVE_TAB);
-                activeItem = onlineFormItem;
-                break;
-            case "page2": 
-                page1Item.setDisabled(true); 
-                page1Item.setStyle(ACTIVE_TAB);
-                activeItem = page1Item;
-                break;
-            case "page3": 
-                page2Item.setDisabled(true); 
-                page2Item.setStyle(ACTIVE_TAB);
-                activeItem = page2Item;
-                break;
-            case "page4": 
-                page3Item.setDisabled(true); 
-                page3Item.setStyle(ACTIVE_TAB);
-                activeItem = page3Item;
-                break;
-            case "page5": 
-                page4Item.setDisabled(true);
-                page4Item.setStyle(ACTIVE_TAB);
-                activeItem = page4Item;
-                break;
-            case "page6": 
-                page5Item.setDisabled(true);
-                page5Item.setStyle(ACTIVE_TAB);
-                activeItem = page5Item;
-                break;
-            case "page7": 
-                page6Item.setDisabled(true);
-                page6Item.setStyle(ACTIVE_TAB);
-                activeItem = page6Item;
-                break;
-            case "page8": 
-                page7Item.setDisabled(true);
-                page7Item.setStyle(ACTIVE_TAB);
-                activeItem = page7Item;
-                break;
-            case "page9": 
-                page8Item.setDisabled(true); 
-                page8Item.setStyle(ACTIVE_TAB);
-                activeItem = page8Item;
-                break;
-        } 
+        requestTypeItem.setDisabled(true);
+        projectItem.setDisabled(true);
+        collectionItem.setDisabled(true);
+        specimentsItem.setDisabled(true);
+        desctructiveItem.setDisabled(true);
+        photoItem.setDisabled(true);
+        citesItem.setDisabled(true);
+        contactItem.setDisabled(true);
+        reviewItem.setDisabled(true);
+        
+        informationItem.setDisabled(true);
+        loanDetailItem.setDisabled(true);
+        
+        purposeOfUesItem.setDisabled(true);
+        storageItem.setDisabled(true);
+        loanTypeItem.setDisabled(true);
+
+//        if (loanPurpose.isEducation()) {
+//            log.info("is educational");
+//            informationItem.setRendered(true);
+//            purposeOfUesItem.setRendered(true);
+//            loanDetailItem.setRendered(true);
+//            storageItem.setRendered(true);
+//            
+//            desctructiveItem.setRendered(false);
+//            citesItem.setRendered(false); 
+//            requestTypeItem.setRendered(false);
+//            projectItem.setRendered(false);
+//            collectionItem.setRendered(false);
+//            specimentsItem.setRendered(false);
+//            desctructiveItem.setRendered(false);
+//            citesItem.setRendered(false); 
+//        } else if (loanPurpose.isCommercial()) {
+//            log.info("is comercial");
+//            informationItem.setRendered(true);
+//            loanTypeItem.setRendered(true);
+//            loanDetailItem.setRendered(true);
+//             
+//            desctructiveItem.setRendered(false);
+//            citesItem.setRendered(false); 
+//            requestTypeItem.setRendered(false);
+//            projectItem.setRendered(false);
+//            collectionItem.setRendered(false);
+//            specimentsItem.setRendered(false);
+//            desctructiveItem.setRendered(false);
+//            citesItem.setRendered(false); 
+//        } else {
+//            log.info("is scientific");
+//            citesItem.setRendered(true);
+//            contactItem.setRendered(true);
+//            reviewItem.setRendered(true);
+//
+//            requestTypeItem.setValue(BreadCrumbElement.RequestType.getMainMenuTextByLocale(isSwedish));
+//            projectItem.setValue(BreadCrumbElement.Project.getMainMenuTextByLocale(isSwedish));
+//            collectionItem.setValue(BreadCrumbElement.Collection.getMainMenuTextByLocale(isSwedish));
+//            specimentsItem.setValue(BreadCrumbElement.Speciments.getMainMenuTextByLocale(isSwedish));
+//            desctructiveItem.setValue(BreadCrumbElement.Desctructive.getMainMenuTextByLocale(isSwedish));
+//            citesItem.setValue(BreadCrumbElement.Cites.getMainMenuTextByLocale(isSwedish));
+//            contactItem.setValue(BreadCrumbElement.Contact.getMainMenuTextByLocale(isSwedish));
+//            reviewItem.setValue(BreadCrumbElement.Review.getMainMenuTextByLocale(isSwedish));
+//        }
+
+//        requestTypeItem.setDisabled(true);
+//        projectItem.setDisabled(true);
+//        collectionItem.setDisabled(true);
+//        specimentsItem.setDisabled(true);
+//        desctructiveItem.setDisabled(true);
+//        citesItem.setDisabled(true);
+//        contactItem.setDisabled(true);
+//        reviewItem.setDisabled(true);
     }
     
-    private void setMainPathValue(){
-        boolean isSwedish = language.isIsSwedish();
-        page1Item.setValue(BreadCrumbElement.Page1.getMainMenuTextByLocale(isSwedish)); 
-        page2Item.setValue(BreadCrumbElement.Page2.getMainMenuTextByLocale(isSwedish));
-        page3Item.setValue(BreadCrumbElement.Page3.getMainMenuTextByLocale(isSwedish));
-        page4Item.setValue(BreadCrumbElement.Page4.getMainMenuTextByLocale(isSwedish));
-        page5Item.setValue(BreadCrumbElement.Page5.getMainMenuTextByLocale(isSwedish));
-        page6Item.setValue(BreadCrumbElement.Page6.getMainMenuTextByLocale(isSwedish));
-        page7Item.setValue(BreadCrumbElement.Page7.getMainMenuTextByLocale(isSwedish));
-        page8Item.setValue(BreadCrumbElement.Page8.getMainMenuTextByLocale(isSwedish));
-        page9Item.setValue(BreadCrumbElement.Page9.getMainMenuTextByLocale(isSwedish));
+   
+    
+    public void setNextItem(DefaultMenuItem current, DefaultMenuItem next) {
+        current.setStyle(unActiveTab);
+        current.setDisabled(false);
+        next.setDisabled(true);
+        next.setStyle(activeTab);
+        activeItem = next;
     }
     
-    public void setNotImplementDepartmentPath(boolean isImplemented) {
-        
-        logger.info("setNotImplementDepartmentPath : {}",isImplemented);
-        
-        if(isImplemented) {
-            page1Item.setValue(BreadCrumbElement.Page1.getMainMenuTextByLocale(language.isIsSwedish())); 
-            setMainPathValue();
-        } else {
-            page1Item.setValue(BreadCrumbElement.Page1b.getMainMenuTextByLocale(language.isIsSwedish()));
-            
-        }    
-        page2Item.setRendered(isImplemented);
-        page3Item.setRendered(isImplemented);
-        page4Item.setRendered(isImplemented);
-        page5Item.setRendered(isImplemented);
-        page6Item.setRendered(isImplemented);
-        page7Item.setRendered(isImplemented);
-        page8Item.setRendered(isImplemented);
-        page9Item.setRendered(isImplemented);
-        
-        page1Item.setDisabled(true);
-        page2Item.setDisabled(true);
-        page3Item.setDisabled(true);
-        page4Item.setDisabled(true);
-        page5Item.setDisabled(true);
-        page6Item.setDisabled(true);
-        page7Item.setDisabled(true);
-        page8Item.setDisabled(true);
-        page9Item.setDisabled(true);
+    public void setManuItem(DefaultMenuItem item) {
+        log.info("setManuItem 1 : {}", item.getId());
+        item.setStyle(activeTab);
+        item.setDisabled(true);
+        disableOldActiveElement();
+        activeItem = item;
     }
-     
-    /**
+
+    private void disableOldActiveElement() {
+        log.info("activeItem : {}", activeItem.getId());
+        switch (activeItem.getId()) {
+            case "home":
+                resetNavigationPathToHomePage();
+            case "department":
+                departmentItem.setStyle(unActiveTab);
+                departmentItem.setDisabled(false);
+                break;
+            case "purpose":
+                purposeItem.setStyle(unActiveTab);
+                purposeItem.setDisabled(false);
+                break;
+            case "requesttype":
+                requestTypeItem.setStyle(unActiveTab);
+                requestTypeItem.setDisabled(false);
+                break;
+            case "project":
+                projectItem.setStyle(unActiveTab);
+                projectItem.setDisabled(false);
+                break;
+            case "collection":
+                collectionItem.setStyle(unActiveTab);
+                collectionItem.setDisabled(false);
+                break;
+            case "speciments":
+                specimentsItem.setStyle(unActiveTab);
+                specimentsItem.setDisabled(false);
+                break;
+            case "desctructive":
+                desctructiveItem.setStyle(unActiveTab);
+                desctructiveItem.setDisabled(false);
+                break;
+            case "photo":
+                photoItem.setStyle(unActiveTab);
+                photoItem.setDisabled(false);
+                break;
+            case "cites":
+                citesItem.setStyle(unActiveTab);
+                citesItem.setDisabled(false);
+                break;
+            case "contact":
+                contactItem.setStyle(unActiveTab);
+                contactItem.setDisabled(false);
+                break;
+            case "review":
+                reviewItem.setStyle(unActiveTab);
+                reviewItem.setDisabled(false);
+                break;
+            case "loaninformation":
+                informationItem.setStyle(unActiveTab);
+                informationItem.setDisabled(false);
+                break;
+            case "purposeofuse":
+                purposeOfUesItem.setStyle(unActiveTab);
+                purposeOfUesItem.setDisabled(false);
+                break;
+            case "storage":
+                storageItem.setStyle(unActiveTab);
+                storageItem.setDisabled(false);
+                break;
+            case "loantype":
+                loanTypeItem.setStyle(unActiveTab);
+                loanTypeItem.setDisabled(false);
+                break;
+            case "loandetail":
+                loanDetailItem.setStyle(unActiveTab);
+                loanDetailItem.setDisabled(false);
+                break;
+        }
+    }
+    
+     /**
      * Set navigation path to photo text
      */
     public void setPhotoElement() {
-        page6Item.setValue(BreadCrumbElement.Page6b.getMainMenuTextByLocale(language.isIsSwedish()));
-        page6Item.setRendered(true);
-        page7Item.setRendered(true);
-        page3Item.setRendered(true);
+        log.info("setPhotoElement");
+        
+        desctructiveItem.setRendered(false);
+        projectItem.setRendered(true);
+        photoItem.setRendered(true);
+        citesItem.setRendered(true);  
     }
-    
-         
+
     /**
      * Set navigation path to photo text
      */
     public void setInformationElement() {
-        page3Item.setRendered(false);
-        page6Item.setRendered(false);
-        page7Item.setRendered(false);
+        projectItem.setRendered(false);
+        desctructiveItem.setRendered(false);
+        
+        photoItem.setRendered(false);
+        citesItem.setRendered(false);
     }
-    
+
     /**
      * Set navigation path to physical text
      */
     public void setPhiscalElement() {
-        page6Item.setValue(BreadCrumbElement.Page6.getMainMenuTextByLocale(language.isIsSwedish()));
-        page6Item.setRendered(true);
-        page3Item.setRendered(true);
-        page7Item.setRendered(true);
+        desctructiveItem.setValue(BreadCrumbElement.Desctructive.getMainMenuTextByLocale(language.isIsSwedish()));
+        desctructiveItem.setRendered(true);
+        photoItem.setRendered(false);
+        projectItem.setRendered(true);
+        photoItem.setRendered(false);
+        citesItem.setRendered(true);
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    public void setNext(DefaultMenuItem item) {
+        log.info("setNext : {}", item);
 
-    
-    
-    /**
-     * To change navigation path language
-     * 
-     * @param isSwedish
-     * @param isImplemented  -- indecate if the department is implemented or not
-     * @param isPhoto
-     * @param numOfPages 
-     */
-    public void resetLocale(boolean isSwedish, boolean isImplemented, boolean isPhoto, int numOfPages) { 
-        
-        logger.info("resetLocale : {}", isSwedish);
-          
-        homeItem.setValue(BreadCrumbElement.Home.getMainMenuTextByLocale(isSwedish)); 
-        onlineFormItem.setValue(BreadCrumbElement.OnlineForm.getMainMenuTextByLocale(isSwedish));  
-        
-        page1Item.setValue(isImplemented ? BreadCrumbElement.Page1.getMainMenuTextByLocale(isSwedish) : BreadCrumbElement.Page1b.getMainMenuTextByLocale(isSwedish)); 
-        if(numOfPages == 9) {  
-            page2Item.setValue(BreadCrumbElement.Page2.getMainMenuTextByLocale(isSwedish)); 
-            page3Item.setValue(BreadCrumbElement.Page3.getMainMenuTextByLocale(isSwedish)); 
-            page4Item.setValue(BreadCrumbElement.Page4.getMainMenuTextByLocale(isSwedish)); 
-            page5Item.setValue(BreadCrumbElement.Page5.getMainMenuTextByLocale(isSwedish)); 
-            if(isPhoto) {
-                page6Item.setValue(BreadCrumbElement.Page6b.getMainMenuTextByLocale(isSwedish)); 
-            } else {
-                page6Item.setValue(BreadCrumbElement.Page6.getMainMenuTextByLocale(isSwedish)); 
-            } 
-            page7Item.setValue(BreadCrumbElement.Page7.getMainMenuTextByLocale(isSwedish)); 
-            page8Item.setValue(BreadCrumbElement.Page8.getMainMenuTextByLocale(isSwedish)); 
-            page9Item.setValue(BreadCrumbElement.Page9.getMainMenuTextByLocale(isSwedish)); 
-        } else if(numOfPages == 7) { 
-            page2Item.setValue(BreadCrumbElement.Page2.getEduMenuTextByLocale(isSwedish)); 
-            page3Item.setValue(BreadCrumbElement.Page3.getEduMenuTextByLocale(isSwedish)); 
-            page4Item.setValue(BreadCrumbElement.Page4.getEduMenuTextByLocale(isSwedish)); 
-            page5Item.setValue(BreadCrumbElement.Page5.getEduMenuTextByLocale(isSwedish));  
-            page6Item.setValue(BreadCrumbElement.Page6.getEduMenuTextByLocale(isSwedish));  
-            page7Item.setValue(BreadCrumbElement.Page7.getEduMenuTextByLocale(isSwedish));  
+        if (item == null) {
+            resetNavigationPathToHomePage();
         } else {
-            page2Item.setValue(BreadCrumbElement.Page2.getArtMenuTextByLocale(isSwedish)); 
-            page3Item.setValue(BreadCrumbElement.Page3.getArtMenuTextByLocale(isSwedish)); 
-            page4Item.setValue(BreadCrumbElement.Page4.getArtMenuTextByLocale(isSwedish)); 
-            page5Item.setValue(BreadCrumbElement.Page5.getArtMenuTextByLocale(isSwedish));  
-            page6Item.setValue(BreadCrumbElement.Page6.getArtMenuTextByLocale(isSwedish));  
-        }  
-    }
- 
-     
-    
-    public void resetNavigationPath(LoanPurpose loanPurpose ) {
-        
-        logger.info("resetNavigationPath : {}", loanPurpose);
-        
-        boolean isSwedish = language.isIsSwedish(); 
-        
-        if(loanPurpose.isEducation()) { 
-            page3Item.setRendered(true);
-            page6Item.setRendered(true);
-            page7Item.setRendered(true);
-            page8Item.setRendered(false);
-            page9Item.setRendered(false); 
-              
-            page2Item.setValue(BreadCrumbElement.Page2.getEduMenuTextByLocale(isSwedish));  
-            page3Item.setValue(BreadCrumbElement.Page3.getEduMenuTextByLocale(isSwedish));  
-            page4Item.setValue(BreadCrumbElement.Page4.getEduMenuTextByLocale(isSwedish));  
-            page5Item.setValue(BreadCrumbElement.Page5.getEduMenuTextByLocale(isSwedish)); 
-            page6Item.setValue(BreadCrumbElement.Page6.getEduMenuTextByLocale(isSwedish)); 
-            page7Item.setValue(BreadCrumbElement.Page7.getEduMenuTextByLocale(isSwedish));  
-        } else if(loanPurpose.isCommercial()) {  
-            page3Item.setRendered(true);
-            page6Item.setRendered(true);
-            page7Item.setRendered(false);
-            page8Item.setRendered(false); 
-            page9Item.setRendered(false); 
-            
-            page2Item.setValue(BreadCrumbElement.Page2.getArtMenuTextByLocale(isSwedish));  
-            page3Item.setValue(BreadCrumbElement.Page3.getArtMenuTextByLocale(isSwedish));  
-            page4Item.setValue(BreadCrumbElement.Page4.getArtMenuTextByLocale(isSwedish)); 
-            page5Item.setValue(BreadCrumbElement.Page5.getArtMenuTextByLocale(isSwedish));
-            page6Item.setValue(BreadCrumbElement.Page6.getArtMenuTextByLocale(isSwedish));
-        } else { 
-            page7Item.setRendered(true);
-            page8Item.setRendered(true);
-            page9Item.setRendered(true);
+            navigationPathEnabled = true;
 
-            page2Item.setValue(BreadCrumbElement.Page2.getMainMenuTextByLocale(isSwedish));
-            page3Item.setValue(BreadCrumbElement.Page3.getMainMenuTextByLocale(isSwedish));
-            page4Item.setValue(BreadCrumbElement.Page4.getMainMenuTextByLocale(isSwedish));
-            page5Item.setValue(BreadCrumbElement.Page5.getMainMenuTextByLocale(isSwedish)); 
-            page6Item.setValue(BreadCrumbElement.Page6.getMainMenuTextByLocale(isSwedish));  
-            page7Item.setValue(BreadCrumbElement.Page7.getMainMenuTextByLocale(isSwedish));  
-            page8Item.setValue(BreadCrumbElement.Page8.getMainMenuTextByLocale(isSwedish)); 
-            page9Item.setValue(BreadCrumbElement.Page9.getMainMenuTextByLocale(isSwedish)); 
+            item.setStyle(unActiveTab);
+            item.setDisabled(false);
+            setNextItem(item);
         }
-        
-        page2Item.setDisabled(true);
-        page3Item.setDisabled(true);
-        page4Item.setDisabled(true);
-        page5Item.setDisabled(true);
-        page6Item.setDisabled(true);
-        page7Item.setDisabled(true);
-        page8Item.setDisabled(true);
-        page9Item.setDisabled(true);
     }
-    
-    public void enableManuItem(DefaultMenuItem item) {
-        logger.info("disableManuItem : {}", item.getId());
-        item.setStyle(UNACTIVE_TAB);
-        item.setDisabled(false);  
-    }
-      
-    
-    public void disableManuItem(DefaultMenuItem item) {
-        logger.info("disableManuItem : {}", item.getId());
-        item.setStyle(UNACTIVE_TAB);
-        item.setDisabled(false);  
-    }
-    
-    
-    public void setManuItem(DefaultMenuItem item) {
-        
-        logger.info("setManuItem : {}", item.getId());
-        item.setStyle(ACTIVE_TAB);
-        item.setDisabled(true);
-        disableOldActiveElement();
-        activeItem = item; 
-    }
-      
-    private void disableOldActiveElement() {
-        switch (activeItem.getId()) {
+
+    private void setNextItem(DefaultMenuItem item) {
+        log.info("setNextItem : {}", item.getId());
+        switch (item.getId()) {
             case "home":
-                resetNavigationPathToHomePage();
-            case "onlineform":
-                onlineFormItem.setStyle(UNACTIVE_TAB);
-                onlineFormItem.setDisabled(false);
+                departmentItem.setDisabled(true);
+                departmentItem.setStyle(activeTab);
+                activeItem = departmentItem;
                 break;
-            case "page1":
-                page1Item.setStyle(UNACTIVE_TAB);
-                page1Item.setDisabled(false);
+            case "department":
+                purposeItem.setDisabled(true);
+                purposeItem.setStyle(activeTab);
+                activeItem = purposeItem;
                 break;
-            case "page2": 
-                page2Item.setStyle(UNACTIVE_TAB);
-                page2Item.setDisabled(false);
+            case "purpose":
+                requestTypeItem.setDisabled(true);
+                requestTypeItem.setStyle(activeTab);
+                activeItem = requestTypeItem;
                 break;
-            case "page3":
-                page3Item.setStyle(UNACTIVE_TAB);
-                page3Item.setDisabled(false);
+            case "requestType":
+                projectItem.setDisabled(true);
+                projectItem.setStyle(activeTab);
+                activeItem = projectItem;
                 break;
-            case "page4": 
-                page4Item.setStyle(UNACTIVE_TAB);
-                page4Item.setDisabled(false);
+            case "project":
+                collectionItem.setDisabled(true);
+                collectionItem.setStyle(activeTab);
+                activeItem = collectionItem;
                 break;
-            case "page5": 
-                page5Item.setStyle(UNACTIVE_TAB);
-                page5Item.setDisabled(false);
+            case "collection":
+                specimentsItem.setDisabled(true);
+                specimentsItem.setStyle(activeTab);
+                activeItem = specimentsItem;
                 break;
-            case "page6": 
-                page6Item.setStyle(UNACTIVE_TAB);
-                page6Item.setDisabled(false);
+            case "specimemts":
+                desctructiveItem.setDisabled(true);
+                desctructiveItem.setStyle(activeTab);
+                activeItem = desctructiveItem;
                 break;
-            case "page7": 
-                page7Item.setStyle(UNACTIVE_TAB);
-                page7Item.setDisabled(false);
+            case "desctructive":
+                citesItem.setDisabled(true);
+                citesItem.setStyle(activeTab);
+                activeItem = citesItem;
                 break;
-            case "page8": 
-                page8Item.setStyle(UNACTIVE_TAB);
-                page8Item.setDisabled(false);
+            case "cites":
+                contactItem.setDisabled(true);
+                contactItem.setStyle(activeTab);
+                activeItem = contactItem;
                 break;
-            case "page9": 
-                page9Item.setStyle(UNACTIVE_TAB);
-                page9Item.setDisabled(false);
+            case "contact":
+                reviewItem.setDisabled(true);
+                reviewItem.setStyle(activeTab);
+                activeItem = reviewItem;
                 break;
-        } 
+            case "review":
+                break;
+        }
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+   
+
+   
 
 
     
+
+    
+
+    private void setMainPathValue() {
+        boolean isSwedish = language.isIsSwedish();
+        purposeItem.setValue(BreadCrumbElement.Purpose.getMainMenuTextByLocale(isSwedish));
+        requestTypeItem.setValue(BreadCrumbElement.RequestType.getMainMenuTextByLocale(isSwedish));
+        projectItem.setValue(BreadCrumbElement.Project.getMainMenuTextByLocale(isSwedish));
+        collectionItem.setValue(BreadCrumbElement.Collection.getMainMenuTextByLocale(isSwedish));
+        specimentsItem.setValue(BreadCrumbElement.Speciments.getMainMenuTextByLocale(isSwedish));
+        desctructiveItem.setValue(BreadCrumbElement.Desctructive.getMainMenuTextByLocale(isSwedish));
+        citesItem.setValue(BreadCrumbElement.Cites.getMainMenuTextByLocale(isSwedish));
+        contactItem.setValue(BreadCrumbElement.Contact.getMainMenuTextByLocale(isSwedish));
+        reviewItem.setValue(BreadCrumbElement.Review.getMainMenuTextByLocale(isSwedish));
+    }
+    
+//    private void setEducationPathValue() {
+//        boolean isSwedish = language.isIsSwedish();
+//        purposeItem.setValue(BreadCrumbElement.Purpose.getMainMenuTextByLocale(isSwedish));
+//        requestTypeItem.setValue(BreadCrumbElement.RequestType.getMainMenuTextByLocale(isSwedish));
+//        projectItem.setValue(BreadCrumbElement.Project.getMainMenuTextByLocale(isSwedish));
+//        collectionItem.setValue(BreadCrumbElement.Collection.getMainMenuTextByLocale(isSwedish));
+//        specimentsItem.setValue(BreadCrumbElement.Speciments.getMainMenuTextByLocale(isSwedish));
+//        desctructiveItem.setValue(BreadCrumbElement.Desctructive.getMainMenuTextByLocale(isSwedish));
+//        citesItem.setValue(BreadCrumbElement.Cites.getMainMenuTextByLocale(isSwedish));
+//        contactItem.setValue(BreadCrumbElement.Contact.getMainMenuTextByLocale(isSwedish));
+//        reviewItem.setValue(BreadCrumbElement.Review.getMainMenuTextByLocale(isSwedish));
+//    }
+
+   
+
+    
+
+    
+
+    public void enableManuItem(DefaultMenuItem item) {
+        log.info("disableManuItem : {}", item.getId());
+        item.setStyle(unActiveTab);
+        item.setDisabled(false);
+    }
+
+    public void disableManuItem(DefaultMenuItem item) {
+        log.info("disableManuItem : {}", item.getId());
+        item.setStyle(unActiveTab);
+        item.setDisabled(false);
+    }
+
+    
+
     public void setManuItem(DefaultMenuItem item, int numOfPages) {
-         
-        item.setStyle(ACTIVE_TAB);
-        item.setDisabled(true);  
-        
+        log.info("setManuItem : {}", item);
+        item.setStyle(activeTab);
+        item.setDisabled(true);
+
         switch (activeItem.getId()) {
             case "home":
                 navigationPathEnabled = false;
-            case "onlineform":
-                onlineFormItem.setStyle(UNACTIVE_TAB);
-                onlineFormItem.setDisabled(false);
+            case "department":
+                departmentItem.setStyle(unActiveTab);
+                departmentItem.setDisabled(false);
                 break;
-            case "page1":
-                page1Item.setStyle(UNACTIVE_TAB);
-                page1Item.setDisabled(false);
+            case "purpose":
+                purposeItem.setStyle(unActiveTab);
+                purposeItem.setDisabled(false);
                 break;
-            case "page2": 
-                page2Item.setStyle(UNACTIVE_TAB);
-                page2Item.setDisabled(false);
+            case "requestType":
+                requestTypeItem.setStyle(unActiveTab);
+                requestTypeItem.setDisabled(false);
                 break;
-            case "page3":
-                page3Item.setStyle(UNACTIVE_TAB);
-                page3Item.setDisabled(false);
+            case "project":
+                projectItem.setStyle(unActiveTab);
+                projectItem.setDisabled(false);
                 break;
-            case "page4": 
-                page4Item.setStyle(UNACTIVE_TAB);
-                page4Item.setDisabled(false);
+            case "collection":
+                collectionItem.setStyle(unActiveTab);
+                collectionItem.setDisabled(false);
                 break;
-            case "page5": 
-                page5Item.setStyle(UNACTIVE_TAB);
-                page5Item.setDisabled(false);
+            case "speciments":
+                specimentsItem.setStyle(unActiveTab);
+                specimentsItem.setDisabled(false);
                 break;
-            case "page6": 
-                page6Item.setStyle(UNACTIVE_TAB);
-                page6Item.setDisabled(false);
+            case "desctructive":
+                desctructiveItem.setStyle(unActiveTab);
+                desctructiveItem.setDisabled(false);
                 break;
-            case "page7": 
-                page7Item.setStyle(UNACTIVE_TAB);
-                page7Item.setDisabled(false);
+            case "cites":
+                citesItem.setStyle(unActiveTab);
+                citesItem.setDisabled(false);
                 break;
-            case "page8": 
-                page8Item.setStyle(UNACTIVE_TAB);
-                page8Item.setDisabled(false);
+            case "contact":
+                contactItem.setStyle(unActiveTab);
+                contactItem.setDisabled(false);
                 break;
-            case "page9": 
-                page9Item.setStyle(UNACTIVE_TAB);
-                page9Item.setDisabled(false);
+            case "review":
+                reviewItem.setStyle(unActiveTab);
+                reviewItem.setDisabled(false);
                 break;
         }
         activeItem = item;
     }
     
-    
-      
+     public void setPrevious(DefaultMenuItem item) {
+        log.info("setPrevious : {}", item.getId());
+
+        navigationPathEnabled = true;
+
+        item.setStyle(unActiveTab);
+        item.setDisabled(false);
+        setPreviousItem(item);
+    }
+
+    private void setPreviousItem(DefaultMenuItem item) {
+        log.info("setPreviousItem : {}", item.getId());
+
+        switch (item.getId()) {
+            case "home":
+            case "department":
+                navigationPathEnabled = false;
+                break;
+            case "purpose":
+                departmentItem.setDisabled(true);
+                departmentItem.setStyle(activeTab);
+                activeItem = departmentItem;
+                break;
+            case "requesttype":
+                purposeItem.setDisabled(true);
+                purposeItem.setStyle(activeTab);
+                activeItem = purposeItem;
+                break;
+            case "project":
+                requestTypeItem.setDisabled(true);
+                requestTypeItem.setStyle(activeTab);
+                activeItem = requestTypeItem;
+                break;
+            case "collection":
+                projectItem.setDisabled(true);
+                projectItem.setStyle(activeTab);
+                activeItem = projectItem;
+                break;
+            case "speciments":
+                collectionItem.setDisabled(true);
+                collectionItem.setStyle(activeTab);
+                activeItem = collectionItem;
+                break;
+            case "descructive":
+                specimentsItem.setDisabled(true);
+                specimentsItem.setStyle(activeTab);
+                activeItem = specimentsItem;
+                break;
+            case "cites":
+                desctructiveItem.setDisabled(true);
+                desctructiveItem.setStyle(activeTab);
+                activeItem = desctructiveItem;
+                break;
+            case "contact":
+                citesItem.setDisabled(true);
+                citesItem.setStyle(activeTab);
+                activeItem = citesItem;
+                break;
+            case "review":
+                contactItem.setDisabled(true);
+                contactItem.setStyle(activeTab);
+                activeItem = contactItem;
+                break;
+        }
+    }
+
     public DefaultMenuItem getHomeItem() {
         return homeItem;
     }
- 
-    public DefaultMenuItem getOnlineFormItem() {
-        return onlineFormItem;
-    }
- 
-    public DefaultMenuItem getPage1Item() {
-        return page1Item;
+
+    public DefaultMenuItem getDepartmentItem() {
+
+        return departmentItem;
     }
 
-    public DefaultMenuItem getPage2Item() {
-        return page2Item;
+    public DefaultMenuItem getPurposeItem() {
+        return purposeItem;
     }
 
-    public DefaultMenuItem getPage3Item() {
-        return page3Item;
+    public DefaultMenuItem getRequestTypeItem() {
+        return requestTypeItem;
     }
 
-    public DefaultMenuItem getPage4Item() {
-        return page4Item;
+    public DefaultMenuItem getProjectItem() {
+        return projectItem;
     }
 
-    public DefaultMenuItem getPage5Item() {
-        return page5Item;
+    public DefaultMenuItem getCollectionItem() {
+        return collectionItem;
     }
 
-    public DefaultMenuItem getPage6Item() {
-        return page6Item;
+    public DefaultMenuItem getSpecimentsItem() {
+        return specimentsItem;
     }
 
-    public DefaultMenuItem getPage7Item() {
-        return page7Item;
+    public DefaultMenuItem getDesctructiveItem() {
+        return desctructiveItem;
     }
 
-    public DefaultMenuItem getPage8Item() {
-        return page8Item;
+    public DefaultMenuItem getPhotoItem() {
+        return photoItem;
+    }
+     
+    public DefaultMenuItem getCitesItem() {
+        return citesItem;
     }
 
-    public DefaultMenuItem getPage9Item() {
-        return page9Item; 
+    public DefaultMenuItem getContactItem() {
+        return contactItem;
     }
+
+    public DefaultMenuItem getReviewItem() {
+        return reviewItem;
+    }
+
+    public DefaultMenuItem getInformationItem() {
+        return informationItem;
+    }
+
+    public DefaultMenuItem getPurposeOfUesItem() {
+        return purposeOfUesItem;
+    }
+
+    public DefaultMenuItem getLoanDetailItem() {
+        return loanDetailItem;
+    }
+
+    public DefaultMenuItem getStorageItem() {
+        return storageItem;
+    }
+
+    public DefaultMenuItem getLoanTypeItem() {
+        return loanTypeItem;
+    }
+
+    public DefaultMenuItem getNotImplementItem() {
+        return notImplementItem;
+    }
+    
+    
 
     public boolean isNavigationPathEnabled() {
         return navigationPathEnabled;
-    } 
+    }
 
     public void setNavigationPathEnabled(boolean navigationPathEnabled) {
         this.navigationPathEnabled = navigationPathEnabled;
     }
-    
-    
+
 }

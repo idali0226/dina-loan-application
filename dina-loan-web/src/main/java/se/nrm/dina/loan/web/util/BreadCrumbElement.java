@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package se.nrm.dina.loan.web.util;
 
 
@@ -15,25 +9,32 @@ package se.nrm.dina.loan.web.util;
 public enum BreadCrumbElement {
     
     Home,
-    OnlineForm,
+//    OnlineForm,
     Department,
-    Enhet,
+//    Enhet,
     Botany,
     ESB,
     Geology,
     Palaeobiology, 
     Zoology,  
-    Page1,
-    Page1b,
-    Page2,
-    Page3,
-    Page4,
-    Page5,
-    Page6,
-    Page6b,
-    Page7,
-    Page8,
-    Page9;
+    Purpose, 
+    RequestType,
+    Project,
+    Collection,
+    Speciments,
+    Desctructive,
+    Photo,
+    
+    Cites,
+    Contact,
+    Review,
+    NoImplement,
+    
+    LoanInformation,
+    PurposeOfUse,
+    Storage,
+    LoanType,
+    LoanDetail;
       
     public String getText() {
         return this.name().toLowerCase();

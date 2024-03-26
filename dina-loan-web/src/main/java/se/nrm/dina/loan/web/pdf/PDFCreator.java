@@ -18,9 +18,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.Serializable;
-import javax.ejb.Stateless;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j; 
 import se.nrm.dina.loan.web.util.CommonString;
 import se.nrm.dina.loan.web.util.RequestType;
 import se.nrm.dina.mongodb.loan.vo.Loan;
@@ -31,533 +29,634 @@ import se.nrm.dina.mongodb.loan.vo.User;
  *
  * @author idali
  */
-@Stateless
+@Slf4j
 public class PDFCreator implements Serializable {
 
-  private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final String newLine = "\n";
+    private final String adminPdf = "_admin.pdf";
+    private final String pdf = ".pdf";
+    private final String loanrequest = "/loanrequest_";
+    private final String na = "N/A";
+    private final String dash = " - ";
 
-  private static final String NEW_LINE = "\n";
+    private Paragraph paragraph;
+    private BaseColor color = BaseColor.WHITE;
 
-  private Paragraph paragraph;
-  private BaseColor color = BaseColor.WHITE;
+    private boolean isSwedish;
 
-  private boolean isSwedish;
+    private final Font titleFont = new Font(Font.FontFamily.TIMES_ROMAN, 22, Font.BOLD);
+    private final Font subTitleFont = new Font(Font.FontFamily.TIMES_ROMAN, 16, Font.BOLD);
+    private final Font sectionTitleFont = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD);
+    private final Font textFont = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.NORMAL);
+    private final Font lableFont = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLD);
+ 
+    private Document document;
+    private Document adminDocument;
 
-  private final Font TITLE_FONT = new Font(Font.FontFamily.TIMES_ROMAN, 22, Font.BOLD);
-  private final Font SUB_TITLE_FONT = new Font(Font.FontFamily.TIMES_ROMAN, 16, Font.BOLD);
-  private final Font SECTION_TITLE_FONT = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD);
-  private final Font TEXT_FONT = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.NORMAL);
-  private final Font LABEL_FONT = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLD);
+    public void createInformationLoanPDF(Loan loan, boolean isEducationLoan,
+            boolean isSwedish, String path)
+            throws FileNotFoundException, DocumentException {
+        log.info("createInformationLoanPDF : {} -- {}", path, isSwedish);
 
-  private final String LOCAL_EXTERNAL_FILES = "http://localhost:8080/dina-external-datasource/pdf?att=";
-  private final String REMOTE_EXTERNAL_FILES_LOANS = "http://dina-loans.nrm.se/dina-external-datasource/pdf?att=";
-  //   private final String REMOTE_EXTERNAL_FILES_AS = "https://dina-web.net/dina-external-datasource/pdf?att=";
-  private final String REMOTE_EXTERNAL_FILES_AS = "https://www.dina-web.net/dina-external-datasource/pdf?att=";
+        this.isSwedish = isSwedish;
 
-  private String externalPath;
+//        StringBuilder sb = new StringBuilder();
+//        sb.append(path);
+//        sb.append(loanrequest);
+//        sb.append(loan.getId());
 
-  private Document document;
-  private Document adminDocument;
+//        File summaryAdminFile = new File(sb.toString() + adminPdf);                 // loan request summary admin pdf file (request_id_admin.pdf)
+//
+//        sb.append(pdf);
+//        File summaryFile = new File(sb.toString().trim());                      // loan request summary pdf file (request_id.pdf)
+//
+//        document = new Document(PageSize.LETTER);
+//        adminDocument = new Document(PageSize.LETTER);
+//        PdfWriter.getInstance(document, new FileOutputStream(summaryFile));
+//        PdfWriter.getInstance(adminDocument, new FileOutputStream(summaryAdminFile));
+//        document.open();
+//        adminDocument.open();
+//        addTitle(loan);
 
-  /**
-   * Create loan request pdf files.
-   *
-   * @param loan
-   * @param isSwedish
-   * @param path
-   * @param count
-   * @param pathname
-   * @throws FileNotFoundException
-   * @throws DocumentException
-   */
-  public void createPDF(Loan loan, boolean isSwedish, String path, int count, String pathname) throws FileNotFoundException, DocumentException {
-    logger.info("createPDF : {} -- {}", path, isSwedish);
+        openDocuments(loan, path);
+ 
+        addNonSecondaryBorrow(loan);
+        addCommercialInformation(loan, isEducationLoan);
+        addTermsOfLoanAgreement();
 
-    this.isSwedish = isSwedish;
-
-    switch (pathname) {
-      case "localhost":
-        externalPath = LOCAL_EXTERNAL_FILES;
-        break;
-      case "dina-loans":
-        externalPath = REMOTE_EXTERNAL_FILES_LOANS;
-        break;
-      default:
-        externalPath = REMOTE_EXTERNAL_FILES_AS;
-        break;
+        document.close();
+        adminDocument.close();
     }
+    
+    public void createScientificLoanPDF(Loan loan, String requestType, boolean isSwedish, String path)
+            throws FileNotFoundException, DocumentException {
+        log.info("createScientificLoanPDF : {} -- {}", path, isSwedish);
 
-    StringBuilder sb = new StringBuilder();
-    sb.append(path);
-    sb.append("/loanrequest_");
-    sb.append(loan.getId());
+        this.isSwedish = isSwedish;
+ 
+        openDocuments(loan, path);
+        if(loan.getSecondaryUser() != null) {
+            addContact(loan);
+        } else {
+            addNonSecondaryBorrow(loan); 
+        }
+        
+        addLoanRequestForScientificPurpose(loan, requestType);
+        addLoanSampleList(loan, requestType);
+         
+        if (!RequestType.Information.isInformation(requestType)) {
+            addDestructiveInformaionOrPhotoInformation(loan, requestType);
+            addCITESInformation(loan);  
+            addTermsOfLoanAgreement(); 
+        }
 
-    File summaryAdminFile = new File(sb.toString() + "_admin.pdf");         // loan request summary admin pdf file (request_id_admin.pdf)
-
-    sb.append(".pdf");
-    File summaryFile = new File(sb.toString().trim());                      // loan request summary pdf file (request_id.pdf)
-
-    document = new Document(PageSize.LETTER);
-    adminDocument = new Document(PageSize.LETTER);
-    PdfWriter.getInstance(document, new FileOutputStream(summaryFile));
-    PdfWriter.getInstance(adminDocument, new FileOutputStream(summaryAdminFile));
-    document.open();
-    adminDocument.open();
-
-    addTitle(loan);
-    addContact(loan);
-
-    switch (count) {
-      case 9:
-        addLoanRequestForScientificPurpose(loan);
-        addLoanSampleList(loan);
-        if (!RequestType.Information.isInformation(loan.getType())) {
-          if (RequestType.Physical.isPhysical(loan.getType())) {
+        document.close();
+        adminDocument.close();
+    }
+     
+    private void addDestructiveInformaionOrPhotoInformation(Loan loan, String requestType) throws DocumentException {
+ 
+        if (RequestType.Physical.isPhysical(requestType)) {
             addDestructiveInformation(loan);
-          } else {
+        } else  {
             addPhotoInformation(loan);
-          }
-          addCITESInformation(loan);
-        } break;
-      case 7:
-        addEducationRequest(loan);
-        break;
-      default:
-        addCommercialInformation(loan);
-        break;
+        } 
+    }
+    
+    private void openDocuments(Loan loan, String path) throws FileNotFoundException, DocumentException {
+           
+        StringBuilder sb = new StringBuilder();
+        sb.append(path);
+        sb.append(loanrequest);
+        sb.append(loan.getId());
+
+        File summaryAdminFile = new File(sb.toString() + adminPdf);                 // loan request summary admin pdf file (request_id_admin.pdf)
+
+        sb.append(pdf);
+        File summaryFile = new File(sb.toString().trim());                      // loan request summary pdf file (request_id.pdf)
+
+        document = new Document(PageSize.LETTER);
+        adminDocument = new Document(PageSize.LETTER);
+        PdfWriter.getInstance(document, new FileOutputStream(summaryFile));
+        PdfWriter.getInstance(adminDocument, new FileOutputStream(summaryAdminFile));
+        document.open();
+        adminDocument.open();
+
+        addTitle(loan);
+    }
+    
+
+    private void addTitle(Loan loan) throws DocumentException {
+        paragraph = new Paragraph(CommonString.getLoanRequest(isSwedish), titleFont);
+        paragraph.setAlignment(Element.ALIGN_CENTER);
+        addEmptyLine(paragraph, 1);
+        paragraph.add(new Paragraph(loan.getSubmitDate(), textFont));
+        paragraph.add(new Paragraph(loan.getId(), subTitleFont));
+
+        addEmptyLine(paragraph, 1);
+        document.add(paragraph);
+        adminDocument.add(paragraph);
     }
 
-    if (!RequestType.Information.isInformation(loan.getType())) {
-      addTermsOfLoanAgreement();
+    private void addNonSecondaryBorrow(Loan loan) throws DocumentException {
+        paragraph = new Paragraph(CommonString.getContactDetails(isSwedish), subTitleFont);
+        addEmptyLine(paragraph, 2);
+        document.add(paragraph);
+        adminDocument.add(paragraph);
+
+        User primaryUser = loan.getPrimaryUser();
+        paragraph = new Paragraph(CommonString.getBowrrow(isSwedish), sectionTitleFont);
+
+        document.add(paragraph);
+        adminDocument.add(paragraph);
+
+        paragraph = new Paragraph(primaryUser.getName() + newLine, textFont);
+        paragraph.add(new Chunk(primaryUser.getEmail() + newLine, textFont));
+        paragraph.add(new Chunk(primaryUser.getPhone() + newLine, textFont));
+        paragraph.add(new Chunk(primaryUser.getInstitution() + newLine, textFont));
+        if (primaryUser.getDepartment() != null && !primaryUser.getDepartment().isEmpty()) {
+            paragraph.add(new Chunk(primaryUser.getDepartment() + newLine, textFont));
+        }
+        paragraph.add(new Chunk(primaryUser.getAddress().getCompleteAddress() + newLine, textFont));
+        addEmptyLine(paragraph, 1);
+        document.add(paragraph);
+        adminDocument.add(paragraph);
     }
-    document.close();
-    adminDocument.close();
-  }
+ 
+    private void addCommercialInformation(Loan loan, boolean isEducationLoan) throws DocumentException {
+ 
+        String paragraphTitl = isEducationLoan ? CommonString.getEducation(isSwedish) 
+                : CommonString.getCommercial(isSwedish);
+        paragraph = new Paragraph(paragraphTitl, sectionTitleFont);
+        addEmptyLine(paragraph, 1);
+        document.add(paragraph);
+        adminDocument.add(paragraph);
 
-  /**
-   * Terms of Loan agreement for borrower and primary borrower
-   *
-   * @throws DocumentException
-   */
-  private void addTermsOfLoanAgreement() throws DocumentException {
-    paragraph = new Paragraph(CommonString.getTermsOfAgreement(isSwedish), SECTION_TITLE_FONT);
+        PdfPTable table = new PdfPTable(2);
+        table.setWidthPercentage(50);
+        table.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-    addEmptyLine(paragraph, 1);
-    paragraph.add(new Paragraph(CommonString.getLoanPolicy(isSwedish), TEXT_FONT));
-    paragraph.add(new Paragraph(CommonString.getPrimaryBorrowerAgreement(isSwedish), TEXT_FONT));
-    addEmptyLine(paragraph, 1);
+        PdfPCell cell = null;
+        if (isEducationLoan) {
+            addCells(table, cell, 2, color, CommonString.getPurpose(isSwedish),
+                    loan.getEduPurpose(), false, false);
+        } else {
+            addCells(table, cell, 2, color, CommonString.getLoanType(isSwedish),
+                    loan.getType(), false, false);
+        }
+        document.add(table);
+        adminDocument.add(table);
 
-    document.add(paragraph);
-    adminDocument.add(paragraph);
-  }
+        paragraph = new Paragraph();
+        addEmptyLine(paragraph, 1);
+        paragraph.add(new Chunk(CommonString.getDescription(isSwedish), sectionTitleFont));
+        addEmptyLine(paragraph, 1);
 
-  private void addCommercialInformation(Loan loan) throws DocumentException {
+        String loanDesc = loan.getLoanDescription();
+        if (loanDesc == null || loanDesc.isEmpty()) {
+            loanDesc = na;
+        }
+        paragraph.add(new Chunk(loanDesc, textFont));
+        addEmptyLine(paragraph, 1);
 
-    paragraph = new Paragraph(CommonString.getCommercial(isSwedish), SECTION_TITLE_FONT);
-    addEmptyLine(paragraph, 2);
-    document.add(paragraph);
-    adminDocument.add(paragraph);
+        if (loan.getEdPurposeFile() != null && !loan.getEdPurposeFile().isEmpty()) {
+            paragraph.add(new Chunk(CommonString.getAttachment(isSwedish), lableFont));
+            paragraph.add(new Chunk(loan.getEdPurposeFile(), textFont));
+            addEmptyLine(paragraph, 2);
+        }
+        paragraph.add(new Chunk(CommonString.getLoanPeriod(isSwedish), lableFont));
+        paragraph.add(new Chunk(buildTimePeriod(loan), textFont));
+        addEmptyLine(paragraph, 2);
 
-    PdfPTable table = new PdfPTable(2);
-    table.setWidthPercentage(50);
-    table.setHorizontalAlignment(Element.ALIGN_LEFT);
+        document.add(paragraph);
+        adminDocument.add(paragraph);
 
-    PdfPCell cell = null;
-    addCells(table, cell, 2, color, CommonString.getLoanType(isSwedish), loan.getType(), false, false);
-    document.add(table);
-    adminDocument.add(table);
+        if (isEducationLoan) {
+            paragraph = new Paragraph(CommonString.getExhibitionDescription(isSwedish), sectionTitleFont);
+            addEmptyLine(paragraph, 1);
 
-    paragraph = new Paragraph();
-    addEmptyLine(paragraph, 1);
-    paragraph.add(new Chunk(CommonString.getDescription(isSwedish), SECTION_TITLE_FONT));
-    addEmptyLine(paragraph, 1);
-
-    String loanDesc = loan.getLoanDescription();
-    if (loanDesc == null || loanDesc.isEmpty()) {
-      loanDesc = " - ";
-    }
-
-    paragraph.add(new Chunk(loanDesc, TEXT_FONT));
-    addEmptyLine(paragraph, 1);
-
-    if (loan.getEdPurposeFile() != null && !loan.getEdPurposeFile().isEmpty()) {
-      paragraph.add(new Chunk(CommonString.getAttachment(isSwedish), LABEL_FONT));
-      paragraph.add(new Chunk(loan.getEdPurposeFile(), TEXT_FONT));
-      addEmptyLine(paragraph, 2);
-    }
-    paragraph.add(new Chunk(CommonString.getLoanPeriod(isSwedish), LABEL_FONT));
-    paragraph.add(new Chunk(loan.getFromDate() + " - " + loan.getToDate(), TEXT_FONT));
-    addEmptyLine(paragraph, 1);
-    document.add(paragraph);
-    adminDocument.add(paragraph);
-  }
-
-  private void addEducationRequest(Loan loan) throws DocumentException {
-
-    paragraph = new Paragraph(CommonString.getEducation(isSwedish), SECTION_TITLE_FONT);
-    addEmptyLine(paragraph, 2);
-    document.add(paragraph);
-    adminDocument.add(paragraph);
-
-    PdfPTable table = new PdfPTable(2);
-    table.setWidthPercentage(50);
-    table.setHorizontalAlignment(Element.ALIGN_LEFT);
-
-    PdfPCell cell = null;
-    addCells(table, cell, 2, color, CommonString.getPurpose(isSwedish), loan.getEduPurpose(), false, false);
-    document.add(table);
-    adminDocument.add(table);
-
-    paragraph = new Paragraph();
-    addEmptyLine(paragraph, 1);
-    paragraph.add(new Chunk(CommonString.getDescription(isSwedish), SECTION_TITLE_FONT));
-    addEmptyLine(paragraph, 1);
-
-    String loanDescription = loan.getLoanDescription();
-    if (loanDescription == null || loanDescription.isEmpty()) {
-      loanDescription = " - ";
-    }
-    paragraph.add(new Chunk(loanDescription, TEXT_FONT));
-    addEmptyLine(paragraph, 1);
-
-    if (loan.getEdPurposeFile() != null && !loan.getEdPurposeFile().isEmpty()) {
-      paragraph.add(new Chunk(CommonString.getAttachment(isSwedish), LABEL_FONT));
-      paragraph.add(new Chunk(loan.getEdPurposeFile(), TEXT_FONT));
-      addEmptyLine(paragraph, 2);
-    }
-    paragraph.add(new Chunk(CommonString.getLoanPeriod(isSwedish), LABEL_FONT));
-    paragraph.add(new Chunk(loan.getFromDate() + " - " + loan.getToDate(), TEXT_FONT));
-    addEmptyLine(paragraph, 2);
-    document.add(paragraph);
-    adminDocument.add(paragraph);
-
-    paragraph = new Paragraph(CommonString.getExhibitionDescription(isSwedish), SECTION_TITLE_FONT);
-    addEmptyLine(paragraph, 1);
-
-    String exhPurposeDesc = loan.getExhPorpuseDesc();
-    if (exhPurposeDesc == null || exhPurposeDesc.isEmpty()) {
-      exhPurposeDesc = " - ";
-    }
-    paragraph.add(new Chunk(exhPurposeDesc, TEXT_FONT));
-    addEmptyLine(paragraph, 1);
-    document.add(paragraph);
-    adminDocument.add(paragraph);
-  }
-
-  private void addCITESInformation(Loan loan) throws DocumentException {
-
-    paragraph = new Paragraph(CommonString.getCITE(isSwedish), SECTION_TITLE_FONT);
-    addEmptyLine(paragraph, 1);
-
-    paragraph.add(new Chunk(CommonString.getCITENumber(isSwedish), LABEL_FONT));
-
-    String citeNum = loan.getCitesNumber();
-    if (citeNum == null || citeNum.isEmpty()) {
-      citeNum = " - ";
-    }
-    paragraph.add(new Chunk(citeNum, TEXT_FONT));
-
-    addEmptyLine(paragraph, 2);
-    document.add(paragraph);
-    adminDocument.add(paragraph);
-  }
-
-  private void addPhotoInformation(Loan loan) throws DocumentException {
-    paragraph = new Paragraph(CommonString.getPhotoMethod(isSwedish), SECTION_TITLE_FONT);
-    addEmptyLine(paragraph, 1);
-
-    String photoInst = loan.getPhotoInstraction();
-    if (photoInst == null || photoInst.isEmpty()) {
-      photoInst = " - ";
-    }
-    paragraph.add(new Chunk(photoInst, TEXT_FONT));
-    addEmptyLine(paragraph, 1);
-
-    if (loan.getPhotoInstractionFile() != null && !loan.getPhotoInstractionFile().isEmpty()) {
-      paragraph.add(new Chunk(CommonString.getAttachment(isSwedish), LABEL_FONT));
-      paragraph.add(new Chunk(loan.getPhotoInstractionFile(), TEXT_FONT));
-      addEmptyLine(paragraph, 2);
-    }
-    document.add(paragraph);
-    adminDocument.add(paragraph);
-  }
-
-  private void addDestructiveInformation(Loan loan) throws DocumentException {
-    paragraph = new Paragraph(CommonString.getDestructiveMethod(isSwedish), SECTION_TITLE_FONT);
-    addEmptyLine(paragraph, 1);
-
-    String destractive = loan.getIsDestructive();
-    if (Boolean.valueOf(destractive)) {
-      paragraph.add(new Chunk(CommonString.getDestructive(isSwedish), TEXT_FONT));
-      addEmptyLine(paragraph, 1);
-    } else {
-      paragraph.add(new Chunk(CommonString.getNoDestructive(isSwedish), TEXT_FONT));
-      addEmptyLine(paragraph, 1);
+            String exhPurposeDesc = loan.getExhPorpuseDesc();
+            log.info("exhPurposeDesc : {}", exhPurposeDesc);
+            if (exhPurposeDesc == null || exhPurposeDesc.isEmpty()) {
+                exhPurposeDesc = na;
+            }
+            paragraph.add(new Chunk(exhPurposeDesc, textFont));
+            addEmptyLine(paragraph, 2);
+            document.add(paragraph);
+            adminDocument.add(paragraph);
+        }
     }
 
-    String destructiveMeth = loan.getDestructiveMethod();
-    if (destructiveMeth == null || destructiveMeth.isEmpty()) {
-      destructiveMeth = " - ";
-    }
-    paragraph.add(new Chunk(destructiveMeth, TEXT_FONT));
-    addEmptyLine(paragraph, 1);
-
-    if (loan.getDestructiveFile() != null && !loan.getDestructiveFile().isEmpty()) {
-      paragraph.add(new Chunk(CommonString.getAttachment(isSwedish), LABEL_FONT));
-      paragraph.add(new Chunk(loan.getDestructiveFile(), TEXT_FONT));
-      addEmptyLine(paragraph, 2);
+    private String buildTimePeriod(Loan loan) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(loan.getFromDate());
+        sb.append(dash);
+        sb.append(loan.getToDate());
+        return sb.toString();
     }
 
-    document.add(paragraph);
-    adminDocument.add(paragraph);
-  }
+    /**
+     * Terms of Loan agreement for borrower and primary borrower
+     *
+     * @throws DocumentException
+     */
+    private void addTermsOfLoanAgreement() throws DocumentException {
+        paragraph = new Paragraph(CommonString.getTermsOfAgreement(isSwedish), sectionTitleFont);
 
-  private void addCells(PdfPTable table, PdfPCell cell, int index, BaseColor color, String label, String value, boolean isTop, boolean isBottom) {
+        addEmptyLine(paragraph, 1);
+        paragraph.add(new Paragraph(CommonString.getLoanPolicy(isSwedish), textFont));
+        paragraph.add(new Paragraph(CommonString.getPrimaryBorrowerAgreement(isSwedish), textFont));
+        addEmptyLine(paragraph, 1);
 
-    color = BaseColor.WHITE;
-    if (index % 2 != 0) {
-      color = new BaseColor(237, 246, 250);
+        document.add(paragraph);
+        adminDocument.add(paragraph);
     }
 
-    cell = new PdfPCell(new Phrase(label, LABEL_FONT));
-    cell.setPaddingLeft(15);
-    if (isTop) {
-      cell.setPaddingTop(5);
-    } else if (isBottom) {
-      cell.setPaddingBottom(5);
+    private void addContact(Loan loan) throws DocumentException {
+        paragraph = new Paragraph(CommonString.getContactDetails(isSwedish), subTitleFont);
+        addEmptyLine(paragraph, 2);
+        document.add(paragraph);
+        adminDocument.add(paragraph);
+
+        User primaryUser = loan.getPrimaryUser();
+
+        User secondaryUser = loan.getSecondaryUser();
+        if (secondaryUser != null) {
+            paragraph = new Paragraph(CommonString.getPrimaryContact(isSwedish), sectionTitleFont);
+        } else {
+            paragraph = new Paragraph(CommonString.getBowrrow(isSwedish), sectionTitleFont);
+        }
+        document.add(paragraph);
+        adminDocument.add(paragraph);
+
+        paragraph = new Paragraph(primaryUser.getName() + newLine, textFont);
+        paragraph.add(new Chunk(primaryUser.getEmail() + newLine, textFont));
+        paragraph.add(new Chunk(primaryUser.getPhone() + newLine, textFont));
+        paragraph.add(new Chunk(primaryUser.getInstitution() + newLine, textFont));
+        if (primaryUser.getDepartment() != null && !primaryUser.getDepartment().isEmpty()) {
+            paragraph.add(new Chunk(primaryUser.getDepartment() + newLine, textFont));
+        }
+        paragraph.add(new Chunk(primaryUser.getAddress().getCompleteAddress() + newLine, textFont));
+        addEmptyLine(paragraph, 1);
+        document.add(paragraph);
+        adminDocument.add(paragraph);
+
+        if (secondaryUser != null) {
+            paragraph = new Paragraph(CommonString.getSecondaryContact(isSwedish), sectionTitleFont);
+            document.add(paragraph);
+            adminDocument.add(paragraph);
+
+            paragraph = new Paragraph(secondaryUser.getName() + newLine, textFont);
+            paragraph.add(new Chunk(secondaryUser.getEmail() + newLine, textFont));
+            paragraph.add(new Chunk(secondaryUser.getPhone() + newLine, textFont));
+            paragraph.add(new Chunk(secondaryUser.getInstitution() + newLine, textFont));
+            if (secondaryUser.getDepartment() != null && !secondaryUser.getDepartment().isEmpty()) {
+                paragraph.add(new Chunk(secondaryUser.getDepartment() + newLine, textFont));
+            }
+            paragraph.add(new Chunk(secondaryUser.getAddress().getCompleteAddress() + newLine, textFont));
+            addEmptyLine(paragraph, 2);
+            document.add(paragraph);
+            adminDocument.add(paragraph);
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+//    /**
+//     * Create loan request pdf files.
+//     *
+//     * @param loan
+//     * @param isSwedish
+//     * @param path
+//     * @param count
+//     * @param pathname
+//     * @throws FileNotFoundException
+//     * @throws DocumentException
+//     */
+//    public void createPDF(Loan loan, boolean isSwedish, String path,
+//            int count, String pathname) throws FileNotFoundException, DocumentException {
+//        log.info("createPDF : {} -- {}", path, isSwedish);
+//
+//        this.isSwedish = isSwedish;
+//
+//        StringBuilder sb = new StringBuilder();
+//        sb.append(path);
+//        sb.append("/loanrequest_");
+//        sb.append(loan.getId());
+//
+//        File summaryAdminFile = new File(sb.toString() + "_admin.pdf");         // loan request summary admin pdf file (request_id_admin.pdf)
+//
+//        sb.append(".pdf");
+//        File summaryFile = new File(sb.toString().trim());                      // loan request summary pdf file (request_id.pdf)
+//
+//        document = new Document(PageSize.LETTER);
+//        adminDocument = new Document(PageSize.LETTER);
+//        PdfWriter.getInstance(document, new FileOutputStream(summaryFile));
+//        PdfWriter.getInstance(adminDocument, new FileOutputStream(summaryAdminFile));
+//        document.open();
+//        adminDocument.open();
+//
+//        addTitle(loan);
+//        addContact(loan);
+//
+//        switch (count) {
+//            case 9:
+//                addLoanRequestForScientificPurpose(loan);
+//                addLoanSampleList(loan);
+//                if (!RequestType.Information.isInformation(loan.getType())) {
+//                    if (RequestType.Physical.isPhysical(loan.getType())) {
+//                        addDestructiveInformation(loan);
+//                    } else {
+//                        addPhotoInformation(loan);
+//                    }
+//                    addCITESInformation(loan);
+//                }
+//                break;
+//            case 7:
+////                addEducationRequest(loan);
+//                break;
+//            default:
+////                addCommercialInformation(loan);
+//                break;
+//        }
+//
+//        if (!RequestType.Information.isInformation(loan.getType())) {
+//            addTermsOfLoanAgreement();
+//        }
+//        document.close();
+//        adminDocument.close();
+//    }
+
+    private void addCITESInformation(Loan loan) throws DocumentException {
+
+        paragraph = new Paragraph(CommonString.getCITE(isSwedish), sectionTitleFont);
+        addEmptyLine(paragraph, 1);
+
+        paragraph.add(new Chunk(CommonString.getCITENumber(isSwedish), lableFont));
+
+        String citeNum = loan.getCitesNumber();
+        if (citeNum == null || citeNum.isEmpty()) {
+            citeNum = " - ";
+        }
+        paragraph.add(new Chunk(citeNum, textFont));
+
+        addEmptyLine(paragraph, 2);
+        document.add(paragraph);
+        adminDocument.add(paragraph);
     }
 
-    cell.setBorder(Rectangle.NO_BORDER);
-    cell.setBackgroundColor(color);
-    table.addCell(cell);
+    private void addPhotoInformation(Loan loan) throws DocumentException {
+        paragraph = new Paragraph(CommonString.getPhotoMethod(isSwedish), sectionTitleFont);
+        addEmptyLine(paragraph, 1);
 
-    cell = new PdfPCell(new Phrase(value, TEXT_FONT));
-    if (isTop) {
-      cell.setPaddingTop(5);
-    } else if (isBottom) {
-      cell.setPaddingBottom(5);
-    }
-    cell.setBorder(Rectangle.NO_BORDER);
-    cell.setBackgroundColor(color);
-    table.addCell(cell);
-  }
+        String photoInst = loan.getPhotoInstraction();
+        if (photoInst == null || photoInst.isEmpty()) {
+            photoInst = " - ";
+        }
+        paragraph.add(new Chunk(photoInst, textFont));
+        addEmptyLine(paragraph, 1);
 
-  private void addTable(Sample sample, int index) throws DocumentException {
-
-    color = BaseColor.WHITE;
-    PdfPTable table = new PdfPTable(2);
-    table.setHorizontalAlignment(Element.ALIGN_LEFT);
-    table.setTotalWidth(new float[]{72, 144});
-
-    PdfPCell cell = null;
-    addCells(table, cell, index, color, CommonString.getCatelogNumber(isSwedish), sample.getCatalogNumber(), true, false);
-    addCells(table, cell, index, color, CommonString.getFamily(isSwedish), sample.getFamily(), false, false);
-    addCells(table, cell, index, color, CommonString.getGenus(isSwedish), sample.getGenus(), false, false);
-    addCells(table, cell, index, color, CommonString.getSpecies(isSwedish), sample.getSpecies(), false, false);
-    addCells(table, cell, index, color, CommonString.getAuthor(isSwedish), sample.getAuctor(), false, false);
-    addCells(table, cell, index, color, CommonString.getTypeStatus(isSwedish), sample.getTypeStatus(), false, false);
-
-    addCells(table, cell, index, color, CommonString.getCountry(isSwedish), sample.getCountry(), false, false);
-    addCells(table, cell, index, color, CommonString.getLocality(isSwedish), sample.getLocality(), false, false);
-
-    addCells(table, cell, index, color, CommonString.getCollectedYear(isSwedish), sample.getCollectedYear(), false, false);
-    addCells(table, cell, index, color, CommonString.getCollector(isSwedish), sample.getCollector(), false, false);
-    addCells(table, cell, index, color, CommonString.getPreservationType(isSwedish), sample.getType(), false, false);
-    addCells(table, cell, index, color, CommonString.getLocation(isSwedish), sample.getLocation(), false, false);
-    addCells(table, cell, index, color, CommonString.getCommens(isSwedish), sample.getOther(), false, true);
-
-    adminDocument.add(table);
-
-    table = new PdfPTable(2);
-    table.setHorizontalAlignment(Element.ALIGN_LEFT);
-    table.setTotalWidth(new float[]{72, 144});
-
-    cell = null;
-    addCells(table, cell, index, color, CommonString.getCatelogNumber(isSwedish), sample.getCatalogNumber(), true, false);
-    addCells(table, cell, index, color, CommonString.getFamily(isSwedish), sample.getFamily(), false, false);
-    addCells(table, cell, index, color, CommonString.getGenus(isSwedish), sample.getGenus(), false, false);
-    addCells(table, cell, index, color, CommonString.getSpecies(isSwedish), sample.getSpecies(), false, false);
-    addCells(table, cell, index, color, CommonString.getAuthor(isSwedish), sample.getAuctor(), false, false);
-    addCells(table, cell, index, color, CommonString.getTypeStatus(isSwedish), sample.getTypeStatus(), false, false);
-
-    addCells(table, cell, index, color, CommonString.getCountry(isSwedish), sample.getCountry(), false, false);
-    addCells(table, cell, index, color, CommonString.getLocality(isSwedish), sample.getLocality(), false, false);
-
-    addCells(table, cell, index, color, CommonString.getCollectedYear(isSwedish), sample.getCollectedYear(), false, false);
-    addCells(table, cell, index, color, CommonString.getCollector(isSwedish), sample.getCollector(), false, false);
-
-    addCells(table, cell, index, color, CommonString.getPreservationType(isSwedish), sample.getType(), false, false);
-    addCells(table, cell, index, color, CommonString.getCommens(isSwedish), sample.getOther(), false, true);
-
-    document.add(table);
-  }
-
-  private void addLoanSampleList(Loan loan) throws DocumentException {
-
-    paragraph = new Paragraph(CommonString.getSampleDetails(isSwedish), SECTION_TITLE_FONT);
-
-    addEmptyLine(paragraph, 2);
-    document.add(paragraph);
-    adminDocument.add(paragraph);
-
-    if (loan.getSamples() != null && !loan.getSamples().isEmpty()) {
-      int index = 0;
-      for (Sample sample : loan.getSamples()) {
-        index++;
-        addTable(sample, index);
-      }
-    } else {
-      paragraph = new Paragraph();
-      paragraph.add(new Chunk(" - ", TEXT_FONT));
-      document.add(paragraph);
-      adminDocument.add(paragraph);
+        if (loan.getPhotoInstractionFile() != null && !loan.getPhotoInstractionFile().isEmpty()) {
+            paragraph.add(new Chunk(CommonString.getAttachment(isSwedish), lableFont));
+            paragraph.add(new Chunk(loan.getPhotoInstractionFile(), textFont));
+            addEmptyLine(paragraph, 2);
+        }
+        document.add(paragraph);
+        adminDocument.add(paragraph);
     }
 
-    paragraph = new Paragraph();
-    addEmptyLine(paragraph, 1);
+    private void addDestructiveInformation(Loan loan) throws DocumentException {
+        paragraph = new Paragraph(CommonString.getDestructiveMethod(isSwedish), sectionTitleFont);
+        addEmptyLine(paragraph, 1);
 
-    if (RequestType.Information.isInformation(loan.getType())) {
-      paragraph.add(new Chunk(CommonString.getAdditionalInfoInfo(isSwedish), SECTION_TITLE_FONT));
-    } else {
-      paragraph.add(new Chunk(CommonString.getAdditionalInfo(isSwedish), SECTION_TITLE_FONT));
+        String destractive = loan.getIsDestructive();
+        if (Boolean.parseBoolean(destractive)) {
+            paragraph.add(new Chunk(CommonString.getDestructive(isSwedish), textFont));
+            addEmptyLine(paragraph, 1);
+        } else {
+            paragraph.add(new Chunk(CommonString.getNoDestructive(isSwedish), textFont));
+            addEmptyLine(paragraph, 1);
+        }
+
+        String destructiveMeth = loan.getDestructiveMethod();
+        if (destructiveMeth == null || destructiveMeth.isEmpty()) {
+            destructiveMeth = " - ";
+        }
+        paragraph.add(new Chunk(destructiveMeth, textFont));
+        addEmptyLine(paragraph, 1);
+
+        if (loan.getDestructiveFile() != null && !loan.getDestructiveFile().isEmpty()) {
+            paragraph.add(new Chunk(CommonString.getAttachment(isSwedish), lableFont));
+            paragraph.add(new Chunk(loan.getDestructiveFile(), textFont));
+            addEmptyLine(paragraph, 2);
+        }
+
+        document.add(paragraph);
+        adminDocument.add(paragraph);
     }
-    addEmptyLine(paragraph, 1);
-    String additionalInfo = loan.getSampleSetAdditionalInfo();
-    if (additionalInfo == null || additionalInfo.isEmpty()) {
-      additionalInfo = " - ";
+
+    private void addCells(PdfPTable table, PdfPCell cell, int index, BaseColor color, String label, String value, boolean isTop, boolean isBottom) {
+
+        color = BaseColor.WHITE;
+        if (index % 2 != 0) {
+            color = new BaseColor(237, 246, 250);
+        }
+
+        cell = new PdfPCell(new Phrase(label, lableFont));
+        cell.setPaddingLeft(15);
+        if (isTop) {
+            cell.setPaddingTop(5);
+        } else if (isBottom) {
+            cell.setPaddingBottom(5);
+        }
+
+        cell.setBorder(Rectangle.NO_BORDER);
+        cell.setBackgroundColor(color);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase(value, textFont));
+        if (isTop) {
+            cell.setPaddingTop(5);
+        } else if (isBottom) {
+            cell.setPaddingBottom(5);
+        }
+        cell.setBorder(Rectangle.NO_BORDER);
+        cell.setBackgroundColor(color);
+        table.addCell(cell);
     }
-    paragraph.add(new Chunk(additionalInfo, TEXT_FONT));
-    addEmptyLine(paragraph, 2);
-    document.add(paragraph);
-    adminDocument.add(paragraph);
-  }
 
-  private void addLoanRequestForScientificPurpose(Loan loan) throws DocumentException {
+    private void addTable(Sample sample, int index) throws DocumentException {
 
-    paragraph = new Paragraph(CommonString.getLoanDetail(isSwedish), SECTION_TITLE_FONT);
-    addEmptyLine(paragraph, 2);
-    document.add(paragraph);
-    adminDocument.add(paragraph);
+        color = BaseColor.WHITE;
+        PdfPTable table = new PdfPTable(2);
+        table.setHorizontalAlignment(Element.ALIGN_LEFT);
+        table.setTotalWidth(new float[]{72, 144});
 
-    PdfPTable table = new PdfPTable(2);
-    table.setWidthPercentage(50);
-    table.setHorizontalAlignment(Element.ALIGN_LEFT);
+        PdfPCell cell = null;
+        addCells(table, cell, index, color, CommonString.getCatelogNumber(isSwedish), sample.getCatalogNumber(), true, false);
+        addCells(table, cell, index, color, CommonString.getFamily(isSwedish), sample.getFamily(), false, false);
+        addCells(table, cell, index, color, CommonString.getGenus(isSwedish), sample.getGenus(), false, false);
+        addCells(table, cell, index, color, CommonString.getSpecies(isSwedish), sample.getSpecies(), false, false);
+        addCells(table, cell, index, color, CommonString.getAuthor(isSwedish), sample.getAuctor(), false, false);
+        addCells(table, cell, index, color, CommonString.getTypeStatus(isSwedish), sample.getTypeStatus(), false, false);
 
-    PdfPCell cell = null;
-    addCells(table, cell, 2, color, CommonString.getDepartment(isSwedish), loan.getDepartment(), false, false);
-    addCells(table, cell, 2, color, CommonString.getLoanPurpose(isSwedish), loan.getPurpose(), false, false);
-    addCells(table, cell, 2, color, CommonString.getLoanType(isSwedish), loan.getType(), false, false);
-    addCells(table, cell, 2, color, CommonString.getRelevantCollection(isSwedish), loan.getReleventCollection(), false, false);
+        addCells(table, cell, index, color, CommonString.getCountry(isSwedish), sample.getCountry(), false, false);
+        addCells(table, cell, index, color, CommonString.getLocality(isSwedish), sample.getLocality(), false, false);
 
-    document.add(table);
-    adminDocument.add(table);
+        addCells(table, cell, index, color, CommonString.getCollectedYear(isSwedish), sample.getCollectedYear(), false, false);
+        addCells(table, cell, index, color, CommonString.getCollector(isSwedish), sample.getCollector(), false, false);
+        addCells(table, cell, index, color, CommonString.getPreservationType(isSwedish), sample.getType(), false, false);
+        addCells(table, cell, index, color, CommonString.getLocation(isSwedish), sample.getLocation(), false, false);
+        addCells(table, cell, index, color, CommonString.getCommens(isSwedish), sample.getOther(), false, true);
 
-    if (!RequestType.Information.isInformation(loan.getType())) {
-      paragraph = new Paragraph();
-      addEmptyLine(paragraph, 1);
-      paragraph.add(new Chunk(CommonString.getLoanDescription(isSwedish), SECTION_TITLE_FONT));           // Description of loan
-      addEmptyLine(paragraph, 1);
+        adminDocument.add(table);
 
-      String loanDescription = loan.getLoanDescription();
-      if (loanDescription == null || loanDescription.isEmpty()) {
-        loanDescription = " - ";
-      }
-      paragraph.add(new Chunk(loanDescription, TEXT_FONT));
-      addEmptyLine(paragraph, 2);
+        table = new PdfPTable(2);
+        table.setHorizontalAlignment(Element.ALIGN_LEFT);
+        table.setTotalWidth(new float[]{72, 144});
 
-      // attached loan description file
-      if (loan.getLoanDescriptionFile() != null && !loan.getLoanDescriptionFile().isEmpty()) {
+        cell = null;
+        addCells(table, cell, index, color, CommonString.getCatelogNumber(isSwedish), sample.getCatalogNumber(), true, false);
+        addCells(table, cell, index, color, CommonString.getFamily(isSwedish), sample.getFamily(), false, false);
+        addCells(table, cell, index, color, CommonString.getGenus(isSwedish), sample.getGenus(), false, false);
+        addCells(table, cell, index, color, CommonString.getSpecies(isSwedish), sample.getSpecies(), false, false);
+        addCells(table, cell, index, color, CommonString.getAuthor(isSwedish), sample.getAuctor(), false, false);
+        addCells(table, cell, index, color, CommonString.getTypeStatus(isSwedish), sample.getTypeStatus(), false, false);
 
-        Anchor anchor = new Anchor(loan.getLoanDescriptionFile());
-        anchor.setReference(buildBasePath(loan.getUuid(), loan.getLoanDescriptionFile()));
-        paragraph.add(anchor);
+        addCells(table, cell, index, color, CommonString.getCountry(isSwedish), sample.getCountry(), false, false);
+        addCells(table, cell, index, color, CommonString.getLocality(isSwedish), sample.getLocality(), false, false);
+
+        addCells(table, cell, index, color, CommonString.getCollectedYear(isSwedish), sample.getCollectedYear(), false, false);
+        addCells(table, cell, index, color, CommonString.getCollector(isSwedish), sample.getCollector(), false, false);
+
+        addCells(table, cell, index, color, CommonString.getPreservationType(isSwedish), sample.getType(), false, false);
+        addCells(table, cell, index, color, CommonString.getCommens(isSwedish), sample.getOther(), false, true);
+
+        document.add(table);
+    }
+
+    private void addLoanSampleList(Loan loan, String requestType) throws DocumentException {
+
+        paragraph = new Paragraph(CommonString.getSampleDetails(isSwedish), sectionTitleFont);
+
+        addEmptyLine(paragraph, 2);
+        document.add(paragraph);
+        adminDocument.add(paragraph);
+
+        if (loan.getSamples() != null && !loan.getSamples().isEmpty()) {
+            int index = 0;
+            for (Sample sample : loan.getSamples()) {
+                index++;
+                addTable(sample, index);
+            }
+        } else {
+            paragraph = new Paragraph();
+            paragraph.add(new Chunk(na, textFont));
+            document.add(paragraph);
+            adminDocument.add(paragraph);
+        }
+
+        paragraph = new Paragraph();
+        addEmptyLine(paragraph, 1);
+
+        if (RequestType.Information.isInformation(requestType)) {
+            paragraph.add(new Chunk(CommonString.getAdditionalInfoInfo(isSwedish), sectionTitleFont));
+        } else {
+            paragraph.add(new Chunk(CommonString.getAdditionalInfo(isSwedish), sectionTitleFont));
+        }
+        addEmptyLine(paragraph, 1);
+        String additionalInfo = loan.getSampleSetAdditionalInfo();
+        if (additionalInfo == null || additionalInfo.isEmpty()) {
+            additionalInfo = na;
+        }
+        paragraph.add(new Chunk(additionalInfo, textFont));
+        addEmptyLine(paragraph, 2);
+        document.add(paragraph);
+        adminDocument.add(paragraph);
+    }
+
+    private void addLoanRequestForScientificPurpose(Loan loan, String requestType) throws DocumentException {
+
+        paragraph = new Paragraph(CommonString.getLoanDetail(isSwedish), sectionTitleFont);
+        addEmptyLine(paragraph, 2);
+        document.add(paragraph);
+        adminDocument.add(paragraph);
+
+        PdfPTable table = new PdfPTable(2);
+        table.setWidthPercentage(50);
+        table.setHorizontalAlignment(Element.ALIGN_LEFT);
+
+        PdfPCell cell = null;
+        addCells(table, cell, 2, color, 
+                CommonString.getDepartment(isSwedish), 
+                loan.getDepartment(), false, false);
+        addCells(table, cell, 2, color, 
+                CommonString.getLoanPurpose(isSwedish), 
+                loan.getPurpose(), false, false);
+        addCells(table, cell, 2, color, 
+                CommonString.getLoanType(isSwedish), 
+                loan.getType(), false, false);
+        addCells(table, cell, 2, color, 
+                CommonString.getRelevantCollection(isSwedish), 
+                loan.getReleventCollection(), false, false);
+
+        document.add(table);
+        adminDocument.add(table);
+
+        if (!RequestType.Information.isInformation(requestType)) {
+            paragraph = new Paragraph();
+            addEmptyLine(paragraph, 1);
+            paragraph.add(new Chunk(CommonString.getLoanDescription(isSwedish), sectionTitleFont));           // Description of loan
+            addEmptyLine(paragraph, 1);
+
+            String loanDescription = loan.getLoanDescription();
+            if (loanDescription == null || loanDescription.isEmpty()) {
+                loanDescription = na;
+            }
+            paragraph.add(new Chunk(loanDescription, textFont));
+            addEmptyLine(paragraph, 2);
+
+            // attached loan description file
+            if (loan.getLoanDescriptionFile() != null && !loan.getLoanDescriptionFile().isEmpty()) {
+
+                Anchor anchor = new Anchor(loan.getLoanDescriptionFile());
+                anchor.setReference(buildBasePath(loan.getUuid(), loan.getLoanDescriptionFile()));
+                paragraph.add(anchor);
 
 //                paragraph.add(new Chunk(CommonString.getAttachment(isSwedish), LABEL_FONT));                    
 //                paragraph.add(new Chunk(loan.getLoanDescriptionFile(), TEXT_FONT));
-        addEmptyLine(paragraph, 2);
-      }
-      document.add(paragraph);
-      adminDocument.add(paragraph);
+                addEmptyLine(paragraph, 2);
+            }
+            document.add(paragraph);
+            adminDocument.add(paragraph);
+        }
     }
-  }
 
-  private String buildBasePath(String uuid, String fileName) {
-    StringBuilder sb = new StringBuilder();
-    sb.append(externalPath);
-    sb.append(uuid);
-    sb.append("-");
-    sb.append(fileName.trim());
-    return sb.toString();
-  }
+    private String buildBasePath(String uuid, String fileName) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("localhost");
+        sb.append(uuid);
+        sb.append("-");
+        sb.append(fileName.trim());
+        return sb.toString();
+    }
 
 //    private void addLoanReference(Loan loan) throws DocumentException {  
 //        paragraph = new Paragraph(CommonString.getLoanReference(isSwedish) + loan.getId() + NEW_LINE, SUB_TITLE_FONT);  
 //        document.add(paragraph); 
 //        adminDocument.add(paragraph);
 //    }
-  private void addContact(Loan loan) throws DocumentException {
-    paragraph = new Paragraph(CommonString.getContactDetails(isSwedish), SUB_TITLE_FONT);
-    addEmptyLine(paragraph, 2);
-    document.add(paragraph);
-    adminDocument.add(paragraph);
-
-    User primaryUser = loan.getPrimaryUser();
- 
-    User secondaryUser = loan.getSecondaryUser();
-    if (secondaryUser != null) {
-      paragraph = new Paragraph(CommonString.getPrimaryContact(isSwedish), SECTION_TITLE_FONT);
-    } else {
-      paragraph = new Paragraph(CommonString.getBowrrow(isSwedish), SECTION_TITLE_FONT);
+    private void addEmptyLine(Paragraph paragraph, int number) {
+        for (int i = 0; i < number; i++) {
+            paragraph.add(new Paragraph(" "));
+        }
     }
-    document.add(paragraph);
-    adminDocument.add(paragraph);
-
-    paragraph = new Paragraph(primaryUser.getName() + NEW_LINE, TEXT_FONT);
-    paragraph.add(new Chunk(primaryUser.getEmail() + NEW_LINE, TEXT_FONT));
-    paragraph.add(new Chunk(primaryUser.getPhone() + NEW_LINE, TEXT_FONT));
-    paragraph.add(new Chunk(primaryUser.getInstitution() + NEW_LINE, TEXT_FONT));
-    if (primaryUser.getDepartment() != null && !primaryUser.getDepartment().isEmpty()) {
-      paragraph.add(new Chunk(primaryUser.getDepartment() + NEW_LINE, TEXT_FONT));
-    }
-    paragraph.add(new Chunk(primaryUser.getAddress().getCompleteAddress() + NEW_LINE, TEXT_FONT));
-    addEmptyLine(paragraph, 1);
-    document.add(paragraph);
-    adminDocument.add(paragraph);
-
-    if (secondaryUser != null) {
-      paragraph = new Paragraph(CommonString.getSecondaryContact(isSwedish), SECTION_TITLE_FONT);
-      document.add(paragraph);
-      adminDocument.add(paragraph);
-
-      paragraph = new Paragraph(secondaryUser.getName() + NEW_LINE, TEXT_FONT);
-      paragraph.add(new Chunk(secondaryUser.getEmail() + NEW_LINE, TEXT_FONT));
-      paragraph.add(new Chunk(secondaryUser.getPhone() + NEW_LINE, TEXT_FONT));
-      paragraph.add(new Chunk(secondaryUser.getInstitution() + NEW_LINE, TEXT_FONT));
-      if (secondaryUser.getDepartment() != null && !secondaryUser.getDepartment().isEmpty()) {
-        paragraph.add(new Chunk(secondaryUser.getDepartment() + NEW_LINE, TEXT_FONT));
-      }
-      paragraph.add(new Chunk(secondaryUser.getAddress().getCompleteAddress() + NEW_LINE, TEXT_FONT));
-      addEmptyLine(paragraph, 2);
-      document.add(paragraph);
-      adminDocument.add(paragraph);
-    }
-  }
-
-  private void addTitle(Loan loan) throws DocumentException {
-    paragraph = new Paragraph(CommonString.getLoanRequest(isSwedish), TITLE_FONT);
-    paragraph.setAlignment(Element.ALIGN_CENTER);
-    addEmptyLine(paragraph, 1);
-    paragraph.add(new Paragraph(loan.getSubmitDate(), TEXT_FONT));
-    paragraph.add(new Paragraph(loan.getId(), SUB_TITLE_FONT));
-
-    addEmptyLine(paragraph, 1);
-    document.add(paragraph);
-    adminDocument.add(paragraph);
-  }
-
-  private void addEmptyLine(Paragraph paragraph, int number) {
-    for (int i = 0; i < number; i++) {
-      paragraph.add(new Paragraph(" "));
-    }
-  }
 }

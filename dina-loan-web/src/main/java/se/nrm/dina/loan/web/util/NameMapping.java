@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package se.nrm.dina.loan.web.util;
 
 import java.util.HashMap;
@@ -35,63 +30,63 @@ public class NameMapping {
     MAIN_MENU_MAP_EN = new HashMap<>();
     MAIN_MENU_MAP_SV = new HashMap<>();
 
-    MAIN_MENU_MAP_EN.put(BreadCrumbElement.OnlineForm, "Department");
-    MAIN_MENU_MAP_EN.put(BreadCrumbElement.Page1, "Purpose");
-    MAIN_MENU_MAP_EN.put(BreadCrumbElement.Page1b, "Not implemented");
-    MAIN_MENU_MAP_EN.put(BreadCrumbElement.Page2, "Request type");
-    MAIN_MENU_MAP_EN.put(BreadCrumbElement.Page3, "Project");
-    MAIN_MENU_MAP_EN.put(BreadCrumbElement.Page4, "Collection");
-    MAIN_MENU_MAP_EN.put(BreadCrumbElement.Page5, "Specimens");
-    MAIN_MENU_MAP_EN.put(BreadCrumbElement.Page6, "Destructive sampling");
-    MAIN_MENU_MAP_EN.put(BreadCrumbElement.Page6b, "Photo details");
-    MAIN_MENU_MAP_EN.put(BreadCrumbElement.Page7, "CITES");
-    MAIN_MENU_MAP_EN.put(BreadCrumbElement.Page8, "Contact details");
-    MAIN_MENU_MAP_EN.put(BreadCrumbElement.Page9, "Review/Submit");
+    MAIN_MENU_MAP_EN.put(BreadCrumbElement.Department, "Department");
+    MAIN_MENU_MAP_EN.put(BreadCrumbElement.Purpose, "Purpose");
+    MAIN_MENU_MAP_EN.put(BreadCrumbElement.NoImplement, "Not implemented");
+    MAIN_MENU_MAP_EN.put(BreadCrumbElement.RequestType, "Request type");
+    MAIN_MENU_MAP_EN.put(BreadCrumbElement.Project, "Project");
+    MAIN_MENU_MAP_EN.put(BreadCrumbElement.Collection, "Collection");
+    MAIN_MENU_MAP_EN.put(BreadCrumbElement.Speciments, "Specimens");
+    MAIN_MENU_MAP_EN.put(BreadCrumbElement.Desctructive, "Destructive sampling");
+    MAIN_MENU_MAP_EN.put(BreadCrumbElement.Photo, "Photo details");
+    MAIN_MENU_MAP_EN.put(BreadCrumbElement.Cites, "CITES");
+    MAIN_MENU_MAP_EN.put(BreadCrumbElement.Contact, "Contact details");
+    MAIN_MENU_MAP_EN.put(BreadCrumbElement.Review, "Review/Submit");
 
-    MAIN_MENU_MAP_SV.put(BreadCrumbElement.OnlineForm, "Enhet");
-    MAIN_MENU_MAP_SV.put(BreadCrumbElement.Page1, "Syfte");
-    MAIN_MENU_MAP_SV.put(BreadCrumbElement.Page1b, "Inte anslutet");
-    MAIN_MENU_MAP_SV.put(BreadCrumbElement.Page2, "Förfrågningstyp");
-    MAIN_MENU_MAP_SV.put(BreadCrumbElement.Page3, "Projekt");
-    MAIN_MENU_MAP_SV.put(BreadCrumbElement.Page4, "Samling");
-    MAIN_MENU_MAP_SV.put(BreadCrumbElement.Page5, "Föremål");
-    MAIN_MENU_MAP_SV.put(BreadCrumbElement.Page6, "Destruktiv hantering");
-    MAIN_MENU_MAP_SV.put(BreadCrumbElement.Page6b, "Foto-detaljer");
-    MAIN_MENU_MAP_SV.put(BreadCrumbElement.Page7, "CITES");
-    MAIN_MENU_MAP_SV.put(BreadCrumbElement.Page8, "Adressuppgifter");
-    MAIN_MENU_MAP_SV.put(BreadCrumbElement.Page9, "Granska/Skicka");
+    MAIN_MENU_MAP_SV.put(BreadCrumbElement.Department, "Enhet");
+    MAIN_MENU_MAP_SV.put(BreadCrumbElement.Purpose, "Syfte");
+    MAIN_MENU_MAP_SV.put(BreadCrumbElement.NoImplement, "Inte anslutet");
+    MAIN_MENU_MAP_SV.put(BreadCrumbElement.RequestType, "Förfrågningstyp");
+    MAIN_MENU_MAP_SV.put(BreadCrumbElement.Project, "Projekt");
+    MAIN_MENU_MAP_SV.put(BreadCrumbElement.Collection, "Samling");
+    MAIN_MENU_MAP_SV.put(BreadCrumbElement.Speciments, "Föremål");
+    MAIN_MENU_MAP_SV.put(BreadCrumbElement.Desctructive, "Destruktiv hantering");
+    MAIN_MENU_MAP_SV.put(BreadCrumbElement.Photo, "Foto-detaljer");
+    MAIN_MENU_MAP_SV.put(BreadCrumbElement.Cites, "CITES");
+    MAIN_MENU_MAP_SV.put(BreadCrumbElement.Contact, "Adressuppgifter");
+    MAIN_MENU_MAP_SV.put(BreadCrumbElement.Review, "Granska/Skicka");
 
     EDUCATION_MENU_MAP_EN = new HashMap<>();
     EDUCATION_MENU_MAP_SV = new HashMap<>();
 
-    EDUCATION_MENU_MAP_EN.put(BreadCrumbElement.Page2, "General loan information");
-    EDUCATION_MENU_MAP_EN.put(BreadCrumbElement.Page3, "Purpose of use");
-    EDUCATION_MENU_MAP_EN.put(BreadCrumbElement.Page4, "Loan details");
-    EDUCATION_MENU_MAP_EN.put(BreadCrumbElement.Page5, "Storage");
-    EDUCATION_MENU_MAP_EN.put(BreadCrumbElement.Page6, "Contact details");
-    EDUCATION_MENU_MAP_EN.put(BreadCrumbElement.Page7, "Review/Submit");
+    EDUCATION_MENU_MAP_EN.put(BreadCrumbElement.LoanInformation, "General loan information");
+    EDUCATION_MENU_MAP_EN.put(BreadCrumbElement.PurposeOfUse, "Purpose of use");
+    EDUCATION_MENU_MAP_EN.put(BreadCrumbElement.LoanDetail, "Loan details");
+    EDUCATION_MENU_MAP_EN.put(BreadCrumbElement.Storage, "Storage");
+    EDUCATION_MENU_MAP_EN.put(BreadCrumbElement.Contact, "Contact details");
+    EDUCATION_MENU_MAP_EN.put(BreadCrumbElement.Review, "Review/Submit");
 
-    EDUCATION_MENU_MAP_SV.put(BreadCrumbElement.Page2, "Generell låneinformation");
-    EDUCATION_MENU_MAP_SV.put(BreadCrumbElement.Page3, "Användningssyfte");
-    EDUCATION_MENU_MAP_SV.put(BreadCrumbElement.Page4, "Lånedetaljer");
-    EDUCATION_MENU_MAP_SV.put(BreadCrumbElement.Page5, "Förvaring");
-    EDUCATION_MENU_MAP_SV.put(BreadCrumbElement.Page6, "Adressuppgifter");
-    EDUCATION_MENU_MAP_SV.put(BreadCrumbElement.Page7, "Granska/Skicka");
+    EDUCATION_MENU_MAP_SV.put(BreadCrumbElement.LoanInformation, "Generell låneinformation");
+    EDUCATION_MENU_MAP_SV.put(BreadCrumbElement.PurposeOfUse, "Användningssyfte");
+    EDUCATION_MENU_MAP_SV.put(BreadCrumbElement.LoanDetail, "Lånedetaljer");
+    EDUCATION_MENU_MAP_SV.put(BreadCrumbElement.Storage, "Förvaring");
+    EDUCATION_MENU_MAP_SV.put(BreadCrumbElement.Contact, "Adressuppgifter");
+    EDUCATION_MENU_MAP_SV.put(BreadCrumbElement.Review, "Granska/Skicka");
 
     ART_MENU_MAP_EN = new HashMap<>();
     ART_MENU_MAP_SV = new HashMap<>();
 
-    ART_MENU_MAP_EN.put(BreadCrumbElement.Page2, "General loan information");
-    ART_MENU_MAP_EN.put(BreadCrumbElement.Page3, "Loan type");
-    ART_MENU_MAP_EN.put(BreadCrumbElement.Page4, "Loan details");
-    ART_MENU_MAP_EN.put(BreadCrumbElement.Page5, "Contact details");
-    ART_MENU_MAP_EN.put(BreadCrumbElement.Page6, "Review/Submit");
+    ART_MENU_MAP_EN.put(BreadCrumbElement.LoanInformation, "General loan information");
+    ART_MENU_MAP_EN.put(BreadCrumbElement.LoanType, "Loan type");
+    ART_MENU_MAP_EN.put(BreadCrumbElement.LoanDetail, "Loan details");
+    ART_MENU_MAP_EN.put(BreadCrumbElement.Contact, "Contact details");
+    ART_MENU_MAP_EN.put(BreadCrumbElement.Review, "Review/Submit");
 
-    ART_MENU_MAP_SV.put(BreadCrumbElement.Page2, "Generell låneinformation");
-    ART_MENU_MAP_SV.put(BreadCrumbElement.Page3, "Lånetyp");
-    ART_MENU_MAP_SV.put(BreadCrumbElement.Page4, "Lånedetaljer");
-    ART_MENU_MAP_SV.put(BreadCrumbElement.Page5, "Adressuppgifter");
-    ART_MENU_MAP_SV.put(BreadCrumbElement.Page6, "Granska/Skicka");
+    ART_MENU_MAP_SV.put(BreadCrumbElement.LoanInformation, "Generell låneinformation");
+    ART_MENU_MAP_SV.put(BreadCrumbElement.LoanType, "Lånetyp");
+    ART_MENU_MAP_SV.put(BreadCrumbElement.LoanDetail, "Lånedetaljer");
+    ART_MENU_MAP_SV.put(BreadCrumbElement.Contact, "Adressuppgifter");
+    ART_MENU_MAP_SV.put(BreadCrumbElement.Review, "Granska/Skicka");
 
     NAME_MAP_EN = new HashMap<>();
     NAME_MAP_SV = new HashMap<>();
@@ -200,6 +195,7 @@ public class NameMapping {
     COMMON_MAP_EN.put(CommonNames.IdleMsg, "Page is inactive for two hours. Session is expired. Redirect to start page.");
 
     COMMON_MAP_EN.put(CommonNames.DataSourceConnectionError, "Database connection error");
+    COMMON_MAP_EN.put(CommonNames.EmptySample, "Please fill in relevant fields!");
 
     COMMON_MAP_SV.put(CommonNames.NoResults, "Inga taxa i våran databas överensstämmer med din sökterm");
     COMMON_MAP_SV.put(CommonNames.MissingCatNum, "Fyll i samlings-id!");
@@ -222,6 +218,8 @@ public class NameMapping {
     COMMON_MAP_SV.put(CommonNames.IdleMsg, "Sidan är inaktiv i två timmar. Session har gått ut. Redirectory till startsidan.");
 
     COMMON_MAP_SV.put(CommonNames.DataSourceConnectionError, "Databas anslutningsfel");
+    
+    COMMON_MAP_SV.put(CommonNames.EmptySample, "Fyll i relevanta fält!");
   }
 
   public static String getName(String key, String locale) {

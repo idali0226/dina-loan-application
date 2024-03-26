@@ -1,0 +1,72 @@
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:p="http://primefaces.org/ui"     
+      xmlns:h="http://java.sun.com/jsf/html"    > 
+    <head>
+        <title>Borrower</title>
+    </head>
+    <body>    
+        <ui:composition  template="/templates/masterLayout.xhtml">     
+            <ui:define name="content"  >   
+                <h:panelGroup styleClass="main" layout="block" id="borrow"  > 
+                    <ui:include src="/clientpages/breadcrumb.xhtml" />  
+                    <h:form id="borrowerForm">   
+                        <h:panelGroup layout="block" id="borrowPanel" 
+                                      styleClass="nonDestructivBorrowpage"  > 
+
+                            <p:messages id="borrowPanelmsg"   
+                                        showDetail="true" showSummary="false" 
+                                        closable="true"   showIcon="true"  />
+
+                            <h:panelGroup layout="block" id="contactpanel">
+                                <p:outputLabel value="#{msg.contactdetailtitle}:" 
+                                               style="font-size: 24px; font-family: Arial,sans-serif; font-weight: bold;" /> 
+                                <br />
+                                <p:outputLabel value="#{msg.contactdatanote}:"  
+                                               style="font-size: 11px; font-family: Arial,sans-serif;  " /> 
+                                <br />
+                                <ui:include src="/clientpages/mainUser.xhtml" />  
+                            </h:panelGroup>
+
+                            <br />
+                            <br />  
+                            <h:panelGrid columns="3" columnClasses="aligntop,aligntop,aligntop" 
+                                         rendered="#{otherForm.physicalLoan}" >  
+                                <h:selectBooleanCheckbox  value="#{otherForm.isAgree}" > 
+                                    <p:ajax listener="#{otherForm.onIsAgreeStatusChange}" 
+                                            update="borrowbuttonpanel" global="false" /> 
+                                </h:selectBooleanCheckbox>  
+                                <p:spacer width="5" />
+ 
+                                <p:outputLabel value="#{msg.borrowagreementcheck}" styleClass="defaulttext"  /> 
+                                
+                                <br />
+                                <br /> 
+                            </h:panelGrid>
+
+
+
+                            <h:panelGroup layout="block" style="width: 150px; float: right;  " 
+                                          id="borrowbuttonpanel">  
+                                <p:commandButton value="#{msg.back}" 
+                                                 action="#{viewBean.navigateIndexLoanDetail()}"
+                                                 global="false"  >   
+                                </p:commandButton>
+                                <p:spacer width="10" />
+                                <p:commandButton value="#{msg.next}" 
+                                                 action="#{viewBean.gotoInformationLoanPreviewPage()}"   
+                                                 global="false" update="borrowerForm"
+                                                 validateClient="true" 
+                                                 disabled="#{!otherForm.isAgree}" > 
+                                </p:commandButton>
+                            </h:panelGroup> 
+
+                            <br /> 
+                            <br />
+                        </h:panelGroup> 
+                    </h:form>
+                </h:panelGroup>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

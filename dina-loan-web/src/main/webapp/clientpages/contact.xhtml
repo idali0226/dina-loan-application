@@ -2,116 +2,75 @@
       xmlns:ui="http://java.sun.com/jsf/facelets" 
       xmlns:p="http://primefaces.org/ui"   
       xmlns:h="http://java.sun.com/jsf/html"    > 
-  <body>
-    <ui:composition>     
-      <h:panelGrid id="contactpage" styleClass="sectionstyle1" rendered="#{onlineForm.section == 4}"  > 
-        <h:panelGroup id="contactPanel">     
-          <h:panelGrid styleClass="backtofomrlink">
-            <p:commandLink actionListener="#{onlineForm.backtoform}" value="#{msg.backtoloanform}"  style="color: #8B8786; " 
-                           process="@this" global="false" update="@all"  oncomplete="drawRegionsMap();"  />   
-          </h:panelGrid>
-
-          <br /><br /><br />
-
-          <h:panelGroup id="svcontactpanel" rendered="#{languages.isSwedish}"> 
-            <h:panelGroup layout="block" style="padding-left: 40px;">
-              <h:panelGroup  layout="block" >
-                <p:outputLabel value="Kontakta oss"  styleClass="maintext" />  
-              </h:panelGroup>  
-              <br /><br />
-              <h:panelGroup styleClass="subtitle"> 
-                Hör gärna av dig till oss med frågor, tips och kommentarer. Vi försöker alltid hjälpa till så gott vi kan. 
-              </h:panelGroup>
-
-              <br />
-              <br />
-              <br />
-
-              <h:panelGroup styleClass="subtitle"> 
-                Postadress och kontaktuppgifter<br /> 
-              </h:panelGroup>
+    <head>
+        <title>Contact</title>
+    </head>
+    <body>
+        <ui:composition  template="/templates/masterLayout.xhtml">     
+            <ui:define name="content"  >      
+                <h:panelGroup id="aboutPage" styleClass="main"  layout="block" > 
 
 
-              <h:panelGroup styleClass="defaulttext"> 
-                För vetenskapliga frågor, vänligen kontakta relevant enhet. 
-              </h:panelGroup>
-              <br />
-              <br />
-              <h:panelGroup styleClass="defaulttext"> 
-                NRM Låneansökan<br /> 
-                Naturhistoriska riksmuseet<br />
-                Box 50007<br />
-                104 05 Stockholm 
-              </h:panelGroup>
-              <br />
-              <br />  
+                    <h:panelGroup styleClass="backtofomrlink">
+                        <p:commandLink actionListener="#{viewBean.gotoBackFormView()}" value="#{msg.backtoloanform}"  
+                                       style="color: #8B8786; font-size: 12px; text-decoration: underline;  " 
+                                       process="@this" global="false" update="@all"   />   
+                    </h:panelGroup>
 
-              <h:panelGroup styleClass="defaulttext"  layout="block" > 
-                <p:outputLabel  value="Telefon (växel):"  style="font-weight: bold; padding-right: 10px; " />  
-                <p:outputLabel value="08-519 540 00 (fråga efter Bioinformatik och Genetik avdelening)"  />  
-              </h:panelGroup>   
-              <h:panelGroup styleClass="defaulttext"  layout="block" >
-                <p:outputLabel style="font-weight: bold;">
-                  E-post:
-                </p:outputLabel> 
-                <h:outputLink value="mailto:team@mail.dina-web.net" style="padding-left: 60px;">team@mail.dina-web.net</h:outputLink>
-              </h:panelGroup>   
-            </h:panelGroup> 
-          </h:panelGroup>
+                    <br /><br /><br />
+                    <h:panelGroup id="aboutpanel" layout="block" styleClass="sectionstyle1"> 
+                        <h:panelGroup  layout="block" >
+                            <p:outputLabel value="#{msg.contactTitle}"  
+                                           style="font-size: 20px; font-weight: bold;"/>  
+                        </h:panelGroup>  
+                        <br /><br />
+                        <h:panelGroup styleClass="subtitle"> 
+                            <p:outputLabel value="#{msg.contactText}" 
+                                           style="font-size: 16px; font-weight: bold;" />  
+                        </h:panelGroup>
 
-          <h:panelGroup id="encontactpanel" rendered="#{!languages.isSwedish}"> 
-            <h:panelGroup layout="block" style="padding-left: 40px;">
-              <h:panelGroup  layout="block" >
-                <p:outputLabel value="Contact us"  styleClass="maintext" />  
-              </h:panelGroup>  
-              <br /><br />
-              <h:panelGroup styleClass="subtitle"> 
-                You are welcome to contact us with questions, recommendations and comments.  We always try to help or improve best we can.
-              </h:panelGroup>
+                        <br />
+                        <br />
+                        <br />
 
-              <br />
-              <br />
-              <br />
+                        <h:panelGroup styleClass="subtitle"> 
+                            <p:outputLabel value="#{msg.contactPostalTitle}"  
+                                           style="font-size: 16px; font-weight: bold;" />  <br /> 
+                        </h:panelGroup>
 
-              <h:panelGroup styleClass="subtitle"> 
-                Postal address and contact information<br /> 
-              </h:panelGroup>
-              <h:panelGroup styleClass="text"> 
-                For scientific questions, please contact the relevant department.
-              </h:panelGroup>
 
-              <br />
-              <br />
-              <h:panelGroup styleClass="defaulttext"> 
-                NRM loan request form<br /> 
-                Swedish Museum of Natural History<br />
-                Box 50007<br />
-                104 05 Stockholm <br />
-                Sweden
-              </h:panelGroup>
-              <br />
-              <br />  
+                        <h:panelGroup styleClass="defaulttext"> 
+                            <p:outputLabel value="#{msg.contactPostText}"
+                                        style="font-size: 12px;"    />
+                        </h:panelGroup>
+                        <br />
+                        <br />
+                        <h:panelGroup style="font-size: 12px;"  > 
+                            <p:outputLabel value="#{msg.contactLoanForm}"  style="font-size: 12px;"   /><br /> 
+                            <p:outputLabel value="#{msg.nrm}" style="font-size: 12px;"   /><br /> 
+                            <p:outputLabel value="#{msg.contactBox}" style="font-size: 12px;"   /><br /> 
+                            <p:outputLabel value="#{msg.contactZipCode}" style="font-size: 12px;"   /><br /> 
+                            <p:outputLabel value="#{msg.contactContry}" style="font-size: 12px;"    /><br /> 
+                        </h:panelGroup>
 
-              <h:panelGrid columns="2" styleClass="defaulttext">
-                <p:outputLabel  value="Phone (exchange):"  style="font-weight: bold; padding-right: 10px; " />  
-                <p:outputLabel value="08-519 540 00 (ask for Bioinformatics and Genetics)"  />  
+                        <br />
+                        <br />  
 
-                <p:outputLabel style="font-weight: bold; padding-right: 10px; ">
-                  E-mail:
-                </p:outputLabel> 
-                <h:outputLink value="mailto:team@mail.dina-web.net" >team@mail.dina-web.net</h:outputLink>
-              </h:panelGrid>
-
-              <h:panelGroup styleClass="defaulttext"  layout="block" > 
-
-              </h:panelGroup>   
-              <h:panelGroup styleClass="defaulttext"  layout="block" >
-
-              </h:panelGroup>   
-            </h:panelGroup> 
-          </h:panelGroup> 
-        </h:panelGroup>
-      </h:panelGrid>
-    </ui:composition>
-  </body>
+                        <h:panelGrid columns="2"  cellpadding="0" cellspacing="0">
+                            <p:outputLabel value="#{msg.contactSupportPhone}:"  
+                                           style="font-weight: bold; padding-right: 10px; font-size: 12px;"/> 
+                            <p:outputLabel value="#{contactBean.supportPhone}" 
+                                           style="font-size: 12px;" />  
+                            <p:outputLabel value="#{msg.contactSupportEmai}:" 
+                                           style="font-weight: bold; padding-right: 10px; font-size: 12px;"/> 
+                            <h:outputLink value="mailto:#{contactBean.supportEmail}" 
+                                          style="padding-right: 10px; font-size: 12px;">
+                                #{contactBean.supportEmail}
+                            </h:outputLink> 
+                        </h:panelGrid> 
+                    </h:panelGroup>
+                </h:panelGroup>
+            </ui:define>
+        </ui:composition>
+    </body>
 </html>

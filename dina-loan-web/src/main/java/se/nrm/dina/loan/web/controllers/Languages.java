@@ -1,16 +1,9 @@
 package se.nrm.dina.loan.web.controllers;
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+ 
 
 import java.io.Serializable; 
 import javax.enterprise.context.SessionScoped; 
-import javax.inject.Named; 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import javax.inject.Named;  
 
 /**
  *
@@ -19,10 +12,13 @@ import org.slf4j.LoggerFactory;
 @Named(value = "languages")
 @SessionScoped
 public class Languages implements Serializable {
-    
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    
+     
+    private final String sv = "sv";
     private String locale = "en";  
+    
+    private final String changeToEnglisth = "Change language to: English";
+    private final String changeToSwedish = "     Byt språk till: Svenska";
+    
     private boolean openGbif = false;
 
     public Languages() {
@@ -40,11 +36,11 @@ public class Languages implements Serializable {
     public String getLanguage() {
         openGbif = false;
         
-        return locale.equals("sv") ? "Change language to: English" : "     Byt språk till: Svenska";
+        return locale.equals(sv) ? changeToEnglisth : changeToSwedish;
     }
       
     public boolean isIsSwedish() {
-        return locale.equals("sv");
+        return locale.equals(sv);
     } 
 
     public boolean isOpenGbif() {

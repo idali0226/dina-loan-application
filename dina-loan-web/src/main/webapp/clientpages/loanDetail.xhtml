@@ -1,0 +1,118 @@
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:p="http://primefaces.org/ui"    
+      xmlns:h="http://java.sun.com/jsf/html"    > 
+
+    <head>
+        <title>Information loan detail</title>
+    </head>
+    <body>    
+        <ui:composition  template="/templates/masterLayout.xhtml">     
+            <ui:define name="content"  >  
+                <h:panelGroup styleClass="main" layout="block" id="informationLoanDetail"  >    
+                    <ui:include src="/clientpages/breadcrumb.xhtml" />  
+                    <h:form id="loanDetailform">
+                        <h:panelGroup layout="block" id="informationLoanDetailPanel" 
+                                      styleClass="purposepage" > 
+
+                            <p:outputLabel value="#{msg.loandetailtitle}"
+                                           style="font-size: 20px; font-weight: bold;" />   
+                            <br /> 
+
+
+                            <p:inputTextarea id="loanDetailDescription" 
+                                             value="#{otherForm.loanDetailDescription}" 
+                                             rows="7" cols="110" styleClass="contactfieldstext" >  
+                                <p:ajax event="blur" listener="#{otherForm.saveText()}"  global="false" />
+                            </p:inputTextarea>
+                            <br />
+                            <br />
+
+                            <h:panelGrid columns="3" style="font-size: 12px;">
+                                <p:outputLabel value="#{msg.requestloanperiod}:" styleClass="text" />  
+                                <h:panelGrid cellspacing="0" cellpadding="0">
+                                    <p:calendar pattern="yyyy-MM-dd" showButtonPanel="true" navigator="true"   
+                                                id="fromdate" value="#{otherForm.fromDate}" pages="3" 
+                                                mindate="#{otherForm.minDate}"   >    
+                                        <p:ajax event="dateSelect" 
+                                                listener="#{otherForm.handleFromDateSelect()}"
+                                                update="toDatePanel" />  
+                                    </p:calendar>  
+                                </h:panelGrid>
+
+                                <h:panelGrid cellspacing="0" cellpadding="0" id="toDatePanel">
+                                    <p:calendar pattern="yyyy-MM-dd" showButtonPanel="true" navigator="true"  
+                                                id="todate"  value="#{otherForm.toDate}" pages="3" 
+                                                mindate="#{otherForm.toMinDate}"  >  
+                                        <p:ajax event="dateSelect" 
+                                                listener="#{otherForm.handleToDateSelect()}"  />  
+                                    </p:calendar>  
+                                </h:panelGrid>
+
+                                <p:spacer width="5" /> 
+                                <h:panelGrid cellspacing="0" cellpadding="0">
+                                    <p:outputLabel value="#{msg.from}" styleClass="text" />  
+                                </h:panelGrid>
+
+                                <h:panelGrid cellspacing="0" cellpadding="0">
+                                    <p:outputLabel value="#{msg.to}" styleClass="text" />  
+                                </h:panelGrid>
+                            </h:panelGrid>
+
+                            <h:panelGroup style="float: right; " layout="block"  id="uploadedpfilePanel" >
+                                <h:panelGroup layout="block" style="width: 300px; float: left; ">
+                                    <p:outputLabel value="#{msg.optional}:" styleClass="text" /> 
+                                    <br />
+                                    <p:outputLabel value="#{msg.commonattachment}:" styleClass="text" />    
+
+                                    <h:panelGrid cellpadding="0" cellspacing="0" >
+                                        <p:fileUpload fileUploadListener="#{files.handleLoanDetailFileUpload}"  
+                                                      mode="advanced"   label="#{msg.uploadfile}" 
+                                                      invalidSizeMessage="#{msg.invalidfilesiz}"
+                                                      auto="true" styleClass="originalbutton" sizeLimit="5000000" 
+                                                      update=":loanDetailform:uploadedpfilePanel" />  
+                                    </h:panelGrid> 
+
+                                    <h:panelGrid  id="uploadededpFilePanel" cellpadding="0" cellspacing="0" 
+                                                  style="margin-top: -20px; " 
+                                                  rendered="#{not empty files.loanDetailFile}">
+                                        <p:panel style="border: none; font-size: 12px; " > 
+                                            <p:outputLabel value="#{files.loanDetailFileName}" /> 
+                                            <p:spacer width="10" />
+                                            <p:commandLink actionListener="#{files.removeLoanDetailFile()}" 
+                                                           process="uploadedpfilePanel"
+                                                           title="#{msg.btnremovefile}"  
+                                                           update="uploadedpfilePanel"  global="false" > 
+                                                <h:graphicImage name="images/button_remove.gif" styleClass="images" /> 
+                                            </p:commandLink> 
+                                        </p:panel>    
+                                    </h:panelGrid>
+                                </h:panelGroup> 
+
+                            </h:panelGroup>  
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />   
+                            <br />
+                            <br />
+
+                            <h:panelGroup layout="block" style="width: 200px; float: right;"> 
+                                <p:commandButton value="#{msg.back}" 
+                                                 action="#{viewBean.navigateIndexLoanWithPurpose()}" 
+                                                 global="false" process="@this"   /> 
+                                <p:spacer width="10" />
+                                <p:commandButton value="#{msg.next}" 
+                                                 action="#{viewBean.gotoLoanDetailNaxtPage()}" 
+                                                 global="false"  process="@this"  > 
+                                </p:commandButton>
+                            </h:panelGroup> 
+                        </h:panelGroup> 
+                    </h:form>
+                </h:panelGroup> 
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

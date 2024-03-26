@@ -1,0 +1,53 @@
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:p="http://primefaces.org/ui"   
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:h="http://java.sun.com/jsf/html"    > 
+    <head>
+        <title>Purpose</title>
+    </head>
+    <body>    
+        <ui:composition  template="/templates/masterLayout.xhtml">     
+            <ui:define name="content"  >  
+                <h:panelGroup styleClass="main" layout="block" id="purpose"  >    
+                    <ui:include src="/clientpages/breadcrumb.xhtml" />  
+                    <h:form id="purposeform">
+                        <h:panelGroup layout="block" id="purposepanel" styleClass="purposepage" > 
+                            <h:panelGroup layout="block" >
+                                <p:outputLabel value="#{msg.purpose}"
+                                               style="font-size: 20px; font-weight: bold;" /> 
+                            </h:panelGroup>
+                            <br />
+                            <br />
+                            <br /> 
+                            <p:panel>
+                                <h:selectOneRadio value="#{loan.purpose}" layout="pageDirection"  >
+                                    <f:selectItem itemValue="scientificpurpose" 
+                                                  itemLabel="#{msg.scientificpurpose}" />
+                                    <f:selectItem itemValue="educationexhibition" 
+                                                  itemLabel="#{msg.educationexhibition}" />	   	
+                                    <f:selectItem itemValue="commercialartother" 
+                                                  itemLabel="#{msg.commercialart}" /> 
+                                    <p:ajax event="change"  listener="#{viewBean.selectpurpose()}" 
+                                            process="@this" global="false" 
+                                            update="breadcrumbpanel purposepanel" />  
+                                </h:selectOneRadio> 
+                            </p:panel> 
+
+                            <br />
+                            <br /> 
+                            <h:panelGroup layout="block" style="width: 200px; float: right;"> 
+                                <p:commandButton value="#{msg.back}" action="#{viewBean.navigateIndexDepartment()}" 
+                                                 global="false" process="@this"   /> 
+                                <p:spacer width="10" />
+                                <p:commandButton value="#{msg.next}" action="#{viewBean.gotoPurposeNextPage()}" 
+                                                 global="false"  process="@this"  > 
+                                </p:commandButton>
+                            </h:panelGroup> 
+                        </h:panelGroup> 
+                    </h:form>
+                </h:panelGroup> 
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

@@ -1,0 +1,166 @@
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:ui="http://java.sun.com/jsf/facelets"  
+      xmlns:p="http://primefaces.org/ui"  
+      xmlns:f="http://java.sun.com/jsf/core"  > 
+    <head>
+        <title>Samples table</title>
+    </head>
+    <body>
+        <ui:composition>   
+            <p:dataTable var="sample" value="#{sampleBean.samples}" id="sampleTbl"
+                         editable="true"   scrollable="true" style="width: 100%;"  >    
+                <f:facet name="header">
+                    <p:outputLabel value="#{msg.specimenTableTitle}"   /> 
+                </f:facet> 
+
+                <p:column styleClass="alignTop" style="width: 20px; font-size: 12px;">   
+                    <p:commandLink update="sampleTbl" title="Remove" 
+                                   process="@this" global="false" 
+                                   action="#{sampleBean.removeSample(sample)}"   >   
+                        <p:graphicImage value="/resources/images/button_remove.gif" styleClass="images" />
+                        <p:collector value="#{sample}"  removeFrom="#{sampleBean.samples}" unique="true"   />  
+                    </p:commandLink>  
+                </p:column> 
+
+                <p:column style="width:45px">
+                    <p:rowEditor />
+                </p:column>
+
+                <p:column headerText="#{msg.catalognumber}" width="130" style="font-size: 12px;">      
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <p:outputLabel value="#{sample.catalogNumber}" />
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText id="catalogNumberInput" 
+                                         value="#{sample.catalogNumber}"  style="width:100%"/>
+                        </f:facet>
+                    </p:cellEditor> 
+                </p:column>  
+
+                <p:column  headerText="#{msg.family}" width="120" style="font-size: 12px; ">  
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <p:outputLabel value="#{sample.family}"   />
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText id="familyInput" value="#{sample.family}"  style="width:100%"/>
+                        </f:facet>
+                    </p:cellEditor>  
+                </p:column>   
+
+                <p:column headerText="#{msg.genus}" width="120" style="font-size: 12px; ">     
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <p:outputLabel value="#{sample.genus}"   />
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText id="genusInput" value="#{sample.genus}"  style="width:100%"/>
+                        </f:facet>
+                    </p:cellEditor>   
+                </p:column> 
+
+                <p:column headerText="#{msg.species}" width="120" style="font-size: 12px; ">     
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <p:outputLabel value="#{sample.species}"   />
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText id="speciesInput" value="#{sample.species}" style="width:100%"/>
+                        </f:facet>
+                    </p:cellEditor>      
+                </p:column> 
+
+                <p:column headerText="#{msg.author}" width="80" style="font-size: 12px; ">  
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <p:outputLabel value="#{sample.auctor}" />
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText id="auctorInput" value="#{sample.auctor}" style="width:100%"/>
+                        </f:facet>
+                    </p:cellEditor>    
+                </p:column> 
+
+                <p:column headerText="#{msg.typeStatus}" width="60" style="font-size: 12px; ">     
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <p:outputLabel value="#{sample.typeStatus}" />
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText id="typestatusInput" value="#{sample.typeStatus}" style="width:100%"/>
+                        </f:facet>
+                    </p:cellEditor>    
+                </p:column> 
+
+                <p:column headerText="#{msg.localitycountry}" width="140" style="font-size: 12px; ">    
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <p:outputLabel value="#{sample.country}" />
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText id="localitycountryInput" value="#{sample.country}" style="width:100%" />
+                        </f:facet>
+                    </p:cellEditor>    
+                </p:column> 
+
+                <p:column headerText="#{msg.locality}" width="140" style="font-size: 12px; ">    
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <p:outputLabel value="#{sample.locality}" />
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText id="localityInput" value="#{sample.locality}" style="width:100%"/>
+                        </f:facet>
+                    </p:cellEditor>    
+                </p:column> 
+
+                <p:column headerText="#{msg.collectdyear}" width="80" style="font-size: 12px; ">    
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <p:outputLabel value="#{sample.collectedYear}" />
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText id="collectedyearInput" value="#{sample.collectedYear}" style="width:100%"/>
+                        </f:facet>
+                    </p:cellEditor>    
+                </p:column> 
+
+                <p:column headerText="#{msg.collector}" width="80" style="font-size: 12px; ">    
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <p:outputLabel value="#{sample.collector}" />
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText id="collectorInput" value="#{sample.collector}" style="width:100%" />
+                        </f:facet>
+                    </p:cellEditor>   
+                </p:column> 
+ 
+                <p:column headerText="#{msg.typespecimen}" width="120" style="font-size: 12px; ">   
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <p:outputLabel value="#{sample.type}" />
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText id="typeInput" value="#{sample.type}"  style="width:100%" 
+                                         required="#{!scientificLoanForm.isPhoto}"
+                                         requiredMessage="#{msg.errmsgtypespecimen}" />
+                        </f:facet>
+                    </p:cellEditor>     
+                </p:column> 
+
+                <p:column headerText="#{msg.other}" width="180" style="font-size: 12px; ">     
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <p:outputLabel value="#{sample.other}"   />
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText id="otherInput" value="#{sample.other}"  style="width:100%"/>
+                        </f:facet>
+                    </p:cellEditor>  
+                </p:column>   
+            </p:dataTable>   
+        </ui:composition>
+    </body>
+</html>

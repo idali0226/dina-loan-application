@@ -1,0 +1,56 @@
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:p="http://primefaces.org/ui"     
+      xmlns:h="http://java.sun.com/jsf/html"    > 
+    <head>
+        <title>Confirmation</title>
+    </head>
+    <body>    
+        <ui:composition  template="/templates/masterLayout.xhtml">     
+            <ui:define name="content"  >   
+                <h:panelGroup styleClass="main" layout="block" id="confirmation"  > 
+                    <!-- confirmation page -->
+                    <h:panelGroup  id="confirmationpagepanel" >
+                        <h:panelGroup layout="block" id="confirmationpagepanel1" 
+                                  styleClass="sectionstyle1"   > 
+
+
+                            <p:messages id="confirmationErrorMsg" showDetail="true" 
+                                        showSummary="false" closable="true" showIcon="true" />
+                             
+                            <ui:remove>
+                                <p:messages id="errormsg"   showDetail="true" showSummary="false" 
+                                            closable="true"   showIcon="true" />
+                            </ui:remove>
+                            
+                            <h:panelGroup layout="block" 
+                                          style="background-color: #036fab; color: #FFFFFF; text-align: center; padding: 10px 10px 10px 10px; " > 
+                                <p:outputLabel value="#{msg.requestnumber}" styleClass="subtitle" /> 
+                                <p:spacer width="5" />
+                                <p:outputLabel value="#{loan.loanId}" />
+                            </h:panelGroup> 
+
+ 
+                            <h:panelGroup layout="block" 
+                                          style="background-color: #036fab; color: #FFFFFF; text-align: center; padding: 10px 10px 10px 10px; " > 
+                                <p:outputLabel value="#{msg.confirmationtext}" styleClass="subtitle" /> 
+                            </h:panelGroup> 
+                            <br />
+                            <br /> 
+                            <br />  
+                            <h:panelGroup layout="block" >
+                                <p:outputLabel value="#{msg.problemcontact}" styleClass="text" />  
+                                <h:outputLink value="mailto:#{contactBean.supportEmail}"
+                                              style="color: #8B8786 !important; font-size: 12px; " >
+                                    webmaster
+                                </h:outputLink>. 
+                            </h:panelGroup> 
+                            <br /> 
+                            <br />
+                        </h:panelGroup> 
+                    </h:panelGroup>
+                </h:panelGroup>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

@@ -1,0 +1,33 @@
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:ui="http://java.sun.com/jsf/facelets"  
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:h="http://java.sun.com/jsf/html" >
+    <head>
+        <title>Notifications</title>
+    </head>
+
+
+    <body>
+        <ui:composition>     
+            <h:panelGroup layout="block"
+                          rendered="#{!notification.notifications.isEmpty()}">
+                <h:panelGroup layout="block"  styleClass="notification" >  
+                    <ui:repeat value="#{notification.notifications}"  var="note" varStatus="status"> 
+
+                        <h:panelGrid columns="3" columnClasses="dottop">
+                            <p:graphicImage value="/resources/images/dot_PNG4.png" 
+                                            styleClass="dotimages"  />  
+                            <p:spacer width="10" />
+                            <p:outputLabel value="#{languages.isSwedish ? 
+                                                    note.descriptionSv : note.descriptionEn}" />
+                        </h:panelGrid>  
+                        <br /> 
+                    </ui:repeat>
+                </h:panelGroup>
+                <br /> 
+                <br /> 
+                <br /> 
+            </h:panelGroup>
+        </ui:composition>
+    </body>
+</html>

@@ -1,0 +1,202 @@
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:p="http://primefaces.org/ui"   
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:h="http://java.sun.com/jsf/html"    > 
+    <head>
+        <title>Department</title>
+    </head>
+    <body>    
+        <ui:composition  template="/templates/masterLayout.xhtml">     
+            <ui:define name="content"  >  
+                <h:panelGroup styleClass="main" layout="block" id="departmentPanel"  >    
+                    <ui:include src="/clientpages/breadcrumb.xhtml" />  
+                    <!-- select collection --> 
+                    <h:panelGroup layout="block" id="collectionpanel1"  styleClass="subpage" >
+
+                        <h:form id="departmentForm">
+                            <h:panelGroup layout="block"  styleClass="sectionstyle1">
+                                <h:panelGroup layout="block" >
+                                    <p:outputLabel value="#{msg.departmentstitle}"
+                                                   style="font-size: 20px; font-weight: bold;"  /> 
+                                </h:panelGroup>
+                                <br />
+                                <br />
+                                <h:panelGroup layout="block" >
+                                    <p:outputLabel value="#{msg.departmentsubtitle}" 
+                                                   style="font-size: 16px; font-weight: bold;" /> 
+                                </h:panelGroup>
+                                <br />
+                                <br />
+                                <br />  
+
+
+                                <p:panel > 
+                                    <h:selectOneRadio value="#{loan.department}" layout="pageDirection">
+                                        <f:selectItem itemValue="zoology" itemLabel="#{msg.zoology}" />	  
+                                        <f:selectItem itemValue="botany" itemLabel="#{msg.botany}" />
+                                        <f:selectItem itemValue="envionmentspecimenbank" itemLabel="#{msg.esb}" />	   	
+                                        <f:selectItem itemValue="geology" itemLabel="#{msg.geology}" />	   
+                                        <f:selectItem itemValue="palaeobiology" itemLabel="#{msg.palaeobiology}" />	   
+                                        <p:ajax event="change"  listener="#{viewBean.departmentChanged()}" 
+                                                process="@this" global="false" 
+                                                update="collectionpanel  breadcrumbpanel departmentBtnPanel" />  
+                                    </h:selectOneRadio> 
+                                </p:panel>  
+
+                                <br />
+                                <br /> 
+
+
+
+                                <h:panelGroup id="collectionpanel" layout="block">
+
+                                    <h:panelGroup layout="block" rendered="#{!loan.zoologyDepartment}">
+                                        <ui:include  src="/clientpages/otherDepartments.xhtml"  />  
+                                    </h:panelGroup>
+
+
+                                    <ui:remove>
+                                        <!-- botany --> 
+                                        <h:panelGroup layout="block" id="botanypanel" 
+                                                      rendered="#{loan.botanyDepartment}" >  
+                                            <h:panelGroup>
+                                                <p:outputLabel value="#{msg.botany}"  
+                                                               style="font-size: 20px; font-weight: bold;" />
+                                            </h:panelGroup>
+                                            <br />
+                                            <br /> 
+                                            <h:panelGroup layout="block">
+                                                <p:outputLabel value="#{msg.departmentlinkssubtitle1}" 
+                                                               style="font-size: 16px; font-weight: bold;"/>
+                                                <br />
+                                                <p:outputLabel value="#{msg.departmentlinkssubtitle2}" 
+                                                               style="font-size: 16px; font-weight: bold;"/>
+                                            </h:panelGroup> 
+                                            <br />
+                                            <br /> 
+                                            <h:panelGroup layout="block">
+                                                <p:outputLabel value="#{msg.botany}" />
+                                                <br /> 
+                                                <h:outputLink value="#{msg.botanyurl1}" title="#{msg.botanyurl1}" 
+                                                              target="_blank" styleClass="departmentUrl"  >
+                                                    #{msg.botanyurl1}
+                                                </h:outputLink>
+                                            </h:panelGroup> 
+                                            <br />
+                                            <br />  
+                                        </h:panelGroup>
+                                        <!-- esb --> 
+                                        <h:panelGroup layout="block" id="esbpanel" 
+                                                      rendered="#{loan.esbDepartment}"  > 
+                                            <h:panelGroup>
+                                                <p:outputLabel value="#{msg.esb}" 
+                                                               style="font-size: 20px; font-weight: bold;" />
+                                            </h:panelGroup>  
+                                            <br />
+                                            <br /> 
+                                            <h:panelGroup layout="block">
+                                                <p:outputLabel value="#{msg.departmentlinkssubtitle1}" 
+                                                               style="font-size: 16px; font-weight: bold;"/>
+                                                <br />
+                                                <p:outputLabel value="#{msg.departmentlinkssubtitle2}" 
+                                                               style="font-size: 16px; font-weight: bold;"/>
+                                            </h:panelGroup>
+
+                                            <br />
+                                            <br /> 
+
+                                            <h:panelGroup layout="block">
+                                                <p:outputLabel value="#{msg.esb}" />
+                                                <br /> 
+                                                <h:outputLink  value="#{msg.esburl}" title="#{msg.esburl}"  
+                                                               target="_blank" styleClass="departmentUrl" >
+                                                    #{msg.esburl}
+                                                </h:outputLink>
+                                            </h:panelGroup>  
+                                            <br />
+                                            <br />  
+                                        </h:panelGroup>
+                                        <!-- geology --> 
+                                        <h:panelGroup layout="block" id="geologypanel" 
+                                                      rendered="#{loan.geologyDepartment}"  >  
+                                            <h:panelGroup>
+                                                <p:outputLabel value="#{msg.geology}" 
+                                                               style="font-size: 20px; font-weight: bold;"/>
+                                            </h:panelGroup>  
+                                            <br />
+                                            <br /> 
+                                            <h:panelGroup layout="block">
+                                                <p:outputLabel value="#{msg.departmentlinkssubtitle1}" 
+                                                               style="font-size: 16px; font-weight: bold;"/>
+                                                <br />
+                                                <p:outputLabel value="#{msg.departmentlinkssubtitle2}" 
+                                                               style="font-size: 16px; font-weight: bold;"/>
+                                            </h:panelGroup>
+
+                                            <br />
+                                            <br /> 
+                                            <h:panelGroup layout="block">
+                                                <p:outputLabel value="#{msg.mineralogy}" />
+                                                <br />
+                                                <h:outputLink  value="#{msg.mineralogyurl}" title="#{msg.mineralogyurl}" 
+                                                               target="_blank" 
+                                                               styleClass="departmentUrl" >
+                                                    #{msg.mineralogyurl}
+                                                </h:outputLink>
+                                            </h:panelGroup>  
+                                            <br />
+                                            <br />  
+                                        </h:panelGroup>
+                                        <!-- paleobiology --> 
+                                        <h:panelGroup layout="block" id="palebiologypanel" 
+                                                      rendered="#{loan.palaeobiologyDepartment}"  >  
+                                            <h:panelGroup>
+                                                <p:outputLabel value="#{msg.palaeobiology}"
+                                                               style="font-size: 20px; font-weight: bold;"/>
+                                            </h:panelGroup>
+                                            <br />
+                                            <br /> 
+                                            <h:panelGroup layout="block">
+                                                <p:outputLabel value="#{msg.departmentlinkssubtitle1}" 
+                                                               style="font-size: 16px; font-weight: bold;"/>
+                                                <br />
+                                                <p:outputLabel value="#{msg.departmentlinkssubtitle2}" 
+                                                               style="font-size: 16px; font-weight: bold;"/>
+                                            </h:panelGroup> 
+                                            <br />
+                                            <br />  
+                                            <h:panelGroup layout="block">
+                                                <p:outputLabel value="#{msg.palaeobiology}" />
+                                                <br />
+                                                <h:outputLink  value="#{msg.palaebotanyurl}" 
+                                                               title="#{msg.palaebotanyurl}" target="_blank" 
+                                                               styleClass="departmentUrl" >
+                                                    #{msg.palaebotanyurl}
+                                                </h:outputLink> 
+                                            </h:panelGroup> 
+                                            <br />
+                                            <br /> 
+
+                                        </h:panelGroup>
+                                    </ui:remove>
+                                </h:panelGroup>
+                            </h:panelGroup>
+
+                            <h:panelGroup layout="block" style="width: 200px; float: right;" 
+                                          id="departmentBtnPanel">  
+                                <p:commandButton value="#{msg.back}" actionListener="#{viewBean.goToHome()}"  
+                                                 global="false" process="@all" /> 
+                                <p:spacer width="10" />
+                                <p:commandButton value="#{msg.next}" actionListener="#{viewBean.goToPurpose()}" 
+                                                 disabled="#{!loan.zoologyDepartment}" 
+                                                 global="false"  process="@all"  >  
+                                </p:commandButton>
+                            </h:panelGroup>
+                        </h:form>
+                    </h:panelGroup> 
+                </h:panelGroup>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

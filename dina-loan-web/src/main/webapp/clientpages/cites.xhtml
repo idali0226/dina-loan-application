@@ -1,0 +1,92 @@
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:p="http://primefaces.org/ui"    
+      xmlns:h="http://java.sun.com/jsf/html"    > 
+    <head>
+        <title>Cites</title>
+    </head>
+    <body>    
+        <ui:composition  template="/templates/masterLayout.xhtml">     
+            <ui:define name="content"  >  
+                <h:panelGroup styleClass="main" layout="block" id="cites"  > 
+                    <ui:include src="/clientpages/breadcrumb.xhtml" />  
+                    <h:form id="citesform">  
+                        <p:growl id="messages" showDetail="true" sticky="true" />
+
+                        <p:idleMonitor timeout="300000">
+                            <p:ajax event="idle" listener="#{idleMonitorView.onIdle}" update="messages" />
+                            <p:ajax event="active" listener="#{idleMonitorView.onActive}" update="messages" />
+                        </p:idleMonitor>
+
+                        <h:panelGroup layout="block" id="cetiesPanel" styleClass="subpage"  > 
+                            <h:panelGroup layout="block" >
+                                <p:outputLabel value="#{msg.citesPageTitle}" 
+                                               style="font-size: 20px; font-weight: bold;"> 
+                                </p:outputLabel>
+                            </h:panelGroup> 
+                            <br />
+                            <br /> 
+
+                            <h:panelGroup layout="block" >
+                                <p:outputLabel value="#{msg.citesPageText1}" styleClass="boldtext" /> 
+                                <p:outputLabel value="#{msg.citesPageText2}" styleClass="text" /> 
+                            </h:panelGroup> 
+                            <br /> 
+
+
+                            <h:panelGrid columns="2" columnClasses="column4,column6" >
+                                <p:outputLabel value="#{msg.registnumber}" styleClass="defaulttext" />  
+                                <p:inputText id="citesnum" value="#{scientificLoanForm.citesNumber}" 
+                                             styleClass="defaulttext" size="50" 
+                                             disabled="#{scientificLoanForm.noCITE}" >   
+                                    <p:ajax event="blur" global="false" process="@this"   
+                                        listener="#{scientificLoanForm.saveText()}" />
+                                </p:inputText>
+                                <p:spacer width="5" /> 
+                                <h:panelGrid columns="3">
+                                    <h:selectBooleanCheckbox  value="#{scientificLoanForm.noCITE}" > 
+                                        <p:ajax listener="#{scientificLoanForm.onCITESChanged}" 
+                                                update="citesnum" global="false"  />
+                                    </h:selectBooleanCheckbox>  
+                                    <p:spacer width="5" />
+                                    <p:outputLabel value="#{msg.nocites}" styleClass="defaulttext" /> 
+                                </h:panelGrid> 
+                            </h:panelGrid>
+
+                            <br />
+                            <br />
+                            <h:panelGroup layout="block" >
+                                <p:outputLabel value="#{msg.citesdesc1}" styleClass="text" /> 
+                                <h:outputLink value="#{msg.citesdesc2}" target="_blank" > 
+                                    <h:outputText value="#{msg.citesdesc2}" 
+                                                  style="color: #8B8786; font-style: normal; font-size: 12px; " /> 
+                                </h:outputLink>  
+                            </h:panelGroup>
+                            <br />
+                            <br /> 
+                            <h:panelGroup layout="block" >
+                                <p:outputLabel value="#{msg.citesPageText3}" styleClass="italictext" /> 
+                            </h:panelGroup> 
+                            <br />
+                            <br /> 
+                            <br />
+                            <h:panelGroup layout="block" style="width: 150px; float: right;  ">  
+                                <p:commandButton value="#{msg.back}" 
+                                                 action="#{viewBean.navigateIndexDestructive()}" 
+                                                 process="@this"  
+                                                 global="false"  />  
+                                <p:spacer width="10" />
+                                <p:commandButton value="#{msg.next}" 
+                                                 action="#{viewBean.gotoBorrowerPage()}" 
+                                                 global="false" process="@this" />
+                            </h:panelGroup> 
+
+                            <br /> 
+                            <br />
+                        </h:panelGroup>  
+                    </h:form>
+                </h:panelGroup>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

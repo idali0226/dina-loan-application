@@ -1,0 +1,220 @@
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:p="http://primefaces.org/ui"     
+      xmlns:h="http://java.sun.com/jsf/html" > 
+    <head>
+        <title>Scientific information loan preview</title>
+    </head>
+    <body>    
+        <ui:composition  template="/templates/masterLayout.xhtml">     
+            <ui:define name="content"  >   
+                <h:panelGroup styleClass="main" layout="block" id="scietificInformationLoanPrieview"  > 
+                    <ui:include src="/clientpages/breadcrumb.xhtml" />  
+                    <h:form id="scInformationLoanPrieviewForm">   
+                        <h:panelGroup layout="block" id="scietificInformationPreviewPanel"
+                                      styleClass="sectionstyle2"  > 
+
+                            <p:messages id="previewmsg" showDetail="true" 
+                                        showSummary="false" closable="true" showIcon="true" /> 
+                            <h:panelGroup layout="block"  >
+                                <p:outputLabel value="#{msg.lastpagetitle}" 
+                                               style="font-size: 20px; font-weight: bold;"/> 
+                                <br />
+                                <br /> 
+                                <br /> 
+                                <p:outputLabel value="#{msg.review}" styleClass="subtitle" /> 
+                            </h:panelGroup> 
+
+                            <br />
+                            <h:panelGroup layout="block" id="summaryViewBtnPanel">  
+                                <p:commandButton value="#{msg.closerequest}" 
+                                                 action="#{loan.closesummary()}" 
+                                                 rendered="#{loan.openSummary}"  
+                                                 update="summaryPanel summaryViewBtnPanel"  
+                                                 global="false" process="@this" /> 
+
+                                <p:commandButton value="#{msg.reviewrequest}" 
+                                                 action="#{loan.reviewrequest()}" 
+                                                 update="summaryPanel summaryViewBtnPanel" 
+                                                 rendered="#{!loan.openSummary}" 
+                                                 global="false" process="@this" /> 
+                            </h:panelGroup> 
+                            <br />
+                            <br />  
+
+                            <h:panelGroup id="summaryPanel" layout="block" > 
+                                <h:panelGroup rendered="#{loan.openSummary}">
+
+                                    <p:panel style="width: 700px; " 
+                                             header="#{msg.contactdetail} (#{msg.inplaceedit})" > 
+ 
+                                        <br />
+                                        <ui:include src="/clientpages/mainUserPreview.xhtml" />   
+                                    </p:panel> 
+
+                                    <br />
+                                    <br />
+
+                                    <p:panel header="#{msg.requestinfo}"  >   
+                                        <h:panelGrid columns="3" styleClass="defaulttext" cellpadding="0" cellspacing="0">
+                                            <p:outputLabel value="#{msg.collection}:" style="color: #8B8786;" />
+                                            <p:spacer width="5" />
+                                            <p:outputLabel value="#{loan.departmentName}" style="color: #8B8786;" />
+
+                                            <p:outputLabel  value="#{msg.purposeofrequest}:" style="color: #8B8786;" />
+                                            <p:spacer width="5" />
+                                            <p:outputLabel value="#{loan.purposeName}" style="color: #8B8786;" />
+
+                                            <p:outputLabel value="#{msg.typeofrequest}:" style="color: #8B8786;" />
+                                            <p:spacer width="5" />
+                                            <p:outputLabel value="#{scientificLoanForm.requestType}" style="color: #8B8786;" />
+
+                                            <p:outputLabel value="#{msg.relevantcollection}:"  style="color: #8B8786;" />
+                                            <p:spacer width="5" />
+                                            <p:outputLabel value="#{scientificLoanForm.selectedCollection}" style="color: #8B8786;" /> 
+                                        </h:panelGrid>  
+                                    </p:panel>
+
+                                    <br />
+                                    <br /> 
+                                    <br /> 
+                                    <p:panel header="#{msg.taxadetail} (#{msg.inplaceedit})" id="taxaDetailPanel">    
+                                        <h:panelGroup layout="block" id="samplesPanel" style="width: 100%; ">
+                                            <h:panelGrid rendered="#{not empty sampleBean.samples}" 
+                                                         cellpadding="0" cellspacing="0">
+                                                <ui:repeat value="#{sampleBean.samples}" 
+                                                           var="sample" varStatus="status">
+                                                    <h:panelGrid columns="3"  
+                                                                 styleClass="#{styleBean.getSamplePanelColor(status.index)}" 
+                                                                 columnClasses="column1,column2,column3" cellpadding="5">
+                                                        <p:outputLabel value="#{msg.catalognumber}:"  />  
+                                                        <p:inplace editor="true"  styleClass="originalbutton">
+                                                            <p:inputText value="#{sample.catalogNumber}"  />
+                                                        </p:inplace>  
+                                                        <p:commandLink actionListener="#{sampleBean.removeSample(sample)}"  
+                                                                       title="#{msg.btnremovefile}"  
+                                                                       update=":scInformationLoanPrieviewForm:samplesPanel"   > 
+                                                            <h:graphicImage name="images/button_remove.gif" 
+                                                                            styleClass="images" /> 
+                                                        </p:commandLink>  
+
+                                                        <p:outputLabel value="#{msg.family}:" />  
+                                                        <p:inplace editor="true"  styleClass="originalbutton">
+                                                            <p:inputText value="#{sample.family}"  />
+                                                        </p:inplace>   
+                                                        <p:spacer width="5" />
+
+                                                        <p:outputLabel value="#{msg.genus}:" />  
+                                                        <p:inplace editor="true"  styleClass="originalbutton">
+                                                            <p:inputText value="#{sample.genus}"  />
+                                                        </p:inplace>    
+                                                        <p:spacer width="5" />
+
+                                                        <p:outputLabel value="#{msg.species}:" />  
+                                                        <p:inplace editor="true"  styleClass="originalbutton">
+                                                            <p:inputText value="#{sample.species}"  />
+                                                        </p:inplace>   
+                                                        <p:spacer width="5" />
+
+                                                        <p:outputLabel value="#{msg.author}:" />  
+                                                        <p:inplace editor="true"  styleClass="originalbutton">
+                                                            <p:inputText value="#{sample.auctor}"  />
+                                                        </p:inplace>    
+                                                        <p:spacer width="5" />
+
+                                                        <p:outputLabel value="#{msg.typeStatus}:" />  
+                                                        <p:inplace editor="true"  styleClass="originalbutton">
+                                                            <p:inputText value="#{sample.typeStatus}"  />
+                                                        </p:inplace>   
+                                                        <p:spacer width="5" />
+
+                                                        <p:outputLabel value="#{msg.localitycountry}:" />  
+                                                        <p:inplace editor="true"  styleClass="originalbutton">
+                                                            <p:inputText value="#{sample.country}"  />
+                                                        </p:inplace>   
+                                                        <p:spacer width="5" />
+
+                                                        <p:outputLabel value="#{msg.locality}:" />  
+                                                        <p:inplace editor="true"  styleClass="originalbutton">
+                                                            <p:inputText value="#{sample.locality}"  />
+                                                        </p:inplace>   
+                                                        <p:spacer width="5" />
+
+
+
+                                                        <p:outputLabel value="#{msg.collectdyear}:" />  
+                                                        <p:inplace editor="true"  styleClass="originalbutton">
+                                                            <p:inputText value="#{sample.collectedYear}"  />
+                                                        </p:inplace>   
+                                                        <p:spacer width="5" />
+
+                                                        <p:outputLabel value="#{msg.collector}:" />  
+                                                        <p:inplace editor="true"  styleClass="originalbutton">
+                                                            <p:inputText value="#{sample.collector}"  />
+                                                        </p:inplace>     
+                                                        <p:spacer width="5" />
+
+                                                        <p:outputLabel value="#{msg.typespecimen}:" />  
+                                                        <p:inplace editor="true"  styleClass="originalbutton">
+                                                            <p:inputText value="#{sample.type}" 
+                                                                         requiredMessage="#{msg.errmsgtypespecimen}"  />
+                                                        </p:inplace>    
+                                                        <p:spacer width="5" />
+
+                                                        <p:outputLabel value="#{msg.other}:" />  
+                                                        <p:inplace editor="true"  styleClass="originalbutton">
+                                                            <p:inputText value="#{sample.other}"  />
+                                                        </p:inplace>  
+                                                        <p:spacer width="5" />
+                                                    </h:panelGrid>   
+                                                </ui:repeat>
+                                                <br />
+                                                <br />
+                                            </h:panelGrid>
+
+
+                                            <h:panelGrid style="font-size: 12px; font-family:  Arial,sans-serif;   "  
+                                                         columns="1" rendered="#{not empty scientificLoanForm.additionInformation}">
+                                                <p:outputLabel value="#{msg.additioninfor}:" />   
+                                                <p:inplace editor="true"  styleClass="originalbutton">
+                                                    <p:inputTextarea rows="5" cols="90" 
+                                                                     value="#{scientificLoanForm.additionInformation}"  />
+                                                </p:inplace>
+                                            </h:panelGrid> 
+                                            <h:panelGrid style="font-size: 12px; font-family:  Arial,sans-serif;   "  
+                                                         columns="1" rendered="#{empty scientificLoanForm.additionInformation}">
+                                                <p:outputLabel value="#{msg.additioninfor}:" />   
+                                                <p:outputLabel value="N/A" style="color: #8B8786;"  />   
+                                            </h:panelGrid> 
+                                        </h:panelGroup>  
+                                    </p:panel>
+                                </h:panelGroup> 
+                                <br />
+                                <br />
+
+                                <hr /> 
+                            </h:panelGroup>
+                             
+ 
+                            <br />  
+                            <br />
+                            <h:panelGroup id="previewBtnPanel" layout="block" 
+                                          style="width: 300px; float: right;  ">  
+                                <p:commandButton value="#{msg.back}" action="#{viewBean.navigateIndexBorrowWithPurpose()}" 
+                                                 process="@this" global="false"  >  
+                                </p:commandButton> 
+                                <p:spacer width="10" />
+                                <p:commandButton value="#{msg.submitloan}" 
+                                                 action="#{viewBean.gotoScientificConfirmationPage()}" 
+                                                 styleClass="largebutton"   />
+                            </h:panelGroup> 
+
+                            <br /> 
+                            <br /> 
+                        </h:panelGroup> 
+                    </h:form>
+                </h:panelGroup>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

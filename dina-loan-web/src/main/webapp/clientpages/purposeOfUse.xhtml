@@ -1,0 +1,61 @@
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:p="http://primefaces.org/ui"   
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:h="http://java.sun.com/jsf/html"    > 
+    <head>
+        <title>Purpose Of Use</title>
+    </head>
+    <body>    
+        <ui:composition  template="/templates/masterLayout.xhtml">     
+            <ui:define name="content"  >  
+                <h:panelGroup styleClass="main" layout="block" id="purposeOfUse"  >    
+                    <ui:include src="/clientpages/breadcrumb.xhtml" />  
+                    <h:form id="purposeOfUseform">
+                        <h:panelGroup layout="block" id="purposeOfUsepanel" styleClass="purposepage" > 
+
+                            <h:panelGroup layout="block" id="page32panel"    >   
+                                <h:panelGroup layout="block" >
+                                    <p:outputLabel value="#{msg.edpage3title}" 
+                                                   style="font-size: 20px; font-weight: bold;" /> 
+                                </h:panelGroup>
+                                <br />
+                                <br /> 
+                                <p:panel header="#{msg.appropriatelabel}" >
+                                    <h:selectOneRadio value="#{otherForm.purposeOfUse}"
+                                                      layout="pageDirection" styleClass="collectionlistradiofont">
+                                        <f:selectItem itemValue="exhibition" itemLabel="#{msg.exhibitionslbl}" />
+                                        <f:selectItem itemValue="education" itemLabel="#{msg.educationlbl}" />   
+                                        <p:ajax event="change"  
+                                                listener="#{otherForm.purposeOfUseCheckChanged()}"  
+                                                update="purposeOfUseBtnPanel " global="false" />  
+                                    </h:selectOneRadio>  
+                                </p:panel>    
+
+                                <br />
+                                <br />  
+                                <br />
+                                <br />  
+                                <br /> 
+
+                                <h:panelGroup layout="block" id="purposeOfUseBtnPanel"
+                                              style="width: 150px; float: right;" > 
+                                    <p:commandButton value="#{msg.back}" 
+                                                     action="#{viewBean.navigateIndexInformationPage()}" 
+                                                     process="@this"  
+                                                     global="false" />  
+                                    <p:spacer width="10" />
+                                    <p:commandButton value="#{msg.next}" action="#{viewBean.gotoLoanDetails()}"
+                                                     global="false" process="@this"
+                                                     disabled="#{empty otherForm.purposeOfUse}" /> 
+                                </h:panelGroup>  
+                                <br />
+                                <br /> 
+                            </h:panelGroup> 
+                        </h:panelGroup> 
+                    </h:form>
+                </h:panelGroup> 
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

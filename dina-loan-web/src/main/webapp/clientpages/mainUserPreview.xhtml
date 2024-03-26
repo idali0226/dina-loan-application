@@ -1,0 +1,100 @@
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:ui="http://java.sun.com/jsf/facelets"  
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:f="http://java.sun.com/jsf/core" 
+      xmlns:h="http://java.sun.com/jsf/html" >
+        
+    <head>
+        <title>Main user preview</title>
+    </head>
+
+    <body>
+        <ui:composition>   
+
+            <h:panelGrid styleClass="defaulttext" >      
+
+                <h:panelGrid columns="5" cellpadding="0" cellspacing="0" > 
+                     
+                    <p:inplace  label="#{borrower.user.title}"  editor="true" 
+                                rendered="#{not empty borrower.user.title}"
+                                styleClass="originalbutton" >  
+                        <h:selectOneMenu value="#{borrower.user.title}"> 
+                            <f:selectItem itemValue="" itemLabel="#{msg.selectitile}" /> 
+                            <f:selectItem itemValue="#{msg.dr}" itemLabel="#{msg.dr}" />
+                            <f:selectItem itemValue="#{msg.prof}" itemLabel="#{msg.prof}" />
+                            <f:selectItem itemValue="#{msg.docent}" itemLabel="#{msg.docent}" />
+                            <f:selectItem itemValue="#{msg.assprof}" itemLabel="#{msg.assprof}" />
+                            <f:selectItem itemValue="#{msg.postdoc}" itemLabel="#{msg.postdoc}"  /> 
+                            <f:selectItem itemValue="#{msg.phd}" itemLabel="#{msg.phd}"   /> 
+                            <f:selectItem itemValue="#{msg.master}" itemLabel="#{msg.master}" /> 
+                        </h:selectOneMenu>
+                    </p:inplace> 
+                    <p:spacer width="5" rendered="#{not empty borrower.user.title}"/>  
+                    <p:inplace editor="true"  styleClass="originalbutton" >
+                        <p:inputText value="#{borrower.user.firstname}" 
+                                     required="true" label="text" />
+                    </p:inplace>
+                    <p:spacer width="5" /> 
+                    <p:inplace editor="true"  styleClass="originalbutton">
+                        <p:inputText value="#{borrower.user.lastname}"
+                                     required="true" label="text" />
+                    </p:inplace>  
+                    <p:spacer width="5" rendered="#{empty borrower.user.title}"/>  
+                    <p:spacer width="5" rendered="#{empty borrower.user.title}"/>  
+                </h:panelGrid>
+
+                <p:inplace editor="true"  styleClass="originalbutton">
+                    <p:inputText value="#{borrower.user.email}" 
+                                 required="true" label="text" />
+                </p:inplace>
+
+                <p:inplace editor="true"  styleClass="originalbutton">  
+                    <p:inputText value="#{borrower.user.phone}" 
+                                 required="true" label="text"  
+                                 validatorMessage="#{msg.invalidphone}"  
+                                 styleClass="contactfieldstext" >  
+                        <f:validateRegex pattern="^[+ ]?([0-9]+([- .]+)?)*" />  
+                    </p:inputText> 
+                </p:inplace>
+
+                <p:inplace editor="true" styleClass="originalbutton" >
+                    <p:inputText value="#{borrower.user.institution}" 
+                                 required="true" label="text" />
+                </p:inplace>
+
+                <p:inplace editor="true"  styleClass="originalbutton">
+                    <p:inputText value="#{borrower.user.department}"  label="text" />
+                </p:inplace>
+
+                <p:inplace editor="true"  styleClass="originalbutton">
+                    <p:inputText value="#{borrower.user.address.address}" 
+                                 required="true" label="text" />
+                </p:inplace>
+
+                <h:panelGrid columns="5" cellpadding="0" cellspacing="0">
+                    <p:inplace editor="true"  styleClass="originalbutton">
+                        <p:inputText value="#{borrower.user.address.zip}" 
+                                     required="true" 
+                                     label="text"  style="font-size: 12px; " />
+                    </p:inplace>
+                    <p:spacer width="5" />
+                    <p:inplace editor="true"  styleClass="originalbutton">
+                        <p:inputText value="#{borrower.user.address.city}" 
+                                     required="true" label="text" />
+                    </p:inplace>
+                    <p:spacer width="5" />
+                    <p:inplace editor="true"  styleClass="originalbutton">
+                        <p:inputText value="#{borrower.user.address.state}" 
+                                     label="text" />
+                    </p:inplace> 
+                </h:panelGrid>  
+                <p:inplace label="#{borrower.user.address.country}" 
+                           effectSpeed="fast" event="click" > 
+                    <h:selectOneMenu  value="#{borrower.user.address.country}">
+                        <f:selectItems value="#{borrower.countryList}" />
+                    </h:selectOneMenu>
+                </p:inplace>
+            </h:panelGrid>   
+        </ui:composition>
+    </body>
+</html>

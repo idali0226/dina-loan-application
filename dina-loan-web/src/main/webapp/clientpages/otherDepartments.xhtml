@@ -1,0 +1,40 @@
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:ui="http://java.sun.com/jsf/facelets"  
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:h="http://java.sun.com/jsf/html" > 
+    <head>
+        <title>Other departments</title>
+    </head>
+    <body>
+        <ui:composition>      
+            <h:panelGroup  layout="block" id="otherDepartmentsPanel"  >  
+                <h:panelGroup>
+                    <p:outputLabel value="#{departments.departmentName}"  
+                                   style="font-size: 20px; font-weight: bold;" />
+                </h:panelGroup>
+                <br />
+                <br /> 
+                <h:panelGroup layout="block">
+                    <p:outputLabel value="#{msg.departmentlinkssubtitle1}" 
+                                   style="font-size: 16px; font-weight: bold;"/>
+                    <br />
+                    <p:outputLabel value="#{msg.departmentlinkssubtitle2}" 
+                                   style="font-size: 16px; font-weight: bold;"/>
+                </h:panelGroup> 
+                <br />
+                <br /> 
+                <h:panelGroup layout="block">
+                    <p:outputLabel value="#{departments.departmentCollectionName}" />
+                    <br /> 
+                    <h:outputLink value="#{departments.url}" title="#{departments.url}" 
+                                  target="_blank" styleClass="departmentUrl"  > 
+                        #{departments.url}
+                    </h:outputLink>
+                </h:panelGroup> 
+                <br />
+                <br />  
+            </h:panelGroup>
+
+        </ui:composition> 
+    </body>
+</html>

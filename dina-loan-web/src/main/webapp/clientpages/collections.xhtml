@@ -1,0 +1,60 @@
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:p="http://primefaces.org/ui"   
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:h="http://java.sun.com/jsf/html"    > 
+    <head>
+        <title>Collections</title>
+    </head>
+    <body>    
+        <ui:composition  template="/templates/masterLayout.xhtml">     
+            <ui:define name="content"  >   
+                <h:panelGroup styleClass="main" layout="block" id="collection"  > 
+                    <ui:include src="/clientpages/breadcrumb.xhtml" />  
+                    <h:form id="collectionForm"> 
+               
+                        <h:panelGroup layout="block" id="collectionpanel"  styleClass="descriptionPage"  >   
+                            <h:panelGroup layout="block" >
+                                <p:outputLabel value="#{msg.collectionPageTitle1}" 
+                                               style="font-size: 20px; font-weight: bold;"/>  
+                            </h:panelGroup>
+                            <br />
+                            <h:panelGroup layout="block" >
+                                <p:outputLabel value="#{msg.collectionPageTitle2}" 
+                                               style="font-size: 20px; font-weight: bold;" /> 
+                            </h:panelGroup> 
+                            <br />
+                            <br />  
+                            <h:panelGroup layout="block" id="collectionradiopanel">
+                                <h:selectOneRadio value="#{scientificLoanForm.selectedCollection}" id="collectionRedio"
+                                                  layout="pageDirection" styleClass="collectionlistradiofont"  > 
+                                    <f:selectItems value="#{scientificLoanForm.collectionItems}" />   
+                                    <p:ajax listener="#{scientificLoanForm.collectionChanged()}" event="change" 
+                                            global="false" update="collectionpanelbtn" />
+                                </h:selectOneRadio>  
+                            </h:panelGroup>   
+ 
+                            <br />
+                            <br />
+                            <br /> 
+                            <br />
+
+                            <h:panelGroup layout="block" style="width: 200px; float: right;  "
+                                          id="collectionpanelbtn">  
+                                <p:commandButton value="#{msg.back}" 
+                                                 action="#{viewBean.navigateIndexWithRequestType()}" 
+                                                 process="@this" global="false"  />  
+                                <p:spacer width="10" />
+                                <p:commandButton value="#{msg.next}" action="#{viewBean.gotoSpecimen()}" 
+                                                 disabled="#{empty scientificLoanForm.selectedCollection}" 
+                                                 process="@this" global="false" />
+                            </h:panelGroup>   
+                            <br />
+                            <br />
+                        </h:panelGroup> 
+                    </h:form>
+                </h:panelGroup>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

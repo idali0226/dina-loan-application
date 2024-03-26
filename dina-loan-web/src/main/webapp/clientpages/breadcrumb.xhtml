@@ -1,0 +1,148 @@
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:ui="http://java.sun.com/jsf/facelets"  
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:h="http://java.sun.com/jsf/html" > 
+    <head>
+        <title>menu</title>
+    </head>
+    <body>
+        <ui:composition>      
+            <h:panelGroup  layout="block" styleClass="breadcrumbpanel" id="breadcrumbpanel"  > 
+                <h:form id="breadForm">
+                    
+                    <p:growl id="messages" showDetail="true" sticky="true" />
+
+                    <p:idleMonitor timeout="300000">
+                        <p:ajax event="idle" listener="#{idleMonitorView.onIdle}" update="messages" />
+                        <p:ajax event="active" listener="#{idleMonitorView.onActive}" update="messages" />
+                    </p:idleMonitor>
+                    
+                    <p:breadCrumb>  
+                        <p:menuitem value="#{breadcrumb.homeItem.value}"
+                                    action="#{viewBean.goToHome()}" 
+                                    process="@this" update="@all"  
+                                    global="false"  >   
+                        </p:menuitem>  
+                        <p:menuitem value="#{breadcrumb.departmentItem.value}" 
+                                    action="#{viewBean.navigateIndexDepartment()}" 
+                                    disabled="#{breadcrumb.departmentItem.disabled}" 
+                                    styleClass="#{breadcrumb.departmentItem.style}" 
+                                    update="@all"   global="false" process="@this"> 
+                        </p:menuitem>   
+                        <p:menuitem value="#{breadcrumb.notImplementItem.value}"  
+                                    rendered="#{breadcrumb.notImplementItem.rendered}"
+                                    disabled="true" 
+                                    styleClass="#{breadcrumb.notImplementItem.style}" 
+                                    update="@all"   global="false" process="@this" >   
+                        </p:menuitem>  
+                        <p:menuitem value="#{breadcrumb.purposeItem.value}" 
+                                    action="#{viewBean.navigateIndexPurpose()}" 
+                                    rendered="#{breadcrumb.purposeItem.rendered}"
+                                    disabled="#{breadcrumb.purposeItem.disabled}" 
+                                    styleClass="#{breadcrumb.purposeItem.style}" 
+                                    update="@all"   global="false" process="@this" >   
+                        </p:menuitem>  
+                        <p:menuitem value="#{breadcrumb.requestTypeItem.value}" 
+                                    action="#{viewBean.navigateIndexRequestType}"  
+                                    rendered="#{breadcrumb.requestTypeItem.rendered}"
+                                    disabled="#{breadcrumb.requestTypeItem.disabled}" 
+                                    styleClass="#{breadcrumb.requestTypeItem.style}" 
+                                    update="@all"  global="false" process="@this"  >   
+                        </p:menuitem>  
+                        <p:menuitem value="#{breadcrumb.informationItem.value}" 
+                                    action="#{viewBean.navigateIndexInformationPage()}"  
+                                    rendered="#{breadcrumb.informationItem.rendered}"
+                                    disabled="#{breadcrumb.informationItem.disabled}" 
+                                    styleClass="#{breadcrumb.informationItem.style}" 
+                                    update="@all"  global="false" process="@this"  >   
+                        </p:menuitem> 
+                        <p:menuitem value="#{breadcrumb.projectItem.value}" 
+                                    action="#{viewBean.navigateIndexProject()}"  
+                                    rendered="#{breadcrumb.projectItem.rendered}"
+                                    disabled="#{breadcrumb.projectItem.disabled}" 
+                                    styleClass="#{breadcrumb.projectItem.style}" 
+                                    update="@all"   global="false" process="@this" >   
+                        </p:menuitem>  
+                        <p:menuitem value="#{breadcrumb.purposeOfUesItem.value}" 
+                                    action="#{viewBean.navigateIndexPurposeOfUse}"  
+                                    rendered="#{breadcrumb.purposeOfUesItem.rendered}"
+                                    disabled="#{breadcrumb.purposeOfUesItem.disabled}" 
+                                    styleClass="#{breadcrumb.purposeOfUesItem.style}" 
+                                    update="@all"   global="false" process="@this" >   
+                        </p:menuitem> 
+                        <p:menuitem value="#{breadcrumb.loanTypeItem.value}" 
+                                    action="#{viewBean.navigateIndexLoanType()}"  
+                                    rendered="#{breadcrumb.loanTypeItem.rendered}"
+                                    disabled="#{breadcrumb.loanTypeItem.disabled}" 
+                                    styleClass="#{breadcrumb.loanTypeItem.style}" 
+                                    update="@all"   global="false" process="@this" >   
+                        </p:menuitem>  
+                        <p:menuitem value="#{breadcrumb.collectionItem.value}"
+                                    action="#{viewBean.navigateIndexCollection()}" 
+                                    rendered="#{breadcrumb.collectionItem.rendered}"
+                                    disabled="#{breadcrumb.collectionItem.disabled}" 
+                                    styleClass="#{breadcrumb.collectionItem.style}" 
+                                    update="@all"   global="false" process="@this" >   
+                        </p:menuitem>  
+                        <p:menuitem value="#{breadcrumb.loanDetailItem.value}" 
+                                    action="#{viewBean.navigateIndexLoanDetail}"  
+                                    rendered="#{breadcrumb.loanDetailItem.rendered}"
+                                    disabled="#{breadcrumb.loanDetailItem.disabled}" 
+                                    styleClass="#{breadcrumb.loanDetailItem.style}" 
+                                    update="@all"   global="false" process="@this" >   
+                        </p:menuitem>  
+                        <p:menuitem value="#{breadcrumb.storageItem.value}" 
+                                    action="#{viewBean.navigateIndexStorage}"  
+                                    rendered="#{breadcrumb.storageItem.rendered}"
+                                    disabled="#{breadcrumb.storageItem.disabled}" 
+                                    styleClass="#{breadcrumb.storageItem.style}" 
+                                    update="@all"   global="false" process="@this" >   
+                        </p:menuitem>  
+                        <p:menuitem value="#{breadcrumb.specimentsItem.value}" 
+                                    action="#{viewBean.navigateIndexSpecimens()}" 
+                                    rendered="#{breadcrumb.specimentsItem.rendered}"
+                                    disabled="#{breadcrumb.specimentsItem.disabled}" 
+                                    styleClass="#{breadcrumb.specimentsItem.style}" 
+                                    update="@all"    global="false" process="@this" >   
+                        </p:menuitem>  
+                        <p:menuitem value="#{breadcrumb.desctructiveItem.value}" 
+                                    action="#{viewBean.navigateIndexDestructive()}" 
+                                    rendered="#{breadcrumb.desctructiveItem.rendered}"
+                                    disabled="#{breadcrumb.desctructiveItem.disabled}" 
+                                    styleClass="#{breadcrumb.desctructiveItem.style}" 
+                                    update="@all"   global="false" process="@this" >  
+                        </p:menuitem>  
+                        <p:menuitem value="#{breadcrumb.photoItem.value}" 
+                                    action="#{viewBean.navigateIndexPhotoDetail()}" 
+                                    rendered="#{breadcrumb.photoItem.rendered}"
+                                    disabled="#{breadcrumb.photoItem.disabled}" 
+                                    styleClass="#{breadcrumb.photoItem.style}" 
+                                    update="@all"   global="false" process="@this" >  
+                        </p:menuitem>  
+                        <p:menuitem value="#{breadcrumb.citesItem.value}" 
+                                    action="#{viewBean.navigateIndexCites()}" 
+                                    rendered="#{breadcrumb.citesItem.rendered}" 
+                                    disabled="#{breadcrumb.citesItem.disabled}" 
+                                    styleClass="#{breadcrumb.citesItem.style}" 
+                                    update="@all"  global="false" process="@this"> 
+                        </p:menuitem>  
+                        <p:menuitem value="#{breadcrumb.contactItem.value}" 
+                                    action="#{viewBean.navigateIndexBorrowWithPurpose()}" 
+                                    rendered="#{breadcrumb.contactItem.rendered}" 
+                                    disabled="#{breadcrumb.contactItem.disabled}" 
+                                    styleClass="#{breadcrumb.contactItem.style}" 
+                                    update="@all"   global="false" process="@this">  
+                        </p:menuitem> 
+                        <p:menuitem value="#{breadcrumb.reviewItem.value}" 
+                                    action="#{viewBean.navigateIndexReview()}" 
+                                    rendered="#{breadcrumb.reviewItem.rendered}" 
+                                    disabled="#{breadcrumb.reviewItem.disabled}" 
+                                    styleClass="#{breadcrumb.reviewItem.style}"  
+                                    update="@all"   global="false" process="@this">  
+                        </p:menuitem> 
+                    </p:breadCrumb>     
+                </h:form>
+            </h:panelGroup> 
+        </ui:composition>
+    </body>
+</html>

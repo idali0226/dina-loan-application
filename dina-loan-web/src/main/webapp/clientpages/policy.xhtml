@@ -2,57 +2,77 @@
       xmlns:ui="http://java.sun.com/jsf/facelets" 
       xmlns:p="http://primefaces.org/ui"   
       xmlns:h="http://java.sun.com/jsf/html"    > 
-  <body>
-    <ui:composition>     
-      <h:panelGrid id="policypage" styleClass="sectionstyle1" rendered="#{onlineForm.section == 3}"  > 
+    <head>
+        <title>Policy</title>
+    </head>
+    <body>
+        <ui:composition  template="/templates/masterLayout.xhtml">     
+            <ui:define name="content"  > 
+                <h:form id="policyForm">
+                    <h:panelGroup id="policypage" layout="block" styleClass="main"  >
 
-        <h:panelGroup id="readpolicyPanel">    
-          <h:panelGroup layout="block"  rendered="#{onlineForm.section == 3}" styleClass="sectionstyle1"  >
+                        <h:panelGroup styleClass="backtofomrlink">
+                            <p:commandLink actionListener="#{viewBean.gotoBackFormView()}" 
+                                           value="#{msg.backtoloanform}"  
+                                           style="color: #8B8786; font-size: 12px; text-decoration: underline;  " 
+                                           process="@this" global="false"  />   
+                        </h:panelGroup>
+                        <br /> 
+                        <br />
+                        <br /> 
 
-            <h:panelGrid styleClass="backtofomrlink">
-              <p:commandLink actionListener="#{onlineForm.backtoform}" value="#{msg.backtoloanform}"  style="color: #8B8786; " 
-                             process="@this" global="false" update="@all"  oncomplete="drawRegionsMap();"  />   
-            </h:panelGrid>
+                        <h:panelGroup layout="block"  styleClass="sectionstyle1">
+                            <h:panelGroup layout="block" >
+                                <p:outputLabel value="#{msg.downloadpolicy}" styleClass="subtitle" />  
+                            </h:panelGroup>
+                            <br />
+                            <br /> 
+ 
+                            <p:commandButton id="scPolicyBtn"  value="#{msg.scientificloanpolicy}" type="button"  />
 
-            <br /><br /><br />
+                            <p:overlayPanel id="currentScPolicyPanel" at="left bottom"
+                                            for="scPolicyBtn"  dynamic="true"  >
 
-            <h:panelGroup layout="block" >
-              <p:outputLabel value="#{msg.downloadpolicy}" styleClass="subtitle" />  
-            </h:panelGroup>
-            <br />
-            <br />
-            <br />
-            <br /> 
-            <p:commandButton id="scPolicyBtn"  value="#{msg.scientificloanpolicy}" type="button"  />
-            
-            <p:overlayPanel id="currentScPolicyPanel" for="scPolicyBtn" hideEffect="fade" dynamic="true"  >
-              <ui:remove>
-                <object type="application/pdf" data="#{onlineForm.scPolicy}" height="750px" width="800px"    />
-              </ui:remove>
-               
-              <p:media value="#{onlineForm.scPolicy}" height="750px" width="820px" player="pdf">
-                        Your browser can't display pdf, <h:outputLink
-                          value="#{onlineForm.scPolicy}">click</h:outputLink> to download pdf instead.
-              </p:media>
-            </p:overlayPanel>  
-            <br />
-            <br />
-            <p:commandButton id="edPolicyBtn" value="#{msg.educationalloanpolicy}" type="button" />
-            <p:overlayPanel id="currentEdPolicyPanel" for="edPolicyBtn" hideEffect="fade" dynamic="true"  >
-              <ui:remove>
-                <object type="application/pdf" data="#{onlineForm.edPolicy}" height="750px" width="800px"  />  
-              </ui:remove>
-           
-              <p:media value="#{onlineForm.edPolicy}" height="750px" width="820px" player="pdf">
-                        Your browser can't display pdf, <h:outputLink
-                          value="#{onlineForm.edPolicy}">click</h:outputLink> to download pdf instead.
-              </p:media>
-            </p:overlayPanel>
-      
-          </h:panelGroup>
-        </h:panelGroup>
+                                <p:media value="#{policy.scientificPolicyPdfFile}"  
+                                         height="750px" width="820px" player="pdf">
+                                    Your browser can't display pdf, <h:outputLink
+                                        value="#{policy.scientificPolicyPdfFile}" >
+                                        click
+                                    </h:outputLink> to download pdf instead.
+                                </p:media> 
+                            </p:overlayPanel>  
+                            <br />
+                            <br />
 
-      </h:panelGrid>
-    </ui:composition>
-  </body>
+                            <p:commandButton id="edPolicyBtn" value="#{msg.educationalloanpolicy}" type="button" />
+                            <p:overlayPanel id="currentEdPolicyPanel" at="left bottom"
+                                            for="edPolicyBtn" dynamic="true"  >
+
+                                <p:media value="#{policy.educationPolicyPdfFile}" height="750px" width="820px" player="pdf">
+                                    Your browser can't display pdf, <h:outputLink
+                                        value="#{policy.educationPolicyPdfFile}">click</h:outputLink> to download pdf instead.
+                                </p:media>
+                            </p:overlayPanel>
+                        </h:panelGroup>
+
+                        <br />
+                        <br />
+                        <br />
+                        <br /> 
+
+                        <br />
+                        <br />
+                        <br />
+                        <br /> 
+
+                        <br />
+                        <br />
+                        <br />
+                        <br /> 
+
+                    </h:panelGroup>
+                </h:form>
+            </ui:define>
+        </ui:composition> 
+    </body>
 </html>

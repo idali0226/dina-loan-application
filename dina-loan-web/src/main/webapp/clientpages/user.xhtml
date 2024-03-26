@@ -1,0 +1,149 @@
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:ui="http://java.sun.com/jsf/facelets"  
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:f="http://java.sun.com/jsf/core" 
+      xmlns:h="http://java.sun.com/jsf/html" >
+    <head>
+        <title>User</title>
+    </head>
+    <body>
+        <ui:composition> 
+            <h:panelGroup  id="contact1Panel" 
+                           style="font-size:  11px; font-family: Arial,sans-serif;">
+                <h:panelGrid columns="3"   >
+
+                    <p:outputLabel value="#{msg.title}"  />  
+                    <p:selectOneMenu value="#{borrower.user.title}" id="userTitle" 
+                                     style="width:185px; font-size:  11px; font-family: Arial,sans-serif;">  
+                        <f:selectItem itemValue="" itemLabel="#{msg.selectitile}" /> 
+                        <f:selectItem itemValue="#{msg.dr}" itemLabel="#{msg.dr}" />
+                        <f:selectItem itemValue="#{msg.prof}" itemLabel="#{msg.prof}" />
+                        <f:selectItem itemValue="#{msg.docent}" itemLabel="#{msg.docent}" />
+                        <f:selectItem itemValue="#{msg.assprof}" itemLabel="#{msg.assprof}" />
+                        <f:selectItem itemValue="#{msg.postdoc}" itemLabel="#{msg.postdoc}" />
+                        <f:selectItem itemValue="#{msg.phd}" itemLabel="#{msg.phd}" /> 
+                        <f:selectItem itemValue="#{msg.master}" itemLabel="#{msg.master}" /> 
+                        <p:ajax event="change" listener="#{borrower.borrowerTitleChanged()}" 
+                                update="primaryUserPanel contactlinksPanel" 
+                                global="false" process="@this" />
+                    </p:selectOneMenu>   
+                    <p:spacer width="5" />
+
+                    <h:outputLabel for="userFirstname" value="#{msg.firstname}:" />
+                    <p:inputText id="userFirstname" 
+                                 value="#{borrower.user.firstname}" 
+                                 requiredMessage="#{msg.errmsgfirstname}"
+                                 size="30" required="true"   styleClass="contactfieldstext" >   
+                        <p:ajax event="blur"  global="false" process="@this" 
+                                listener="#{borrower.saveText()}" />
+                    </p:inputText>  
+                    <p:message for="userFirstname" display="icon"   />
+
+                    <h:outputLabel for="userLastname" value="#{msg.lastname}:" />
+                    <p:inputText id="userLastname" 
+                                 value="#{borrower.user.lastname}"
+                                 size="30" required="true" 
+                                 requiredMessage="#{msg.errmsglastname}" 
+                                 styleClass="contactfieldstext" >  
+                        <p:ajax event="blur" global="false" process="@this"   
+                                listener="#{borrower.saveText()}" />
+                    </p:inputText> 
+                    <p:message for="userLastname"  display="icon"  />
+
+
+
+                    <h:outputLabel for="userInstitution" value="#{msg.institution}:" />
+                    <p:inputText id="userInstitution" 
+                                 value="#{borrower.user.institution}" 
+                                 size="30" required="true" 
+                                 requiredMessage="#{msg.errmsginstitution}" 
+                                 styleClass="contactfieldstext" >    
+                        <p:ajax event="blur"  global="false" process="@this"  
+                                listener="#{borrower.saveUser()}" />
+                    </p:inputText> 
+                    <p:message for="userInstitution" display="icon"  />
+
+                    <h:outputLabel for="userDetartment" value="#{msg.department}:" />
+                    <p:inputText id="userDetartment" 
+                                 value="#{borrower.user.department}" 
+                                 size="30" styleClass="contactfieldstext"  >   
+                        <p:ajax event="blur"  global="false" process="@this" 
+                                listener="#{borrower.saveText()}" />
+                    </p:inputText> 
+                    <p:spacer width="5" />
+
+                    <h:outputLabel for="userAddress" value="#{msg.address}:" />
+                    <p:inputText id="userAddress" 
+                                 value="#{borrower.user.address.address}"
+                                 size="30" requiredMessage="#{msg.errmsgaddress}" 
+                                 required="true" styleClass="contactfieldstext" >   
+                        <p:ajax event="blur"  global="false" process="@this"  
+                                listener="#{borrower.saveText()}" />
+                    </p:inputText> 
+                    <p:message for="userAddress" display="icon"   />
+
+                    <h:outputLabel for="userCity" value="#{msg.city}:" />
+                    <p:inputText id="userCity" 
+                                 value="#{borrower.user.address.city}" 
+                                 size="30" required="true" 
+                                 requiredMessage="#{msg.errmsgcity}"  
+                                 styleClass="contactfieldstext" >   
+                        <p:ajax event="blur"  global="false" process="@this"  
+                                listener="#{borrower.saveText()}" />
+                    </p:inputText> 
+                    <p:message for="userCity" display="icon"   /> 
+
+                    <h:outputLabel for="userState" value="#{msg.state}:" />
+                    <p:inputText id="userState"  
+                                 value="#{borrower.user.address.state}" 
+                                 size="30" styleClass="contactfieldstext"  >     
+                        <p:ajax event="blur"  global="false" process="@this"  
+                                listener="#{borrower.saveText()}" />
+                    </p:inputText> 
+                    <p:spacer width="5" />
+
+                    <h:outputLabel for="userZip" value="#{msg.zip}:" /> 
+                    <p:inputText id="userZip" 
+                                 value="#{borrower.user.address.zip}" 
+                                 styleClass="contactfieldstext" 
+                                 required="true" requiredMessage="#{msg.errmsgzip}"  >  
+                        <p:ajax event="blur"  global="false" process="@this"  
+                                listener="#{borrower.saveText()}" />
+                    </p:inputText> 
+                    <p:message for="userZip" display="icon"  /> 
+
+                    <h:outputLabel for="userCountrySelection" value="#{msg.country}:" />  
+                    <p:selectOneMenu id="userCountrySelection" 
+                                     value="#{borrower.user.address.country}" 
+                                     required="true" 
+                                     requiredMessage="#{msg.errmsgcountry}"  
+                                     style="width:185px; font-size:  11px; font-family: Arial,sans-serif;"> 
+                        <f:selectItems value="#{borrower.countryList}"    />    
+                    </p:selectOneMenu>
+                    <p:message for="userCountrySelection" display="icon"  /> 
+
+
+                    <h:outputLabel for="userEmail" value="#{msg.email}:" />
+                    <p:inputText id="userEmail" required="true"   size="30"
+                                 requiredMessage="#{msg.errmsgemail}"
+                                 validatorMessage="#{msg.errmsgemailvalidation}"  
+                                 styleClass="contactfieldstext" 
+                                 value="#{borrower.user.email}">  
+                        <f:validateRegex pattern="([^.@]+)(\.[^.@]+)*@([^.@]+\.)+([^.@]+)" />    
+                    </p:inputText> 
+                    <p:message for="userEmail"  display="icon"  />
+
+                    <h:outputLabel for="userPhone" value="#{msg.phone}:" />
+                    <p:inputText id="userPhone" value="#{borrower.user.phone}" size="30" required="true" 
+                                 requiredMessage="#{msg.errmsgphone}" 
+                                 validatorMessage="#{msg.invalidphone}" 
+                                 styleClass="contactfieldstext"  >    
+                        <f:validateRegex pattern="^[+ ]?([0-9]+([- .]+)?)*" />   
+                    </p:inputText>  
+                    <p:message for="userPhone" display="icon"  />  
+
+                </h:panelGrid>
+            </h:panelGroup>
+        </ui:composition> 
+    </body>
+</html>

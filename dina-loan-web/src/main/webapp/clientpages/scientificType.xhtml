@@ -1,0 +1,84 @@
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:p="http://primefaces.org/ui"   
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:h="http://java.sun.com/jsf/html"    > 
+    <head>
+        <title>Scientific loan type</title>
+    </head>
+    <body>    
+        <ui:composition  template="/templates/masterLayout.xhtml">     
+            <ui:define name="content"  >   
+                <h:panelGroup styleClass="main" layout="block" id="requestType"  > 
+                    <ui:include src="/clientpages/breadcrumb.xhtml" />  
+                    <h:form id="scientificTypeForm"> 
+                        <h:panelGroup layout="block" id="scientifictypepanel"  styleClass="purposepage" > 
+                            <h:panelGroup layout="block" >
+                                <p:outputLabel value="#{msg.typeRequesttitle}" 
+                                               style="font-size: 20px; font-weight: bold;"/> 
+                            </h:panelGroup>
+                            <br />
+                            <br />
+                            <br /> 
+
+                            <p:panel>
+                                <h:panelGrid columns="3"  > 
+                                    <h:selectOneRadio value="#{scientificLoanForm.requestType}" 
+                                                      layout="pageDirection" styleClass="customradio" 
+                                                      id="page2radio">
+                                        <f:selectItem itemValue="Physical" itemLabel="#{msg.physical}" />
+                                        <f:selectItem itemValue="Photo" itemLabel="#{msg.photo}" />	
+                                        <f:selectItem itemValue="Information" itemLabel="#{msg.information}" />	  
+                                        <p:ajax event="change"  global="false" process="@this"
+                                                listener="#{viewBean.requestTypeChanged()}"   
+                                                update="breadcrumbpanel" />  
+                                    </h:selectOneRadio> 
+ 
+                                    <h:panelGroup layout="block" style="padding: 5px; ">
+                                        <p:graphicImage value="/resources/images/icon_question_mark.jpg" 
+                                                        styleClass="languageimg"  
+                                                        style="padding-top: 8px; "
+                                                        alt="#{msg.helptext}" id="physicalTypeRadio" />  
+                                        <br />
+                                        <p:graphicImage value="/resources/images/icon_question_mark.jpg" 
+                                                        styleClass="languageimg" 
+                                                        style="padding-top: 8px; "
+                                                        alt="#{msg.helptext}"  id="photoTypeRadio" />  
+                                        <br />
+                                        <p:graphicImage value="/resources/images/icon_question_mark.jpg" 
+                                                        styleClass="languageimg" 
+                                                        style="padding-top: 8px; "
+                                                        alt="#{msg.helptext}"  id="informationTypeRadio" /> 
+                                    </h:panelGroup>
+
+                                    <p:tooltip for="physicalTypeRadio" value="#{msg.physicalrequesttip}" 
+                                               showEffect="fade" hideEffect="fade" 
+                                               style="font-size: 12px; white-space: normal; width: 250px; "/>  
+                                    
+                                    <p:tooltip for="photoTypeRadio" value="#{msg.photorequesttip}" 
+                                               showEffect="fade" hideEffect="fade" 
+                                               style="font-size: 12px; white-space: normal; width: 250px; "/>  
+
+                                    <p:tooltip for="informationTypeRadio" value="#{msg.informationrequesttip}" 
+                                               showEffect="fade" hideEffect="fade" 
+                                               style="font-size: 12px; white-space: normal; width: 250px; "/>  
+                                </h:panelGrid>  
+                            </p:panel> 
+
+                            <h:panelGroup layout="block" style="width: 200px; float: right;  ">  
+                                <p:commandButton value="#{msg.back}" 
+                                                 action="#{viewBean.navigateIndexPurpose()}"  
+                                                 process="@this" global="false"  />  
+                                <p:spacer width="10" />
+                                <p:commandButton value="#{msg.next}" 
+                                                 action="#{viewBean.gotoScDescPurpose()}" 
+                                                 process="@this" global="false" />
+                            </h:panelGroup> 
+                        </h:panelGroup> 
+                    </h:form>
+                </h:panelGroup>
+            </ui:define>
+        </ui:composition>
+
+    </body>
+</html>

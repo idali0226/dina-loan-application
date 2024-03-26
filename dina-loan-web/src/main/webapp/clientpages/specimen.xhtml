@@ -1,0 +1,282 @@
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:p="http://primefaces.org/ui"    
+      xmlns:h="http://java.sun.com/jsf/html"    > 
+    <head>
+        <title>Specimen</title>
+    </head>
+    
+    <body>    
+        <ui:composition  template="/templates/masterLayout.xhtml">     
+            <ui:define name="content"  >   
+                <h:panelGroup id="openWindow">
+                    <h:outputScript rendered="#{not empty sampleBean.sbdiSearchUrl}">
+                        window.open('#{sampleBean.sbdiSearchUrl}', '_blank')
+                    </h:outputScript>
+                </h:panelGroup>
+                <h:panelGroup styleClass="main" layout="block" id="specimen"  > 
+                    <ui:include src="/clientpages/breadcrumb.xhtml" />  
+                    <h:form id="specimentForm">  
+                        <p:dialog id="speciesdialog" header="#{msg.searchreault}" 
+                                  widgetVar="speciesDlg"  
+                                  style="width: 1000px; font-size: 20px; font-weight: bold; " 
+                                  draggable="false"> 
+                            <ui:include src="/clientpages/speciesSearchResult.xhtml" />   
+                        </p:dialog> 
+
+                        <h:panelGroup layout="block" id="page51panel"  styleClass="sectionstyle2"  >  
+                            <h:panelGroup id="samplelistpanel" style="width: 80%;"
+                                          rendered="#{sampleBean.samples.size() > 0}">    
+                                <ui:include src="/clientpages/samplesTable.xhtml" />   
+                                <br />
+                                <br />  
+                            </h:panelGroup>
+
+                            <h:panelGroup layout="block" >
+                                <p:outputLabel value="#{msg.specimenPageTitle}" 
+                                               style="font-size: 20px; font-weight: bold;"/> 
+                                <br /><br />
+                                <p:outputLabel value="#{msg.specimenPageSubtitle}" 
+                                               style="font-size: 15px; font-weight: bold;"/> 
+                                <br />
+                            </h:panelGroup>
+
+                            <h:panelGroup layout="block" style="padding-left: 20px; "> 
+                                <ul>
+                                    <li>
+                                        <p:outputLabel value="#{msg.page5additionaltext1}" 
+                                                       style="font-size: 12px; "  /> 
+                                    </li>
+                                    <li>
+                                        <p:outputLabel value="#{msg.page5additionaltext2}" 
+                                                       style="font-size: 12px;  "/>
+                                        <p:outputLabel value="#{msg.page5additionbold}" 
+                                                       style="font-size: 12px; font-weight: bold;"/>
+                                        <p:outputLabel value="#{msg.page5additionnormal}" 
+                                                       style="font-size: 12px;  "/> 
+                                    </li>
+                                    <li>
+                                        <p:outputLabel value="#{msg.page5additionaltext3}" 
+                                                       style="font-size: 12px; "/> 
+                                    </li>
+                                    <li>
+                                        <p:outputLabel value="#{msg.page5additionaltext4}" 
+                                                       style="font-size: 12px; "/>    
+                                    </li>  
+                                </ul> 
+                            </h:panelGroup> 
+                            <br />
+                            <br />   
+                            <p:panel id="taxarequestpanel" styleClass="taxasampletext"> 
+                                <p:messages id="speciesSearchmsg"   showDetail="true" showSummary="false" 
+                                            closable="true"   showIcon="true" />
+
+                                <h:panelGrid columns="5" id="newrequestpanel"> 
+                                    <p:spacer width="5" />
+                                    <p:spacer width="5" /> 
+                                    <p:spacer width="5" /> 
+                                    <p:outputLabel value="#{msg.searchOption}" 
+                                                   style="font-weight: bold; font-size: 14px;" />
+                                    <p:spacer width="5" />
+
+                                    <p:outputLabel for="samplecatalognumber" style="font-size: 12px;"
+                                                   value="#{msg.catalognumber}:"  /> 
+                                    <p:inputText id="samplecatalognumber" size="45"
+                                                 value="#{sampleBean.sample.catalogNumber}"> 
+                                    </p:inputText>
+                                    <p:outputLabel value="&lt;==&gt;" style="color: #0b5e82; "  /> 
+                                    <p:commandButton value="#{msg.dina}" id="btnCatNum" 
+                                                     process="@this,samplecatalognumber"
+                                                     update="newrequestpanel speciesSearchmsg speciesdialog" 
+                                                     actionListener="#{sampleBean.searchWithCatalogNumber}" />
+                                    <p:spacer width="5" />
+
+                                    <p:outputLabel for="samplefamily" value="#{msg.family}:" 
+                                                   style="font-size: 12px;" />
+                                    <p:inputText id="samplefamily" value="#{sampleBean.sample.family}"
+                                                 size="45"> 
+                                    </p:inputText> 
+                                    <p:outputLabel value="&lt;==&gt;" style="color: #0b5e82; " />
+                                    <p:commandButton value="#{msg.dina}" 
+                                                     actionListener="#{sampleBean.searchWithFamily()}" 
+                                                     process="@this,samplefamily"
+                                                     update="newrequestpanel speciesSearchmsg speciesdialog" />
+                                    <p:commandButton value="#{msg.sbdi}" global="false"
+                                                     actionListener="#{sampleBean.searchFromSbdi(sampleBean.sample.family)}" 
+                                                     process="@this,samplefamily"  
+                                                     update="openWindow"   /> 
+
+                                    <p:outputLabel for="samplegenus" value="#{msg.genus}:"  
+                                                   style="font-size: 12px;"/>
+                                    <p:inputText id="samplegenus" value="#{sampleBean.sample.genus}" size="45"> 
+                                    </p:inputText>  
+                                    <p:outputLabel value="&lt;==&gt;" style="color: #0b5e82; " />
+                                    <p:commandButton value="#{msg.dina}" 
+                                                     actionListener="#{sampleBean.searchWithGenus()}" 
+                                                     process="@this,samplegenus" 
+                                                     update="newrequestpanel speciesSearchmsg speciesdialog"  />
+                                    <p:commandButton value="#{msg.sbdi}" global="false"
+                                                     actionListener="#{sampleBean.searchFromSbdi(sampleBean.sample.genus)}" 
+                                                     process="@this,samplegenus" update="openWindow"   /> 
+
+
+                                    <p:outputLabel for="samplespecies" value="#{msg.species}:"  
+                                                   style="font-size: 12px;"/>  
+                                    <p:inputText id="samplespecies" value="#{sampleBean.sample.species}" size="45"> 
+                                    </p:inputText> 
+                                    <p:outputLabel value="&lt;==&gt;" style="color: #0b5e82; " />
+                                    <p:commandButton value="#{msg.dina}" actionListener="#{sampleBean.searchWithSpecies()}" 
+                                                     process="@this,samplespecies" 
+                                                     update="newrequestpanel speciesSearchmsg speciesdialog" />
+                                    <p:commandButton value="#{msg.sbdi}" global="false"
+                                                     actionListener="#{sampleBean.searchFromSbdi(sampleBean.sample.species)}" 
+                                                     process="@this,samplespecies"  update="openWindow"   /> 
+
+                                    <p:outputLabel for="sampleauctor" value="#{msg.author}:" 
+                                                   style="font-size: 12px;"/>   
+                                    <p:inputText id="sampleauctor" value="#{sampleBean.sample.auctor}" size="45"> 
+                                    </p:inputText>
+                                    <p:spacer width="5" />
+                                    <p:spacer width="5" />
+                                    <p:spacer width="5" /> 
+
+                                    <p:outputLabel for="sampletypeStatus" value="#{msg.typeStatus}:" 
+                                                   style="font-size: 12px;"/>   
+                                    <p:inputText id="sampletypeStatus" value="#{sampleBean.sample.typeStatus}" size="45"> 
+                                    </p:inputText>
+                                    <p:spacer width="5" />
+                                    <p:spacer width="5" />
+                                    <p:spacer width="5" />
+
+                                    <p:outputLabel for="samplecountry" value="#{msg.localitycountry}:" 
+                                                   style="font-size: 12px;"/> 
+                                    <p:inputText id="samplecountry" value="#{sampleBean.sample.country}" size="45"> 
+                                    </p:inputText> 
+                                    <p:spacer width="5" />
+                                    <p:spacer width="5" />
+                                    <p:spacer width="5" />
+
+                                    <p:outputLabel for="samplelocality" value="#{msg.locality}:"
+                                                   style="font-size: 12px;"/> 
+                                    <p:inputText id="samplelocality" value="#{sampleBean.sample.locality}" size="45"> 
+                                    </p:inputText> 
+                                    <p:spacer width="5" />
+                                    <p:spacer width="5" />
+                                    <p:spacer width="5" />
+
+
+
+                                    <p:outputLabel for="samplecollectedyear" value="#{msg.collectdyear}:" 
+                                                   style="font-size: 12px;"/>
+                                    <p:inputText id="samplecollectedyear" 
+                                                 value="#{sampleBean.sample.collectedYear}" size="45"> 
+                                    </p:inputText>     
+                                    <p:spacer width="5" />
+                                    <p:spacer width="5" />
+                                    <p:spacer width="5" />
+
+                                    <p:outputLabel for="samplecollector" value="#{msg.collector}:" 
+                                                   style="font-size: 12px;"/> 
+                                    <p:inputText id="samplecollector" value="#{sampleBean.sample.collector}" size="45"> 
+                                    </p:inputText>
+                                    <p:spacer width="5" />
+                                    <p:spacer width="5" />
+                                    <p:spacer width="5" />
+
+
+                                    <p:outputLabel for="typespecimen" value="#{msg.typespecimen}:"
+                                                   style="font-size: 12px;" />   
+                                    <p:inputText id="typespecimen" value="#{sampleBean.sample.type}" 
+                                                 required="#{!scientificLoanForm.isPhoto}" 
+                                                 requiredMessage="#{msg.errmsgtypespecimen}"  size="45"> 
+                                    </p:inputText>
+                                    <p:message for="typespecimen" display="icon"   /> 
+                                    <p:spacer width="5" />  
+                                    <p:spacer width="5" />
+
+                                    <p:spacer width="5" /> 
+                                    <p:outputLabel value="#{msg.typespecimendesc}" style="font-size: 12px;"  />
+                                    <p:spacer width="5" />
+                                    <p:spacer width="5" />
+                                    <p:spacer width="5" />
+
+                                    <p:outputLabel for="sampletypeother" style="font-size: 12px;"  
+                                                   value="#{msg.other}:" />
+                                    <p:inputText id="sampletypeother" value="#{sampleBean.sample.other}"  size="45"> 
+                                    </p:inputText> 
+                                    <p:spacer width="5" /> 
+                                    <p:spacer width="5" />
+                                    <p:spacer width="5" />
+                                </h:panelGrid>
+                            </p:panel>
+                            <br />
+                            <h:panelGroup layout="block" style="width: 160px; float: right;  ">   
+                                <p:commandButton value="#{msg.cancel}" update="taxarequestpanel" 
+                                                 process="@this" 
+                                                 actionListener="#{sampleBean.cleartaxafields()}" 
+                                                 global="false"  />
+                                <p:spacer width="10" />  
+                                <p:commandButton value="#{msg.add}" action="#{sampleBean.addTaxa()}"   
+                                                 update="page51panel" global="false" process="page51panel"  />
+                            </h:panelGroup>  
+                            <br />
+                            <br />   
+                            <hr />
+
+
+                            <h:panelGrid  
+                                style="border: 1px solid; border-color: #FF0000; width: 100%; margin-right: auto; margin-left: auto;   "> 
+                                <h:panelGroup>
+                                    <p:outputLabel value="#{msg.page5additionaltext5}" 
+                                                   styleClass="defaultboldtext" style="font-size: 16px; " />
+                                    <p:outputLabel value="#{msg.page5additionaltext6}" styleClass="defaulttext"  style="font-size: 16px;"  /> 
+                                    <h:outputLink value="#{msg.page5additionaltext7}" target="_blank" > 
+                                        <h:outputText value="#{msg.page5additionaltext7}" 
+                                                      style="color: #8B8786; font-style: normal; font-size: 12px; " /> 
+                                    </h:outputLink> 
+
+
+                                    <p:outputLabel value="#{msg.page5additionaltext8}" styleClass="defaulttext"  style="font-size: 16px;"  /> 
+                                </h:panelGroup>
+
+                                <p:spacer width="10" />
+                                <p:outputLabel value="#{msg.page5additionaltext9}" styleClass="defaulttext" style="font-size: 16px;"  />      
+                            </h:panelGrid>
+                            <br /> 
+
+
+                            <h:panelGroup layout="block" style="width: 100%; margin-right: auto; margin-left: auto;" >
+                                <p:outputLabel value="#{msg.additioninforinfor}" 
+                                               styleClass="subtitle" rendered="#{scientificLoanForm.isInformation}" />
+                                <p:outputLabel value="#{msg.additioninfor}" styleClass="subtitle"
+                                               rendered="#{!scientificLoanForm.isInformation}" />
+                                <br/>
+                                <p:outputLabel value="#{msg.additioninfordesc}" styleClass="defaulttext" /> 
+                            </h:panelGroup> 
+                            <br /> 
+                            <h:panelGroup layout="block" style="width: 100%; margin-right: auto; margin-left: auto; ">
+                                <p:inputTextarea id="page5additioninfo" value="#{scientificLoanForm.additionInformation}" 
+                                                 rows="5" cols="110" 
+                                                 styleClass="contactfieldstext" >
+                                    <p:ajax event="blur" listener="#{scientificLoanForm.saveText()}"  global="false" />
+                                </p:inputTextarea>
+                            </h:panelGroup>  
+                            <br />
+                            <br /> 
+                            <br /> 
+                            <h:panelGroup layout="block" style="width: 100%;  float: right; ">
+                                <h:panelGroup layout="block" style="width: 160px; float: right;  ">  
+                                    <p:commandButton value="#{msg.back}" action="#{viewBean.navigateIndexCollection()}" 
+                                                     process="@this"   global="false"  />  
+                                    <p:spacer width="10" />
+                                    <p:commandButton value="#{msg.next}" action="#{viewBean.gotoScientificDetailPage()}"  
+                                                     process="@this" global="false" />
+                                </h:panelGroup> 
+                            </h:panelGroup>
+                        </h:panelGroup>
+                    </h:form>
+                </h:panelGroup>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

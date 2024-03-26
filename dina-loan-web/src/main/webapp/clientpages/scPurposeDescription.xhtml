@@ -1,0 +1,109 @@
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:p="http://primefaces.org/ui"    
+      xmlns:h="http://java.sun.com/jsf/html"    > 
+    <head>
+        <title>Scientific purpose description</title>
+    </head>
+    <body>    
+        <ui:composition  template="/templates/masterLayout.xhtml">     
+            <ui:define name="content"  >   
+                <h:panelGroup styleClass="main" layout="block" id="requestType"  > 
+                    <ui:include src="/clientpages/breadcrumb.xhtml" />  
+                    <h:form id="purposeDescform" enctype="multipart/form-data">
+                        <h:panelGroup layout="block" id="purposeDescpanel" styleClass="descriptionPage" >     
+                            <h:panelGroup layout="block" >
+                                <p:outputLabel value="#{msg.scientificPurposeDescTitle1}"
+                                               style="font-size: 20px; font-weight: bold;"/> 
+                            </h:panelGroup>
+                            <br />
+                            <br />
+                            <h:panelGroup layout="block" >
+                                <p:outputLabel value="#{msg.scientificPurposeDescTitle2}" 
+                                               style="font-size: 16px; font-weight: bold;"/> 
+                            </h:panelGroup>
+                            <br />
+                            <br /> 
+                            <h:panelGroup layout="block" >
+                                <p:outputLabel value="#{msg.scientificPurposeDescSubtitle}" 
+                                               style="font-size: 16px; font-weight: bold;"/> 
+                            </h:panelGroup>
+                            <br />
+                            <br />  
+                            <h:panelGroup style="padding: 15px;" layout="block">
+                                <p:inputTextarea id="descLoanPage3"
+                                                 value="#{scientificLoanForm.descriptionOfLoan}" 
+                                                 rows="7" cols="120" styleClass="contactfieldstext" >  
+                                    <p:ajax event="keyup" global="false" 
+                                            listener="#{scientificLoanForm.saveText()}" 
+                                            update="projectDescriptionButtonPanel" />
+                                </p:inputTextarea>
+                            </h:panelGroup>
+
+
+                            <h:panelGroup style="width: 100%; float: right; " 
+                                          layout="block"  id="uploadfilePanel" >
+                                <h:panelGroup layout="block" style="width: 300px; float: right; ">
+                                    <p:outputLabel value="#{msg.optional}:" 
+                                                   style="font-size: 12px; color: #424242;" />
+                                    <br />
+                                    <p:outputLabel value="#{msg.attachfile}:" 
+                                                   style="font-size: 12px; color: #424242;" />    
+                                    <br />  
+                                    <p:fileUpload fileUploadListener="#{files.handleProjectFileUpload}" 
+                                                      mode="advanced"   label="#{msg.uploadfile}"  
+                                                      invalidSizeMessage="#{msg.invalidfilesiz}"
+                                                      auto="true" styleClass="originalbutton" 
+                                                      sizeLimit="5000000" 
+                                                      update="purposeDescpanel" />  
+
+                                    <h:panelGroup layout="block"  id="uploadedFilePanel"  
+                                                  rendered="#{not empty files.projectFile}">  
+                                        <p:panel style="border: none; font-size: 12px; " > 
+                                            <p:outputLabel value="#{files.projectFileName}" 
+                                                           style="font-size: 12px; "/> 
+                                            <p:spacer width="10" />
+                                            <p:commandLink actionListener="#{files.removeProjectfile()}" 
+                                                           process="uploadfilePanel" 
+                                                           title="#{msg.btnremovefile}" 
+                                                           update="uploadfilePanel projectDescriptionButtonPanel" 
+                                                           global="false"  > 
+                                                <h:graphicImage name="images/button_remove.gif" 
+                                                                styleClass="images" /> 
+                                            </p:commandLink> 
+                                        </p:panel>    
+                                    </h:panelGroup>
+                                </h:panelGroup>  
+                            </h:panelGroup>   
+
+                            <br />
+                            <br />  
+                            <br />
+                            <br />  
+                            <br /> 
+                            <br />
+                            <br />  
+                            <br /> 
+
+                            <h:panelGroup layout="block" style="width: 130px; float: right; margin-top: 20px;" 
+                                          id="projectDescriptionButtonPanel"> 
+                                <p:commandButton value="#{msg.back}" action="#{viewBean.navigateIndexRequestType()}"
+                                                 global="false" process="@this"  />  
+
+                                <p:spacer width="10" />
+                                <p:commandButton value="#{msg.next}" action="#{viewBean.gotoCollections()}" 
+                                                 process="@this" 
+                                                 disabled="#{empty files.projectFile 
+                                                             and empty scientificLoanForm.descriptionOfLoan}" 
+                                                 global="false" />  
+                            </h:panelGroup>   
+                            <br />
+                            <br />  
+                        </h:panelGroup>
+                        
+                    </h:form>
+                </h:panelGroup>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

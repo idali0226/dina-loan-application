@@ -1,0 +1,64 @@
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:p="http://primefaces.org/ui"    
+      xmlns:h="http://java.sun.com/jsf/html"    > 
+    <head>
+        <title>Commercial information</title>
+    </head>
+    <body>    
+        <ui:composition  template="/templates/masterLayout.xhtml">   
+            <ui:define name="content" >
+                <h:panelGroup styleClass="main" layout="block" id="commercialInformation"  > 
+
+                    <ui:include src="/clientpages/breadcrumb.xhtml" />  
+                    <h:form id="commercialInformationForm">  
+
+                        <!-- page 2 section 3 -->
+                        <h:panelGroup layout="block" id="page23panel"   styleClass="sectionstyle2" >       
+                            <h:panelGroup layout="block" >
+                                <p:outputLabel value="#{msg.commercialInformationtitle}" 
+                                                style="font-size: 24px; font-weight: bold;"/> 
+                            </h:panelGroup>
+                            <br />
+                            <br />
+                            <h:panelGroup layout="block" >
+                                <p:outputLabel value="#{msg.commercialInformationText1}" styleClass="text"  /> 
+                                <p:outputLabel value="#{msg.commercialInformationText2}" styleClass="boldtext"  /> 
+                                <p:outputLabel value="#{msg.commercialInformationText3}" styleClass="text"  /> 
+                            </h:panelGroup> 
+                            <br />
+                            <br />  
+                            <h:panelGroup layout="block" >
+                                <p:outputLabel value="#{msg.observe}" 
+                                               style="font-size: 26px; font-weight: bold;"/> 
+                            </h:panelGroup>
+                            <br />
+                            <br />  
+                            <h:panelGroup layout="block" >
+                                <p:outputLabel value="#{msg.observetext}" styleClass="text"  /> 
+                                <p:outputLabel value="#{msg.observetext2}" styleClass="boldtext"  />  
+                            </h:panelGroup> 
+                            <br />
+                            <br />   
+                            <h:panelGroup layout="block" >
+                                <p:outputLabel value="#{msg.bill}" styleClass="text"  />  
+                            </h:panelGroup>  
+                            <br />
+                            <br />  
+                            <br /> 
+                            <h:panelGroup layout="block" style="width: 150px; float: right;  ">  
+                                <p:commandButton value="#{msg.back}" action="#{viewBean.navigateIndexPurpose()}"
+                                                 process="@this" global="false" />  
+                                <p:spacer width="10" />
+                                <p:commandButton value="#{msg.next}" 
+                                                 action="#{viewBean.gotoLoanType()}" 
+                                                 process="@this" 
+                                                 global="false"  />
+                            </h:panelGroup> 
+                        </h:panelGroup> 
+                    </h:form>
+                </h:panelGroup>
+            </ui:define> 
+        </ui:composition>
+    </body>
+</html>

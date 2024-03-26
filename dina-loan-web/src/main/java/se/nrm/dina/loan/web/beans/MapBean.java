@@ -3,42 +3,45 @@ package se.nrm.dina.loan.web.beans;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.List; 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.SessionScoped;
-import javax.faces.bean.ManagedBean;
+import javax.enterprise.context.SessionScoped; 
 import javax.inject.Inject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import se.nrm.dina.loan.web.vo.MapVO;
-import se.nrm.dina.mongodb.jdbc.MongoJDBC;
+import javax.inject.Named;
+import lombok.extern.slf4j.Slf4j;  
+import se.nrm.dina.loan.web.service.MongoService;
+import se.nrm.dina.loan.web.vo.MapVO; 
 
 /**
  *
  * @author idali
- */
-@ManagedBean(name="mapBean")
-@SessionScoped 
+ */ 
+@Named(value = "mapBean") 
+@SessionScoped
+@Slf4j
 public class MapBean implements Serializable {
-    
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
+      
     private List<MapVO> mapList;
     private HashMap<String, String> mapData;
     
     @Inject
-    private MongoJDBC mongo;
+    private MongoService service;
+     
 
     @PostConstruct
     public void init() {  
+        log.info("map init....");
+        
+//        mongo.setUpMongoHost(properties.getMongoHost());
          
-        Map<String, Integer> map = mongo.getMapDataForLoans();   
         mapList = new ArrayList<>();
-        map.entrySet().stream().forEach((entry) -> {
-            mapList.add(new MapVO(entry.getKey(), String.valueOf(entry.getValue())));
-        }); 
-        setMapList(mapList);
+        service.getMapData()
+                .entrySet()
+                .stream()
+                .forEach((entry) -> {
+                    mapList.add(new MapVO(entry.getKey(), String.valueOf(entry.getValue())));
+                }); 
+//        setMapList(mapList); 
     }
      
     public HashMap<String, String> getMapData() {
@@ -52,13 +55,12 @@ public class MapBean implements Serializable {
     }
 
     public List<MapVO> getMapList() {
-        logger.info("getMapList -- {}", mapList.size()); 
-        logger.info("map: {}", mapList);
+        log.info("getMapList -- {}", mapList.size());  
         return mapList;
     }
 
-    public void setMapList(List<MapVO> mapList) {
-//        logger.info("setMapList -- {}", mapList.size()); 
-        this.mapList = mapList;
-    }
+//    public void setMapList(List<MapVO> mapList) {
+////        logger.info("setMapList -- {}", mapList.size()); 
+//        this.mapList = mapList;
+//    }
 }

@@ -1,0 +1,148 @@
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:p="http://primefaces.org/ui"   
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:h="http://java.sun.com/jsf/html"    > 
+    <head>
+        <title>Destructive sample</title>
+    </head>
+    <body>    
+        <ui:composition  template="/templates/masterLayout.xhtml">     
+            <ui:define name="content"  >   
+                <p:dialog id="destructivePolicyDialog" header="#{msg.loanpolicy}" 
+                          widgetVar="destructivePolicyDlg" 
+                          style="width: 820px; height: 700px;">
+                    <p:panel  id="destructivePolicyDialogPanel">    
+                        <p:media value="/pdf?pdf=scientific#page=2"  
+                                 height="750px" width="820px" player="pdf" >
+                            Your browser can't display pdf, 
+                            <h:outputLink value="#{policy.scientificPolicyPdfFile}" >
+                                click
+                            </h:outputLink> to download pdf instead.
+                        </p:media>  
+                    </p:panel>
+                </p:dialog>
+ 
+                <h:panelGroup styleClass="main" layout="block" id="specimen"  > 
+                    <ui:include src="/clientpages/breadcrumb.xhtml" />  
+                    <h:form id="desctructiveform"> 
+                        <h:panelGroup layout="block" id="physicalDesctructivePanel" styleClass="subpage"> 
+                            <h:panelGroup layout="block" >
+                                <p:outputLabel value="#{msg.page6title}" 
+                                               style="font-size: 20px; font-weight: bold;"/>  
+                            </h:panelGroup> 
+                            <br />
+                            <br /> 
+                            <h:panelGroup layout="block">
+                                <p:outputLabel value="#{msg.page6title}" 
+                                               style="font-size: 12px; font-weight: bold;"/>  
+                                <h:selectOneRadio value="#{scientificLoanForm.destractive}" 
+                                                  layout="pageDirection" styleClass="collectionlistradiofont">
+                                    <f:selectItem itemValue="false" itemLabel="#{msg.page6radiolabel1}" />
+                                    <f:selectItem itemValue="true" itemLabel="#{msg.page6radiolabel2}" /> 
+                                    <p:ajax listener="#{scientificLoanForm.selectDestractive()}" 
+                                            event="change" 
+                                            update="physicalDesctructivePanel" global="false" />
+                                </h:selectOneRadio> 
+                                <h:panelGrid > 
+                                    <p:outputLabel value="#{msg.page6radiolabel3}" 
+                                                   style="color: #424242; font-size: 12px; padding-left: 25px; margin-bottom: 10px;"/>  
+                                </h:panelGrid>
+
+                                <p:commandLink value="#{msg.policy}"  
+                                               onclick="PF('destructivePolicyDlg').show();" global="false"  
+                                               style="float: left; font-size: 12px; font-family: Arial,sans-serif; padding-left: 25px; " />  
+                                <p:spacer width="20" />
+
+                                <br /> 
+                                <br />
+                            </h:panelGroup>
+
+                            <h:panelGroup layout="block" rendered="#{scientificLoanForm.isDestractiveLoan}" 
+                                          id="destractiveDescriptionPanel">
+                                <h:panelGroup layout="block" >
+                                    <p:spacer width="100%" height="20" />
+                                    <p:outputLabel value="#{msg.page6title2}" 
+                                                   style="font-size: 12px; " /> 
+                                    <p:outputLabel value="#{msg.page6title3}" 
+                                                   style="font-size: 12px; font-weight: bold;" /> 
+                                    <p:outputLabel value="#{msg.page6title4}" 
+                                                   style="font-size: 12px; "/> 
+                                    <p:outputLabel value="#{msg.page6title5}" 
+                                                   style="font-size: 12px; font-weight: bold;" /> 
+                                    <p:outputLabel value="#{msg.page6title6}" 
+                                                   style="font-size: 12px; "/> 
+                                </h:panelGroup> 
+                                <br /> 
+                                <h:panelGroup layout="block" style="padding-left: 35px; "> 
+                                    <p:inputTextarea id="page6Desc" 
+                                                     value="#{scientificLoanForm.destructiveMethod}" 
+                                                     rows="5" cols="110" styleClass="contactfieldstext" > 
+                                        <p:ajax event="blur" 
+                                                listener="#{scientificLoanForm.handleDesctractiveMethod()}" 
+                                                update="distractiveBtnPanel" global="false" />
+                                    </p:inputTextarea>
+                                </h:panelGroup>  
+
+                                <h:panelGroup style="width: 100%; float: right; " 
+                                              layout="block" id="uploaddesfilePanel" >  
+                                    <h:panelGroup layout="block" style="width: 300px; float: right; ">
+                                        <p:outputLabel value="#{msg.optional}:" styleClass="text" /> 
+                                        <br />
+                                        <p:outputLabel value="#{msg.page6attachment}:" styleClass="text" />   
+
+                                        <h:panelGrid cellpadding="0" cellspacing="0" >
+                                            <p:fileUpload 
+                                                fileUploadListener="#{files.handleDestructiveMethodFileUpload}" 
+                                                mode="advanced"   label="#{msg.uploadfile}"  
+                                                invalidSizeMessage="#{msg.invalidfilesiz}"
+                                                auto="true" styleClass="originalbutton" sizeLimit="5000000" 
+                                                update="physicalDesctructivePanel" />  
+                                        </h:panelGrid> 
+
+                                        <h:panelGrid  id="uploadeddespFilePanel" 
+                                                      cellpadding="0" cellspacing="0" style="margin-top: -20px; " 
+                                                      rendered="#{not empty files.destructiveMethodFile}">
+                                            <p:panel style="border: none; font-size: 12px; " > 
+
+                                                <br />
+                                                <br /> 
+                                                <p:outputLabel value="#{files.destructiveMethodFileName}" 
+                                                               style="font-size: 12px; " />  
+                                                <p:spacer width="10" />
+                                                <p:commandLink actionListener="#{files.removeDestructiveMethodFile()}" 
+                                                               title="#{msg.btnremovefile}"  global="false"  
+                                                               process="uploaddesfilePanel"
+                                                               update="physicalDesctructivePanel"  > 
+                                                    <h:graphicImage name="images/button_remove.gif" styleClass="images" /> 
+                                                </p:commandLink> 
+
+
+                                            </p:panel>    
+                                        </h:panelGrid>
+                                    </h:panelGroup> 
+                                </h:panelGroup>    
+                            </h:panelGroup>
+                            <br />
+                            <br />  
+                            <br />
+                            <br />  
+
+                            <h:panelGroup layout="block"  id="distractiveBtnPanel"  
+                                          style="width: 200px; float: right; margin-top: 20px;"  > 
+                                <p:commandButton value="#{msg.back}" action="#{viewBean.navigateIndexSpecimens()}" 
+                                                 process="@this" global="false"   />  
+                                <p:spacer width="10" />
+                                <p:commandButton value="#{msg.next}" action="#{viewBean.gotoCitesPage()}" 
+                                                 disabled="#{scientificLoanForm.disableDestractiveBtn}"   
+                                                 global="false" process="@this" />
+                            </h:panelGroup>  
+
+                            <br /> 
+                        </h:panelGroup>
+                    </h:form>
+                </h:panelGroup>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

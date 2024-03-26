@@ -1,0 +1,76 @@
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:ui="http://java.sun.com/jsf/facelets"  
+      xmlns:p="http://primefaces.org/ui"  
+      xmlns:h="http://java.sun.com/jsf/html" >
+    <head>
+        <title>Species search results</title>
+    </head>
+
+    <body>
+        <ui:composition>   
+            <p:panel  style="width: 920px; height: 850px; font-size: 10px; font-weight: normal; " > 
+                <p:dataTable id="records" var="record" value="#{sampleBean.records}" 
+                             rowKey="#{record.id}"  
+                             selection="#{sampleBean.selectedRecord}" 
+                             selectionMode="single"  scrollable="true" scrollWidth="920" >
+
+                    <p:ajax event="rowSelect" listener="#{sampleBean.onRowSelect}"  
+                            update="specimentForm" 
+                            global="false" process="@widgetVar(speciesDlg)" />
+
+                    <p:column headerText="#{msg.catalognumber}" 
+                              width="120"
+                              style="font-size: 12px;">
+                        <h:outputText value="#{record.catalogNum}" style="font-size: 11px;" /> 
+                    </p:column>
+
+                    <p:column headerText="#{msg.family}" width="80"
+                              style="font-size: 12px;"> 
+                        <h:outputText value="#{record.family}" style="font-size: 11px;"/> 
+                    </p:column>
+
+                    <p:column headerText="#{msg.genus}" width="80"
+                              style="font-size: 12px;">
+                        <h:outputText value="#{record.genus}" style="font-size: 11px;"/> 
+                    </p:column>
+
+                    <p:column headerText="#{msg.species}" width="100"
+                              style="font-size: 12px;">
+                        <h:outputText value="#{record.fullname}" style="font-size: 11px;" />  
+                    </p:column>
+
+                    <p:column headerText="#{msg.author}" width="80"
+                              style="font-size: 12px;">
+                        <h:outputText value="#{record.auth}" style="font-size: 11px;"/>  
+                    </p:column>
+
+                    <p:column headerText="#{msg.localitycountry}" width="80"
+                              style="font-size: 12px;">
+                        <h:outputText value="#{record.country}" style="font-size: 11px;"/>   
+                    </p:column>
+
+                    <p:column headerText="#{msg.locality}" width="155"
+                              style="font-size: 12px;">
+                        <h:outputText value="#{record.locality}" style="font-size: 11px;"/>  
+                    </p:column>
+
+                    <p:column headerText="#{msg.collectdyear}" width="70"
+                              style="font-size: 12px;">
+                        <h:outputText value="#{record.collectedYear}" style="font-size: 11px;"/>   
+                    </p:column>
+
+                    <p:column headerText="#{msg.collector}" width="80"
+                              style="font-size: 12px;">
+                        <h:outputText value="#{record.collectors}" style="font-size: 11px;"/>   
+                    </p:column>
+
+                    <p:column headerText="#{msg.typespecimen}" width="100"
+                              style="font-size: 12px;">
+                        <h:outputText value="#{record.preparationString}" style="font-size: 11px;"/>   
+                    </p:column> 
+
+                </p:dataTable>
+            </p:panel>
+        </ui:composition>
+    </body>
+</html>

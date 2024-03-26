@@ -4,70 +4,82 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets" 
       xmlns:f="http://java.sun.com/jsf/core"  
-      xmlns:c="http://java.sun.com/jsp/jstl/core">
-
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui" >
+ 
     <h:head >  
         <link rel="shortcut icon" type="image/x-icon" href="#{resource['images/favicon-default.ico']}"/>  
         <title>
             #{msg.headername} 
         </title>     
-<!--'AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY'--> 
+        <!--'AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY'--> 
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-        <script type="text/javascript">
-            google.charts.load('current', {
-                'packages':['geochart'], 
-                'mapsApiKey': 'AIzaSyCa1olBKzqZdr4KaHHaC-2njZOWOinIDq8'
-            });
-            google.charts.setOnLoadCallback(drawRegionsMap);
-
-            function drawRegionsMap() {
-                var data = google.visualization.arrayToDataTable([
-                    ['Country', 'No. loans'],
-                <c:forEach var = "resultAnalysis" items = "${mapBean.mapList}" >
-                    ['${resultAnalysis.country}',${resultAnalysis.count}],
-                </c:forEach>
-                ]);
-                var options = {
-                    backgroundColor: '#BDBDBD',
-                    colors: ['#FFFFCC', '#FF9966', '#244700'],
-                    width: 700,
-                    height: 400
-                  }; 
-                var chart = new google.visualization.GeoChart(document.getElementById('chart_div'));
-                chart.draw(data, options);
-            }
-        </script>
- 
+        <!--        <script type="text/javascript">
+                    google.charts.load('current', {
+                        'packages': ['geochart'],
+                        'mapsApiKey': 'AIzaSyCa1olBKzqZdr4KaHHaC-2njZOWOinIDq8'
+                    });
+                    google.charts.setOnLoadCallback(drawRegionsMap);
+        
+                    function drawRegionsMap() {
+                        var data = google.visualization.arrayToDataTable([
+                            ['Country', 'No. loans'],
+                            <c:forEach var = "resultAnalysis" items = "${mapBean.mapList}" >
+                                ['${resultAnalysis.country}',${resultAnalysis.count}],
+                            </c:forEach>
+                        ]);
+                        var options = {
+                            backgroundColor: '#BDBDBD',
+                            colors: ['#FFFFCC', '#FF9966', '#244700'],
+                            width: 700,
+                            height: 400
+                        };
+                        var chart = new google.visualization.GeoChart(document.getElementById('chart_div'));
+                        chart.draw(data, options);
+                    }
+                </script>--> 
     </h:head> 
 
     <f:view locale="#{languages.locale}"  > 
+        <ui:remove>
+            <!--        <f:metadata> 
+                        <f:event listener="#{loan.init()}"  type="preRenderView"  /> 
+                    </f:metadata>-->
+        </ui:remove>
 
-        <f:metadata> 
-            <f:event listener="#{onlineForm.init()}"  type="preRenderView"  /> 
-        </f:metadata>
-
-
-        <h:body styleClass="background"> 	    
+        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> 
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" 
+                  closable="false" resizable="false" showHeader="false">   
+            <h:panelGrid columns="3"  >  
+                <p:graphicImage value="/resources/images/loaderA32.gif"   
+                                alt="#{msg.wait}" title="#{msg.wait}" styleClass="images" /> 
+                <p:spacer width="10" />
+                <p:outputLabel value="#{msg.wait}" style="font-size: 16px; font-weight: bold;" /> 
+                <!--<a href="../templates/masterLayout.xhtml"></a>-->
+            </h:panelGrid>  
+        </p:dialog>  
+        <h:body styleClass="background"> 	
+   
             <h:outputScript library="js" name="loan.js" target="head"/>    
             <h:outputStylesheet library="css" name="default.css"  />
 
-            <h:panelGroup layout="block" style="width: 960px; margin: auto;">
-                <h:panelGroup  id="header" layout="block"  style="width: 960px;  ">
+            <h:panelGroup layout="block" style="templet">
+                <h:panelGroup  id="header" layout="block"  >
                     <ui:insert name="header" >
                         <ui:include src="/commonpages/header.xhtml" />
                     </ui:insert> 
                 </h:panelGroup>
 
-                <h:panelGroup id="main" layout="block" style="width: 960px;  margin-top: -5px;">
+                <h:panelGroup id="main" layout="block"   >
                     <ui:insert name="content"/>
                 </h:panelGroup>
 
-                <h:panelGroup id="footer" layout="block" style="width: 960px;  ">
+                <h:panelGroup id="footer" layout="block"   >
                     <ui:insert name="footer" >
                         <ui:include src="/commonpages/footer.xhtml" />
                     </ui:insert>
                 </h:panelGroup> 
-            </h:panelGroup> 
+            </h:panelGroup>  
         </h:body>
     </f:view>
 </html>

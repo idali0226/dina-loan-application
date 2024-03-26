@@ -1,23 +1,26 @@
 <html xmlns="http://www.w3.org/1999/xhtml"   
       xmlns:ui="http://java.sun.com/jsf/facelets" 
-      xmlns:h="http://java.sun.com/jsf/html"  >
-  <body>
-    <ui:composition>   
-      <h:panelGroup  layout="block"   id="foot" >
-        <h:panelGroup layout="block" styleClass="footstyle"   >
-          <h:form  id="footform"> 
-            <h:panelGroup layout="block" styleClass="textfoot" style="float: left;">
-              <br />
-              <br /> 
-              <h:panelGroup layout="block">
-                <h:commandLink action="#{onlineForm.contact}" value="#{msg.contact}"  style="color: #FFFFFF;" />   
-              </h:panelGroup>
-              <br />
-              <br />
-            </h:panelGroup> 
-          </h:form>
-        </h:panelGroup>  
-      </h:panelGroup> 
-    </ui:composition>
-  </body>
+      xmlns:h="http://java.sun.com/jsf/html" >
+    <head>
+        <title>Footer</title>
+    </head>
+
+    <body>
+        <ui:composition>    
+            <h:panelGroup  layout="block"   id="foot" styleClass="footstyle"  > 
+                <h:panelGroup layout="block" styleClass="footText" >
+                    <br />
+                    <br />    
+                    <h:form id="footerForm"> 
+                        <h:panelGroup layout="block">
+                            <h:commandLink action="#{viewBean.contact}" value="#{msg.contact}"
+                                           style="color: #FFFFFF !important; " />   
+                        </h:panelGroup> 
+                    </h:form>
+                    <br /> 
+                </h:panelGroup>  
+            </h:panelGroup>  
+            <div id="grad1"></div>   
+        </ui:composition>
+    </body>
 </html> 
