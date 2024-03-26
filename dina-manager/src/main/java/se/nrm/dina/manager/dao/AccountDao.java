@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package se.nrm.dina.manager.dao;
 
 import java.io.Serializable;
@@ -15,9 +9,8 @@ import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.validation.ConstraintViolationException;
-import org.apache.commons.lang.exception.ExceptionUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.exception.ExceptionUtils; 
 import se.nrm.dina.manager.entities.TblGroups;
 import se.nrm.dina.manager.entities.TblUsers;
 import se.nrm.dina.manager.exceptions.ManagerException;
@@ -27,11 +20,26 @@ import se.nrm.dina.manager.exceptions.ManagerException;
  * @author idali
  */
 @Stateless
+@Slf4j
 public class AccountDao implements Serializable {
     
+    private final String validateUsernameNamedQuery = "TblUsers.validateUsername";
+    private final String findByUsernameNamedQuery = "TblUsers.findByUsername";
     
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final String findByEmailNamedQuery = "TblUsers.findByEmail";
     
+    private final String jpql = "SELECT Count(u) FROM TblUsers u JOIN u.tblGroupsList g WHERE g.username = u.username AND g.groupname IN (:group_params) AND u.email = :email";
+    
+    private final String queryUsernameParamKey = "username";
+    private final String queryGroupParamKey = "group_params";
+    private final String queryEmailParamKey = "email";
+    
+    
+    private final String usernameKey = "Username: ";
+    private final String usernameNotFoundError = " not found.";
+    
+    
+      
     List<String> excludeGroups = new ArrayList();
     List<String> loanGroup = new ArrayList();
     
@@ -50,6 +58,99 @@ public class AccountDao implements Serializable {
         loanGroup.add("manager"); 
     }
     
+    public void delete(TblUsers user) {
+        log.info("delete: {}", user);
+
+        TblUsers u = findByUserName(user.getUsername()); 
+        try {
+            entityManager.remove(u); 
+            entityManager.flush();                              // this is needed for throwing internal exception
+        } catch (ConstraintViolationException e) { 
+            log.error(e.getMessage());
+        } catch (Exception e) { 
+            log.error(e.getMessage());
+        }
+    }
+     
+    public TblUsers findByUserName(String username) {
+        log.info("findByUserName");
+        
+        Query query = entityManager.createNamedQuery(findByUsernameNamedQuery); 
+        query.setParameter(queryUsernameParamKey, username);
+         
+        try {
+            return (TblUsers)query.getSingleResult();
+        } catch (javax.persistence.NoResultException | javax.persistence.NonUniqueResultException ex) {
+            throw new ManagerException(usernameKey + username + usernameNotFoundError); 
+        } 
+    }
+    
+    public boolean validateUserName(String username) {  
+        Query query = entityManager.createNamedQuery(validateUsernameNamedQuery);
+
+        query.setParameter(queryUsernameParamKey, username);
+        Number number = (Number) query.getSingleResult();  
+        return number.intValue() < 1; 
+    }
+      
+    public boolean validateEmail(String email) {    
+        Query query = entityManager.createQuery(jpql); 
+        query.setParameter(queryGroupParamKey, loanGroup); 
+        query.setParameter(queryEmailParamKey, email);
+        Number number = (Number) query.getSingleResult(); 
+        log.info("number : {}", number);
+        return number.intValue() < 1;   
+    }
+    
+    public TblUsers createAccount(TblUsers user) {
+        log.info("createAccount: {}", user);
+        TblUsers tmp = user;
+        try {
+            entityManager.persist(user);
+            entityManager.flush();  
+        } catch (ConstraintViolationException e) { 
+            log.error(e.getMessage());
+        } catch (javax.persistence.PersistenceException ex) { 
+            log.error("PersistenceException : {}", ex.getMessage());
+            if (ex.getCause() instanceof  org.hibernate.exception.ConstraintViolationException) {  
+                org.hibernate.exception.ConstraintViolationException e = (org.hibernate.exception.ConstraintViolationException) ex.getCause();
+                throw new ManagerException(handleHibernateConstraintViolation(e), 400); 
+            }
+        } catch (Exception e) { 
+            log.error(e.getMessage());
+        }
+        return tmp;
+    }
+    
+    public TblUsers findOneUserByEmail(String email) {
+        log.info("findOneUserByEmail : {}", email);
+        
+        log.info("entityManager : {}", entityManager);
+        
+        Query query = entityManager.createNamedQuery(findByEmailNamedQuery);
+        query.setParameter(queryEmailParamKey, email);
+        List<TblUsers> users = query.getResultList();
+        
+        if(users != null && !users.isEmpty()) {
+            return users.get(0);
+        } 
+        return null;
+    }
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     public List<String> findAllCuratorsEmailList() {
         String strSql = "SELECT u.email FROM TblUsers u JOIN u.tblGroupsList g WHERE g.username = u.username AND g.groupname NOT IN (:group_params) ";
          
@@ -58,25 +159,7 @@ public class AccountDao implements Serializable {
         return query.getResultList();
     }
     
-    public TblUsers createAccount(TblUsers user) {
-        logger.info("createAccount: {}", user);
-        TblUsers tmp = user;
-        try {
-            entityManager.persist(user);
-            entityManager.flush();  
-        } catch (ConstraintViolationException e) { 
-            logger.error(e.getMessage());
-        } catch (javax.persistence.PersistenceException ex) { 
-            logger.error("PersistenceException : {}", ex.getMessage());
-            if (ex.getCause() instanceof  org.hibernate.exception.ConstraintViolationException) {  
-                org.hibernate.exception.ConstraintViolationException e = (org.hibernate.exception.ConstraintViolationException) ex.getCause();
-                throw new ManagerException(handleHibernateConstraintViolation(e), 400); 
-            }
-        } catch (Exception e) { 
-            logger.error(e.getMessage());
-        }
-        return tmp;
-    }
+
 
     private String handleHibernateConstraintViolation(org.hibernate.exception.ConstraintViolationException e) {
         return getRootCause(e).getMessage();
@@ -98,7 +181,7 @@ public class AccountDao implements Serializable {
 
 
     public TblUsers mergeAccount(TblUsers user) {
-        logger.info("mergeAccount: {}", user);
+        log.info("mergeAccount: {}", user);
 
         TblUsers tmp = user;
         try { 
@@ -112,23 +195,9 @@ public class AccountDao implements Serializable {
         return tmp;
     }
     
-    public void delete(TblUsers user) {
-        logger.info("delete: {}", user);
 
-        TblUsers u = findByUserName(user.getUsername()); 
-        try {
-            entityManager.remove(u); 
-            entityManager.flush();                              // this is needed for throwing internal exception
-             
-        } catch (ConstraintViolationException e) { 
-            logger.error(e.getMessage());
-        } catch (Exception e) { 
-            logger.error(e.getMessage());
-        }
-    }
-    
     public List<TblGroups> findAll() {
-        logger.info("findAll");
+        log.info("findAll");
         
         Query query = entityManager.createNamedQuery("TblGroups.findAll");
          
@@ -136,29 +205,17 @@ public class AccountDao implements Serializable {
     }
     
     public List<TblGroups> findGroupByNamedQuery(String namedQuery, List<String> groups) {
-        logger.info("findGroupByNamedQuery : {}", namedQuery);
+        log.info("findGroupByNamedQuery : {}", namedQuery);
         
         Query query = entityManager.createNamedQuery(namedQuery); 
         query.setParameter("groupnames", groups);
          
         return query.getResultList();
     }
-     
-    public TblUsers findByUserName(String username) {
-        logger.info("findByUserName");
-        
-        Query query = entityManager.createNamedQuery("TblUsers.findByUsername"); 
-        query.setParameter("username", username);
-         
-        try {
-            return (TblUsers)query.getSingleResult();
-        } catch (javax.persistence.NoResultException | javax.persistence.NonUniqueResultException ex) {
-            throw new ManagerException("Username: " + username + " not found."); 
-        } 
-    }
+
     
     public List<TblUsers> findByEmail(String email) {
-        logger.info("findByEmail");
+        log.info("findByEmail");
         
         Query query = entityManager.createNamedQuery("TblUsers.findByEmail");
         query.setParameter("email", email);
@@ -166,37 +223,9 @@ public class AccountDao implements Serializable {
         return query.getResultList();
     }
     
-    public TblUsers findOneUserByEmail(String email) {
-        logger.info("findOneUserByEmail : {}", email);
-        
-        Query query = entityManager.createNamedQuery("TblUsers.findByEmail");
-        query.setParameter("email", email);
-        List<TblUsers> users = query.getResultList();
-        
-        if(users != null && !users.isEmpty()) {
-            return users.get(0);
-        } 
-        return null;
-    }
-    
-    public boolean validateEmail(String email) {   
-        String strSql = "SELECT Count(u) FROM TblUsers u JOIN u.tblGroupsList g WHERE g.username = u.username AND g.groupname IN (:group_params) AND u.email = :email";
-         
-        Query query = entityManager.createQuery(strSql);
-        query.setParameter("group_params", loanGroup); 
-        query.setParameter("email", email);
-        Number number = (Number) query.getSingleResult(); 
-        logger.info("number : {}", number);
-        return number.intValue() < 1;   
-    }
 
-    public boolean validateUserName(String username) {  
-        Query query = entityManager.createNamedQuery("TblUsers.validateUsername");
 
-        query.setParameter("username", username);
-        Number number = (Number) query.getSingleResult();  
-        return number.intValue() < 1; 
-    }
+
 //
 //    @PreDestroy
 //    public void destroyBean() {
