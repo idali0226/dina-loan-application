@@ -16,9 +16,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 import org.primefaces.event.RowEditEvent;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import se.nrm.dina.email.Mail;
 import se.nrm.dina.email.NrmMail;
 import se.nrm.dina.manager.dao.AccountDao;
@@ -32,15 +31,26 @@ import sun.misc.BASE64Encoder;
  */
 @Named(value = "user")
 @SessionScoped
+@Slf4j
 public class UserAccountController implements Serializable {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final String passwordChangedMsg = "Password changed";
+    private final String incorrectOldPassword = "Incorrect old password";
+
+    private final String duplicateEmailErrorTitle = "Duplicate user";
+    private final String duplicateEmailErrorMsg1 = "User with email: ";
+    private final String duplicateEmailErrorMsg2 = " is exist in this group.";
+
+    private final String defaultGroupname = "user";
 
     private String username;
     private String password;
     private String email;
     private boolean isOnVacation;
-    private String groupname = "user";
+    private String groupname;
+
+    private final String loginuserSessionKey = "loginuser";
+    private final String findNonInventoryGroupNamedQuery = "TblGroups.findNonInventoryGroups"; 
 
     private List<TblGroups> filteredAccounts;
     private List<TblGroups> accounts;
@@ -63,6 +73,12 @@ public class UserAccountController implements Serializable {
     @Inject
     private NrmMail nrmMail;
 
+    @Inject
+    private Login login;
+
+    @Inject
+    private Navigater navigate;
+
     private HttpSession session;
 
     public UserAccountController() {
@@ -73,27 +89,25 @@ public class UserAccountController implements Serializable {
         excludeGroups.add("scientist");
 
         isChangePasswordSuccessed = false;
-        servername = ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getServerName();
+        servername = ((HttpServletRequest) FacesContext.getCurrentInstance()
+                .getExternalContext().getRequest()).getServerName();
     }
 
     @PostConstruct
     public void init() {
-
         session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-        loggedinUser = (TblUsers) session.getAttribute("loginuser");
-
+        loggedinUser = (TblUsers) session.getAttribute(loginuserSessionKey);
+ 
         if (accounts == null || accounts.isEmpty()) {
-            accounts = dao.findGroupByNamedQuery("TblGroups.findNonInventoryGroups", excludeGroups);
+            getLoanGroupAccount();
         }
     }
 
-    public void updatePassword() {
-        logger.info("updatePassword");
+ 
 
-//        FacesContext context = FacesContext.getCurrentInstance();
-//        HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
-//        
-//        TblUsers user = dao.findByUserName(request.getUserPrincipal().toString());
+    public void updatePassword() {
+        log.info("updatePassword : {} -- {}", oldPassword, newPassword + " -- " + password);
+
         isChangePasswordSuccessed = false;
         String encodedPasswordDigest;
         try {
@@ -102,21 +116,27 @@ public class UserAccountController implements Serializable {
                 loggedinUser.setPassword(hashAndEncodePassword(newPassword));
                 dao.mergeAccount(loggedinUser);
                 isChangePasswordSuccessed = true;
-                addInfo("Password changed", "Password changed");
+                addInfo(passwordChangedMsg, passwordChangedMsg);
+
+                login.logout();
+                navigate.gotoHome();
             } else {
-                addError("Incorrect old password", "Incorrect old password");
+                addError(incorrectOldPassword, incorrectOldPassword);
                 isChangePasswordSuccessed = false;
             }
         } catch (NoSuchAlgorithmException | NoSuchProviderException | UnsupportedEncodingException ex) {
             isChangePasswordSuccessed = false;
-            logger.warn(ex.getMessage());
+            log.warn(ex.getMessage());
         }
+    }
 
+    public void removeAccount(TblGroups group) {
+        log.info("removeAccount: {}", group);
+        dao.delete(group.getUsername());
     }
 
     public void onRowEdit(RowEditEvent event) {
-
-        logger.info("onRowEdit: {}", (TblGroups) event.getObject());
+        log.info("onRowEdit: {}", (TblGroups) event.getObject());
 
         TblGroups selectedGroup = (TblGroups) event.getObject();
         TblUsers user = selectedGroup.getUsername();
@@ -133,13 +153,8 @@ public class UserAccountController implements Serializable {
         }
     }
 
-    public void removeAccount(TblGroups group) {
-        logger.info("removeAccount: {}", group);
-        dao.delete(group.getUsername());
-    }
-
     public void addUserAccount() {
-        logger.info("addUserAccount");
+        log.info("addUserAccount");
 
         TblUsers user = new TblUsers();
         if (dao.validateUserName(username)) {
@@ -147,12 +162,11 @@ public class UserAccountController implements Serializable {
                 user.setUsername(username);
                 user.setEmail(email);
 
-                String encodedPasswordDigest;
                 try {
-                    encodedPasswordDigest = hashAndEncodePassword(password);
-                    user.setPassword(encodedPasswordDigest);
-                } catch (NoSuchAlgorithmException | NoSuchProviderException | UnsupportedEncodingException ex) {
-                    logger.warn(ex.getMessage());
+                    user.setPassword(hashAndEncodePassword(password));
+                } catch (NoSuchAlgorithmException | NoSuchProviderException
+                        | UnsupportedEncodingException ex) {
+                    log.error(ex.getMessage());
                 }
 
                 TblGroups group = new TblGroups();
@@ -163,9 +177,9 @@ public class UserAccountController implements Serializable {
                 groups.add(group);
 
                 user.setTblGroupsList(groups);
-
+ 
                 dao.createAccount(user);
-                accounts = dao.findGroupByNamedQuery("TblGroups.findNonInventoryGroups", excludeGroups);
+                getLoanGroupAccount(); 
 
                 if (servername.contains("localhost")) {
                     mail.sendNewAdminAccountMail(username, password, email);
@@ -176,66 +190,27 @@ public class UserAccountController implements Serializable {
                 username = null;
                 password = null;
                 email = null;
-                groupname = "user";
+                groupname = defaultGroupname;
             } else {
-                addError("Duplicate user", "User with email: " + email + " is exist in this group.");
+                addError(duplicateEmailErrorTitle, 
+                        duplicateEmailErrorMsg1 + email + duplicateEmailErrorMsg2);
             }
-
-//            if(dao.validateEmail(email)) {
-//                user.setUsername(username);
-//                user.setEmail(email);
-//
-//                String encodedPasswordDigest; 
-//                try {
-//                    encodedPasswordDigest = hashAndEncodePassword(password);
-//                    user.setPassword(encodedPasswordDigest);
-//                } catch (NoSuchAlgorithmException | NoSuchProviderException | UnsupportedEncodingException ex) {
-//                    logger.warn(ex.getMessage());
-//                }
-//
-//                TblGroups group = new TblGroups();
-//                group.setGroupname(groupname);
-//                group.setUsername(user);
-//
-//                List<TblGroups> groups = new ArrayList<>();
-//                groups.add(group);
-//
-//                user.setTblGroupsList(groups);
-//
-//                dao.createAccount(user);
-//                accounts = dao.findGroupByNamedQuery("TblGroups.findNonInventoryGroups", excludeGroups);
-//
-//                if (servername.contains("localhost")) {
-//                    mail.sendNewAdminAccountMail(username, password, email);
-//                } else {
-//                    nrmMail.sendNewAdminAccountMail(username, password, email);
-//                }
-//
-//                username = null;
-//                password = null;
-//                email = null;
-//                groupname = "user";
-//            } else {
-//                addError("Duplicate email", "Email: " + email + " is already exist in database.");
-//            }
         } else {
-            addError("Duplicate username", "Username: " + username + " is already exist in database.");
+            addError("Duplicate username", 
+                    "Username: " + username + " is already exist in database.");
         }
     }
 
-    public void updateUser(String user) {
-        accounts = new ArrayList<>();
-
-        accounts = dao.findGroupByNamedQuery("TblGroups.findNonInventoryGroups", excludeGroups);
-    }
+//    public void updateUser(String user) {
+//        accounts = new ArrayList<>();
+//        getLoanGroupAccount();
+//    }
 
     public void checkonvacation() {
-        logger.info("checkonvacation : {} -- {}", loggedinUser, loggedinUser.getOnvacation());
-
-//        TblUsers user = dao.findByUserName(username);
-//        user.setOnvacation(isOnVacation);
+        log.info("checkonvacation : {} -- {}", loggedinUser, loggedinUser.getOnvacation());
+ 
         dao.mergeAccount(loggedinUser);
-        accounts = dao.findGroupByNamedQuery("TblGroups.findNonInventoryGroups", excludeGroups);
+        getLoanGroupAccount();
     }
 
     private String hashAndEncodePassword(String password) throws NoSuchAlgorithmException, NoSuchProviderException, UnsupportedEncodingException {
@@ -249,6 +224,10 @@ public class UserAccountController implements Serializable {
         } catch (UnsupportedEncodingException | NoSuchAlgorithmException e) {
             throw new RuntimeException("Exception encoding password", e);
         }
+    }
+    
+    private void getLoanGroupAccount() {
+        accounts = dao.findGroupByNamedQuery(findNonInventoryGroupNamedQuery, excludeGroups);
     }
 
     public String getUsername() {

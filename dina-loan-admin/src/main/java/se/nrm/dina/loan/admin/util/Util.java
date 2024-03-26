@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package se.nrm.dina.loan.admin.util;
 
 //import java.text.DateFormat;
@@ -19,10 +13,7 @@ import java.util.Date;
 public class Util {
     
     private final static SimpleDateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd"); 
-//    private final static DateFormat DFORMAT  = new SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy");
-    
-//    private final static boolean IS_LOCAL = false;
-
+  
     public static String getTodayAsString() {
         Calendar now = Calendar.getInstance(); 
         Date date = now.getTime(); 

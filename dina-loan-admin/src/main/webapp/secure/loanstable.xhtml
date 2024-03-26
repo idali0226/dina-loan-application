@@ -1,0 +1,351 @@
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:ui="http://java.sun.com/jsf/facelets"  
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:f="http://java.sun.com/jsf/core"> 
+    <head>
+        <title>Loan results</title>
+    </head>
+    <body>
+        <ui:composition>      
+
+            <p:dataTable id="loans" var="loan" value="#{search.loans}"
+                         widgetVar="resultTable"
+                         rows="10" editable="true"   
+                         emptyMessage="No loans found with given criteria" 
+                         paginator="true" 
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="10,25,50,100"  
+                         currentPageReportTemplate="Showing {startRecord}-{endRecord} out of {totalRecords}" 
+                         rowStyleClass="#{styleBean.loanRowColor(loan.status)}" 
+                         filteredValue="#{search.filteredLoans}" 
+                         scrollable="true" >
+
+
+                <f:facet name="header">
+                    <div class="flex align-items-center justify-content-between">
+                        <span>Loans</span>
+                        <div style="padding-left: 10px; width: 100%; float: left; text-align: left; ">
+                            <h:outputText value="Search all fields:" />
+                            <p:spacer width="20" />
+                            <p:inputText id="globalFilter" onblur="PF('resultTable').filter()" 
+                                         size="40"   placeholder="Enter keyword"/> 
+
+                            <p:spacer width="30" height="5" />
+                            <p:commandButton value="Search" actionListener="#{search.refreshLoans}" 
+                                             update=":loansForm:loans" /> 
+                        </div>
+                    </div> 
+
+                </f:facet>
+                <p:ajax event="rowEdit" listener="#{search.onRowEdit(loan)}"    /> 
+
+                <p:column style="min-width:16px">
+                    <p:rowToggler />
+                </p:column>
+                <p:column style="min-width:32px">
+                    <p:rowEditor />
+                </p:column> 
+
+                <p:column headerText="Request Number"  
+                          sortBy="#{loan.id}" filterBy="#{loan.id}" 
+                          style="min-width:130px" 
+                          footerText="contains" filterMatchMode="contains">
+                    <h:outputText value="#{loan.id}" />
+                </p:column>
+
+                <p:column headerText="Status" style="min-width:130px"  
+                          sortBy="#{loan.status}" filterBy="#{loan.status}" 
+                          filterOptions="#{search.statusOptions}"  
+                          footerText="exact"   filterMatchMode="exact" >  
+
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{loan.status}" />
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:selectOneMenu value="#{loan.status}" 
+                                             effect="fold"  style="width: 100%; ">
+                                <f:selectItems value="#{search.statusList}" />
+                            </p:selectOneMenu> 
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column headerText="Curator"   
+                          sortBy="#{loan.curator}" filterBy="#{loan.curator}" 
+                          filterOptions="#{search.curatorOptions}"  
+                          style="min-width:200px" 
+                          footerText="exact"   filterMatchMode="exact" >  
+
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{loan.curator}" />
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:selectOneMenu  value="#{loan.curator}" 
+                                              effect="fold" editable="true" 
+                                              style="width: 100%; ">
+                                <f:selectItem itemLabel="Select One" itemValue="" />
+                                <f:selectItems value="#{search.curators}" />
+                            </p:selectOneMenu> 
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column headerText="Relevent Collection"  
+                          sortBy="#{loan.releventCollection}" 
+                          style="min-width:180px" 
+                          filterBy="#{loan.releventCollection}" 
+                          filterOptions="#{search.collectionOptions}"  
+                          footerText="exact"   filterMatchMode="exact" >  
+
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{loan.releventCollection}" />
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:selectOneMenu  value="#{loan.releventCollection}" 
+                                              effect="fold" style="width: 100%; " >
+                                <f:selectItems value="#{search.collections}" />
+                            </p:selectOneMenu>   
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column headerText="Borrower" style="min-width:150px" 
+                          sortBy="#{loan.borrower}"  
+                          filterBy="#{loan.borrower}" 
+                          footerText="contains" 
+                          filterMatchMode="contains">
+                    <h:outputText value="#{loan.borrower}" />
+                </p:column>
+
+                <p:column headerText="2ndry Borrower"  style="min-width:150px" 
+                          sortBy="#{loan.secondaryBorrower}"  
+                          filterBy="#{loan.secondaryBorrower}" 
+                          footerText="contains" 
+                          filterMatchMode="contains">
+                    <h:outputText value="#{loan.secondaryBorrower}" />
+                </p:column>
+
+                <p:column headerText=" Date Request"  
+                          style="min-width:130px" 
+                          sortBy="#{loan.submitDate}" > 
+                    <h:outputText value="#{loan.submitDate}" /> 
+                </p:column>
+
+                <p:column headerText="Request Closed"  
+                          style="min-width:130px" 
+                          sortBy="#{loan.closeDate}"  >  
+                    <h:outputText value="#{loan.closeDate}" />  
+                </p:column>
+
+                <p:column headerText="Comments" 
+                          style="min-width:130px"   
+                          sortBy="#{loan.comments}" 
+                          filterBy="#{loan.comments}" 
+                          footerText="contains"   
+                          filterMatchMode="contains" >  
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{loan.comments}" />
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText value="#{loan.comments}" 
+                                         style="width:100%" label="Comments"/>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column headerText="Loan Number"  
+                          style="min-width:130px" 
+                          sortBy="#{loan.loanNumber}" 
+                          filterBy="#{loan.loanNumber}" 
+                          footerText="contains"   
+                          filterMatchMode="contains" >  
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{loan.loanNumber}" />
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText value="#{loan.loanNumber}" 
+                                         style="width:100%" label="Loan Number"/>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column> 
+
+
+                <p:rowExpansion> 
+                    <p:panel header="Request Summary PDF" styleClass="nobord"> 
+                        <h:panelGroup layout="block">
+                            <h:outputText value="Attachments: " styleClass="defaultboldtext" />
+                            <br />
+                            <br />
+                            <h:panelGroup layout="block"  rendered="#{not empty loan.loanDescriptionFile}">
+                                <h:outputText value="Description of the loan:  " /> 
+                                <h:outputText value="  #{loan.loanDescriptionFile}  " /> 
+                                
+                                <p:commandLink id="downloadLink" value="Download" ajax="false" 
+                                                 actionListener="#{download.downloadDescriptionfile(loan)}">
+                                    <p:fileDownload value="#{download.file}" />
+                                </p:commandLink>
+                                <br />
+                                <br /> 
+                                
+                            </h:panelGroup> 
+
+                            <h:panelGroup layout="block"  rendered="#{not empty loan.photoInstractionFile}"> 
+                                <h:outputText value="Photo instruction:  " /> 
+                                <h:outputText value="   #{loan.photoInstractionFile}  " />  
+                                <p:commandLink id="downloadPhotoLink" value="Download" ajax="false" 
+                                                 actionListener="#{download.downloadPhotoInstractionFile(loan)}">
+                                    <p:fileDownload value="#{download.file}" />
+                                </p:commandLink>
+                                <br />
+                                <br />
+                            </h:panelGroup> 
+
+                            <h:panelGroup layout="block"  rendered="#{not empty loan.edPurposeFile}">
+
+                                <h:outputText value="Photo instruction:   " style="padding-right: 10px;" />
+                                <h:outputText value="  #{loan.edPurposeFile}  " style="padding-right: 10px;" />
+ 
+                                <p:commandLink id="downEducationalPurposeLink" value="Download" ajax="false" 
+                                                 actionListener="#{download.downloadEdPurposeFile(loan)}">
+                                    <p:fileDownload value="#{download.file}" />
+                                </p:commandLink>
+                                <br />
+                                <br />
+                            </h:panelGroup> 
+
+
+                            <h:panelGroup layout="block"  rendered="#{not empty loan.destructiveFile}"> 
+                                <h:outputText value="Destructive samplening instruction:   " style="padding-right: 10px;" />
+                                <h:outputText value="  #{loan.destructiveFile}  " style="padding-right: 10px;" />
+  
+                                <p:commandLink id="downDestructiveLink" value="Download" ajax="false" 
+                                               actionListener="#{download.downloadDestructivefile(loan)}">
+                                    <p:fileDownload value="#{download.file}" />
+                                </p:commandLink>
+                                <br />
+                                <br />
+                            </h:panelGroup> 
+ 
+                            <h:panelGroup layout="block"  rendered="#{loan.purpose=='Scientific purpose'}" > 
+                                <h:outputText value="Download file:   " style="padding-right: 10px;" /> 
+
+
+                                <p:dataTable id="tbl" var="sample" value="#{loan.samples}"  
+                                             rows="5"
+                                             paginator="true" style="width: 880px;">
+                                    <f:facet name="footer" >  
+                                        <h:commandLink>
+                                            <p:graphicImage value="/resources/images/excel.png" title="Excel" styleClass="images"/>
+                                            <p:dataExporter type="xls" target="tbl" fileName="loan" />
+                                        </h:commandLink>
+                                        <h:commandLink >
+                                            <p:graphicImage value="/resources/images/csv.png"  alt="CSV"  title="CSV" styleClass="images"/>     
+                                            <p:dataExporter type="csv" target="tbl" fileName="loan" />
+                                        </h:commandLink> 
+                                        <p:spacer width="700" height="5"/>
+
+                                    </f:facet>
+
+
+                                    <p:column style="font-size: 11px;  " width="110">
+                                        <f:facet name="header">
+                                            <h:outputText value="Cat. no" />
+                                        </f:facet>
+                                        <h:outputText value="#{sample.catalogNumber}" />
+                                    </p:column>
+
+                                    <p:column style="font-size: 11px; "  width="80" >
+                                        <f:facet name="header">
+                                            <h:outputText value="Family"/>
+                                        </f:facet>
+                                        <h:outputText value="#{sample.family}" />
+                                    </p:column>
+
+                                    <p:column style="font-size: 11px; "  width="80" >
+                                        <f:facet name="header">
+                                            <h:outputText value="Genus"/>
+                                        </f:facet>
+                                        <h:outputText value="#{sample.genus}" />
+                                    </p:column>
+
+
+                                    <p:column style="font-size: 11px; "  width="140" >
+                                        <f:facet name="header">
+                                            <h:outputText value="Species"/>
+                                        </f:facet>
+                                        <h:outputText value="#{sample.species}" />
+                                    </p:column>
+
+                                    <p:column style="font-size: 11px; " width="100" >
+                                        <f:facet name="header">
+                                            <h:outputText value="Author"/>
+                                        </f:facet>
+                                        <h:outputText value="#{sample.auctor}" />
+                                    </p:column>
+
+                                    <p:column style="font-size: 11px; " width="60"  >
+                                        <f:facet name="header">
+                                            <h:outputText value="Type status"/>
+                                        </f:facet>
+                                        <h:outputText value="#{sample.typeStatus}" />
+                                    </p:column>
+
+                                    <p:column style="font-size: 11px; " width="60"  >
+                                        <f:facet name="header">
+                                            <h:outputText value="Type"/>
+                                        </f:facet>
+                                        <h:outputText value="#{sample.type}" />
+                                    </p:column>
+
+                                    <p:column style="font-size: 11px;  " width="180" >
+                                        <f:facet name="header">
+                                            <h:outputText value="Storage"/>
+                                        </f:facet>
+                                        <h:outputText value="#{sample.location}" />
+                                    </p:column> 
+                                </p:dataTable> 
+                            </h:panelGroup> 
+                            <br /> 
+                        </h:panelGroup>  
+                     
+                        
+                        
+                        
+                        <ui:remove>
+                            
+                            <object type="application/pdf" data="#{pdf.getPdfFile(loan)}" height="750px" width="820px"  /> 
+                            <p:media value="#{pdf.getPdfFile(loan)}" height="750px" width="820px"  player="pdf">
+                            Your browser can't display pdf, <h:outputLink
+                                value="#{pdf.getPdfFile(loan)}">click</h:outputLink> to download pdf instead.
+                        </p:media> 
+                            <p:media value="#{pdf.getPdfFile(loan)}"  
+                                         height="750px" width="820px" player="pdf">
+                                    Your browser can't display pdf, 
+                                    <h:outputLink value="#{pdf.getPdfFile(loan)}" >
+                                        click
+                                    </h:outputLink> to download pdf instead.
+                                </p:media> 
+                        </ui:remove>
+                        <p:media value="#{search.getAdminPdf(loan)}"  
+                                 height="750px" width="820px" player="pdf" >
+                            Your browser can't display pdf, 
+                            <h:outputLink value="#{search.getAdminPdf(loan)}" >
+                                click
+                            </h:outputLink> to download pdf instead.
+                        </p:media>
+                   
+                    </p:panel> 
+                </p:rowExpansion> 
+
+            </p:dataTable>
+
+
+        </ui:composition>
+    </body>
+</html>

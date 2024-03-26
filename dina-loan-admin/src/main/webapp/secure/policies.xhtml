@@ -1,0 +1,104 @@
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:p="http://primefaces.org/ui"   
+      xmlns:h="http://java.sun.com/jsf/html"   >
+    <head>
+        <title>Policies</title>
+    </head>
+    <body>      
+        <ui:composition template="/templates/masterLayout.xhtml">      
+            <ui:define name="windowTitle">
+                Loan polices
+            </ui:define> 
+
+            <ui:define name="content">   
+                <h:form id="policyForm" >  
+                    <h:panelGroup layout="block" styleClass="main"  id="policyPanel"> 
+                        <p:panel header="Update Loan policy documents" styleClass="nobord">
+                            <br />
+                            <h:panelGrid id="updatePolicyPanel" rendered="#{loanAdmin.isNewPolicy}">
+                                <h:outputText value="Right click here to update new policy files" 
+                                              style="color: #FF0000; "/>
+                            </h:panelGrid> 
+                            <p:contextMenu for="updatePolicyPanel"> 
+                                <p:menuitem value="Update" update="policyPanel" icon="ui-icon-refresh" 
+                                            actionListener="#{loanAdmin.updatePolicy}" 
+                                            oncomplete="window.location.reload();"/>
+                            </p:contextMenu>
+                            <br />
+                            <br />  
+
+                            <p:commandButton id="scPolicyBtn"  
+                                             value="Current loan policy for scientific purpose" 
+                                             type="button"  />
+
+                            <p:overlayPanel id="currentScPolicyPanel" for="scPolicyBtn" dynamic="true"  > 
+                                <p:media value="#{policies.scientificPolicyPdfFile}"  
+                                         height="750px" width="820px" player="pdf">
+                                    Your browser can't display pdf, 
+                                    <h:outputLink value="#{policies.scientificPolicyPdfFile}" >
+                                        click
+                                    </h:outputLink> to download pdf instead.
+                                </p:media> 
+                            </p:overlayPanel>  
+
+                            <br />
+                            <br />  
+                            <br />
+                            <br />  
+                            <h:panelGrid styleClass="text" id="scpolicyfilePanel"> 
+                                <h:outputText value="Upload loan policy for scientific purpose: " styleClass="defaultboldtext" />
+                                <br />  
+                                <h:outputText value="(Drag and drop file into upload box, or select file from file system.)" styleClass="smalltext" />
+                                <br /> 
+                                <p:fileUpload fileUploadListener="#{loanAdmin.uploadScFile}" 
+                                              mode="advanced"
+                                              allowTypes="/(\.|\/)(pdf)$/" 
+                                              styleClass="originalbutton" 
+                                              update="policyPanel" />  
+                            </h:panelGrid>
+
+                            <br />
+                            <br />
+                            <br /> 
+
+
+                            <p:commandButton id="edPolicyBtn"  
+                                             value="Current loan policy for educational purpose" 
+                                             type="button"  />
+
+                            <p:overlayPanel id="currentEdPolicyPanel" for="edPolicyBtn" dynamic="true"  > 
+                                <p:media value="#{policies.educationPolicyPdfFile}"  
+                                         height="750px" width="820px" player="pdf">
+                                    Your browser can't display pdf, 
+                                    <h:outputLink value="#{policies.educationPolicyPdfFile}" >
+                                        click
+                                    </h:outputLink> to download pdf instead.
+                                </p:media> 
+                            </p:overlayPanel> 
+
+                            <br />  
+                            <br />
+                            <br />  
+                            <h:panelGrid styleClass="text" id="edpolicyfilePanel">   
+                                <h:outputText value="Upload loan policy for educational purpose: " 
+                                              styleClass="defaultboldtext" /> 
+                                <br />
+                                <h:outputText value="(Drag and drop file into upload box, or select file from file system.)" styleClass="smalltext" />
+                                <br /> 
+
+                                <p:fileUpload fileUploadListener="#{loanAdmin.uploadEdFile}" 
+                                              mode="advanced"
+                                              allowTypes="/(\.|\/)(pdf)$/" 
+                                              styleClass="originalbutton" 
+                                              update="policyPanel"  />  
+                            </h:panelGrid>
+ 
+                        </p:panel>
+
+                    </h:panelGroup>  
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

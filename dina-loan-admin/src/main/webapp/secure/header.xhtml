@@ -2,45 +2,63 @@
       xmlns:ui="http://java.sun.com/jsf/facelets" 
       xmlns:p="http://primefaces.org/ui" 
       xmlns:h="http://java.sun.com/jsf/html"   >
+    <head>
+        <title>Header</title>
+    </head>
+    <body>
+        <ui:composition>        
+            <h:panelGrid styleClass="back" cellpadding="0" cellspacing="0"> 
+                <h:panelGrid columns="2" styleClass="top" cellpadding="0" cellspacing="0" > 
+                    <h:outputText value="#{msg.headername}" styleClass="headertitle" /> 
+                    <h:outputLink value="#{msg.nrmurl}"  target="_blank" > 
+                        <p:graphicImage value="/resources/images/nrm-logo-staende-svensk-negativ.png"
+                                        styleClass="logonrm" title="#{msg.nrm}" /> 
+                    </h:outputLink>  
+                </h:panelGrid>  
 
-  <body>
-    <ui:composition>        
-      <h:panelGrid styleClass="back" cellpadding="0" cellspacing="0"> 
-        <h:panelGrid columns="2" styleClass="top roundedtop " cellpadding="0" cellspacing="0" > 
-          <h:outputText value="#{msg.headername}" styleClass="headertitle" /> 
-          <h:outputLink value="#{msg.nrmurl}"  target="_blank" > 
-            <p:graphicImage value="/resources/images/logoNRM.png" styleClass="logonrm" title="#{msg.nrm}" /> 
-          </h:outputLink>  
-        </h:panelGrid>  
 
+                <h:panelGrid styleClass="topmenu" cellpadding="0" cellspacing="0"  >
+                    <h:form  id="headform"> 
 
-        <h:panelGrid styleClass="topmenu" cellpadding="0" cellspacing="0"  >
-          <h:form  id="headform"> 
-            <h:panelGrid id="topmenupanel" columns="2"  cellpadding="0" cellspacing="0" style="float: left; width: 100% "  >
-              <h:panelGrid rendered="#{not empty request.remoteUser}" cellpadding="0" 
-                           cellspacing="0" style="float: left; text-align: left; width: 80%; " >  
-                <h:panelGrid style="float: left; text-align: left; " >
-                  <p:commandLink actionListener="#{admin.home()}" value="Home" 
-                                 styleClass="clink" global="false" process="@this" update="@all"   />   
-                </h:panelGrid> 
-              </h:panelGrid>
+                        <p:growl id="messages" showDetail="true" sticky="true" />
 
-              <h:panelGrid style="text-align: right; float: right; " columns="2"  cellpadding="0" cellspacing="0"  id="logout">   
-                <h:panelGrid cellpadding="0" cellspacing="0" rendered="#{not empty request.remoteUser}"  style="text-align: right; padding-right: 10px; font-size: 12px; " >    
+                        <p:idleMonitor timeout="30000">
+                            <p:ajax event="idle" listener="#{idleMonitorView.onIdle}" update="messages" />
+                            <p:ajax event="active" listener="#{idleMonitorView.onActive}" update="messages" />
+                        </p:idleMonitor>
+                    
+                        <h:panelGrid id="topmenupanel" columns="2"  cellpadding="0" cellspacing="0" 
+                                     style="float: left; width: 100% "  >
+                            <h:panelGrid rendered="#{not empty request.remoteUser}" cellpadding="0" 
+                                         cellspacing="0" style="float: left; text-align: left; width: 80%; " >  
+                                <h:panelGrid style="float: left; text-align: left; " >
+                                    <p:commandLink actionListener="#{loanAdmin.home()}" value="Home" 
+                                                   styleClass="clink" global="false" 
+                                                   process="@this" update="@all"   />   
+                                </h:panelGrid> 
+                            </h:panelGrid>
 
-                  <p:splitButton value="#{request.getUserPrincipal()} -- Logout"  action="#{login.logout()}"   class="originalbutton"
-                                 update="@all" global="false" icon="ui-icon-unlocked"   >
-                    <p:menuitem value="Change password" actionListener="#{admin.changePassword()}"  
-                                icon="ui-icon-arrowrefresh-1-w" update="@all" process="@this" global="false" class="originalbutton"  />  
-                  </p:splitButton>
-                </h:panelGrid>   
-              </h:panelGrid> 
-            </h:panelGrid> 
-          </h:form> 
-        </h:panelGrid>  
-      </h:panelGrid>    
-    </ui:composition>
-  </body>
+                            <h:panelGrid style="text-align: right; float: right; " columns="2"  
+                                         cellpadding="0" cellspacing="0"  id="logout">   
+                                <h:panelGrid cellpadding="0" cellspacing="0" 
+                                             rendered="#{not empty request.remoteUser}"  
+                                             style="text-align: right; padding-right: 10px; font-size: 12px; " >    
 
+                                    <p:splitButton value="#{request.getUserPrincipal()} -- Logout"  
+                                                   action="#{login.logout()}"   class="originalbutton"
+                                                   update="@all" global="false" icon="ui-icon-unlocked"   >
+                                        <p:menuitem value="Change password" 
+                                                    actionListener="#{loanAdmin.changePassword()}"  
+                                                    icon="ui-icon-arrowrefresh-1-w" update="@all" 
+                                                    process="@this" global="false" class="originalbutton"  />  
+                                    </p:splitButton>
+                                </h:panelGrid>   
+                            </h:panelGrid> 
+                        </h:panelGrid> 
+                    </h:form> 
+                </h:panelGrid>  
+            </h:panelGrid>    
+        </ui:composition>
+    </body> 
 </html>
 

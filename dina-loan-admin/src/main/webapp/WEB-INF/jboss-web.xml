@@ -2,4 +2,5 @@
 
 <jboss-web> 
    <security-domain>app</security-domain>
+   <!--<context-root>admin</context-root>-->
 </jboss-web>

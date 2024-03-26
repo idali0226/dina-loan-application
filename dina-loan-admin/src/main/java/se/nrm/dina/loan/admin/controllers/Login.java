@@ -1,17 +1,17 @@
 package se.nrm.dina.loan.admin.controllers;
 
+import java.io.IOException;
 import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.inject.Named;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import se.nrm.dina.manager.dao.AccountDao;
 import se.nrm.dina.manager.entities.TblUsers;
 
@@ -19,90 +19,110 @@ import se.nrm.dina.manager.entities.TblUsers;
  *
  * @author idali
  */
-@ViewScoped
-@ManagedBean
+@Named("login")
 @SessionScoped
+@Slf4j
 public class Login implements Serializable {
 
-  private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final String homePath = "/secure/home?faces-redirect=true";
+//    private final String logoutPath = "/secure/start?faces-redirect=true";
+//    private final String logoutPath = "/login?faces-redirect=true";
+    private final String emptyString = "";
+    private final String loginUserSessionKey = "loginuser";
 
-  private static final String HOME_PATH = "/secure/home?faces-redirect=true";
-  private static final String LOGOUT_PATH = "/secure/start?faces-redirect=true";
+    private final String authenticationFailed = "Authentication failed!";
+    private final String scientist = "scientist";
+    private final String inventory = "inventory";
 
-  private final HttpSession session;
+    private final String logoutFailed = "Failed to logout user!";
+    private final String reLoginMsg = "Attempt to re-login while the user identity already exists";
+    private final String incorrectPassword = "Incorrect Username or Password!";
+    private final String emtpyString = "";
+    
+    private final String contextPath = "/admin";
 
-  private String username;
-  private String password;
+    private final HttpSession session;
 
-  @EJB
-  private AccountDao dao;
+    private String username;
+    private String password;
 
-  public Login() {
-    session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-  }
+    @EJB
+    private AccountDao dao;
 
-  public String login() { 
-    logger.info("login");
+    public Login() {
+        session = (HttpSession) FacesContext.getCurrentInstance()
+                .getExternalContext().getSession(true);
+    }
 
-    FacesContext context = FacesContext.getCurrentInstance();
-    HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+    public String login() {
+        log.info("login");
 
-    try {
-      request.login(username, password); 
-      if (request.isUserInRole("inventory") || request.isUserInRole("scientist")) { 
-        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Authentication failed!", null));
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+
         try {
-          request.logout();
+            request.login(username, password);
+            log.info("login user role : {}", request.isUserInRole(inventory));
+            if (request.isUserInRole(inventory) || request.isUserInRole(scientist)) {
+                log.info("here...");
+                context.addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                                authenticationFailed, null));
+                try {
+                    request.logout();
+                } catch (ServletException e) {
+                    log.error(logoutFailed, e);
+                }
+                return emptyString;
+            }
+
+            TblUsers user = dao.findByUserName(username);
+            session.setAttribute(loginUserSessionKey, user);
         } catch (ServletException e) {
-          logger.warn("Failed to logout user!", e);
+            log.warn(e.getMessage());
+            if (e.getMessage().equals(reLoginMsg)) {
+                return emtpyString;
+            }
+            context.addMessage(null, new FacesMessage(
+                    FacesMessage.SEVERITY_ERROR, incorrectPassword, null));
+            return emtpyString;
         }
-        return "";
-      }
-
-      TblUsers user = dao.findByUserName(username);
-      session.setAttribute("loginuser", user);
-    } catch (ServletException e) {
-      logger.warn(e.getMessage());
-      if (e.getMessage().equals("Attempt to re-login while the user identity already exists")) {
-        return "";
-      }
-      context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Incorrect Username or Password!", null));
-      return "";
+        return homePath;
     }
 
-//        String user = request.getUserPrincipal().getName(); 
-//        session.setAttribute("user", user);
-//        
-    return HOME_PATH;
-  }
+    public void logout() {
+        log.info("logout");
+         
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext(); 
+        
+        HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
 
-  public String logout() {
-    logger.info("logout");
-    FacesContext context = FacesContext.getCurrentInstance();
-    HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+        
+        try {
+            request.logout(); 
+            session.invalidate(); 
+            externalContext.redirect(contextPath);
 
-    try {
-      request.logout();
-    } catch (ServletException e) {
-      logger.warn("Failed to logout user!", e);
+        } catch (ServletException | IOException ex) {
+            log.error(ex.getMessage());
+
+        }  
+//        return logoutPath;
     }
-    session.invalidate();
-    return LOGOUT_PATH;
-  }
 
-  public String getUsername() {
-    return username;
-  }
+    public String getUsername() {
+        return username;
+    }
 
-  public void setUsername(String username) {
-    this.username = username;
-  }
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-  public String getPassword() {
-    return password;
-  }
+    public String getPassword() {
+        return password;
+    }
 
-  public void setPassword(String password) {
-    this.password = password;
-  }
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

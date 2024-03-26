@@ -31,25 +31,25 @@ public class FileUploadRenderer extends CoreRenderer {
             String uploader = cc.getUploader();
             boolean isAtLeastJSF22 = cc.isAtLeastJSF22();
 
-            switch (uploader) {
-                case "auto":
-                    if(isAtLeastJSF22)
-                    {
-                        if(isMultiPartRequest(context))
-                            NativeFileUploadDecoder.decode(context, fileUpload);
-                    }
-                    else
-                        CommonsFileUploadDecoder.decode(context, fileUpload);
-                    break;
-                case "native":
-                    if(!isAtLeastJSF22) {
-                        throw new FacesException("native uploader requires at least a JSF 2.2 runtime");
-                    }   NativeFileUploadDecoder.decode(context, fileUpload);
-                    break;
-                case "commons":
-                    CommonsFileUploadDecoder.decode(context, fileUpload);
-                    break;
-            }
+//            switch (uploader) {
+//                case "auto":
+//                    if(isAtLeastJSF22)
+//                    {
+//                        if(isMultiPartRequest(context))
+//                            NativeFileUploadDecoder.decode(context, fileUpload);
+//                    }
+//                    else
+//                        CommonsFileUploadDecoder.decode(context, fileUpload);
+//                    break;
+//                case "native":
+//                    if(!isAtLeastJSF22) {
+//                        throw new FacesException("native uploader requires at least a JSF 2.2 runtime");
+//                    }   NativeFileUploadDecoder.decode(context, fileUpload);
+//                    break;
+//                case "commons":
+//                    CommonsFileUploadDecoder.decode(context, fileUpload);
+//                    break;
+//            }
         }
     }
 
@@ -69,26 +69,26 @@ public class FileUploadRenderer extends CoreRenderer {
         String process = fileUpload.getProcess();
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.initWithDomReady("FileUpload", fileUpload.resolveWidgetVar(), clientId, "fileupload");
-
-        wb.attr("auto", fileUpload.isAuto(), false)
-            .attr("dnd", fileUpload.isDragDropSupport(), true)
-            .attr("update", SearchExpressionFacade.resolveComponentsForClient(context, fileUpload, update), null)
-            .attr("process", SearchExpressionFacade.resolveComponentsForClient(context, fileUpload, process), null)
-            .attr("maxFileSize", fileUpload.getSizeLimit(), Long.MAX_VALUE)
-            .attr("fileLimit", fileUpload.getFileLimit(), Integer.MAX_VALUE)
-            .attr("invalidFileMessage", fileUpload.getInvalidFileMessage(), null)
-            .attr("invalidSizeMessage", fileUpload.getInvalidSizeMessage(), null)
-            .attr("fileLimitMessage", fileUpload.getFileLimitMessage(), null)
-            .attr("messageTemplate", fileUpload.getMessageTemplate(), null)
-            .attr("previewWidth", fileUpload.getPreviewWidth(), 80)
-            .attr("disabled", fileUpload.isDisabled(), false)
-            .callback("onstart", "function()", fileUpload.getOnstart())
-            .callback("onerror", "function()", fileUpload.getOnerror())
-            .callback("oncomplete", "function()", fileUpload.getOncomplete());
-
-        if(fileUpload.getAllowTypes() != null) {
-            wb.append(",allowTypes:").append(fileUpload.getAllowTypes());
-        }
+//
+//        wb.attr("auto", fileUpload.isAuto(), false)
+//            .attr("dnd", fileUpload.isDragDropSupport(), true)
+//            .attr("update", SearchExpressionFacade.resolveComponentsForClient(context, fileUpload, update), null)
+//            .attr("process", SearchExpressionFacade.resolveComponentsForClient(context, fileUpload, process), null)
+//            .attr("maxFileSize", fileUpload.getSizeLimit(), Long.MAX_VALUE)
+//            .attr("fileLimit", fileUpload.getFileLimit(), Integer.MAX_VALUE)
+//            .attr("invalidFileMessage", fileUpload.getInvalidFileMessage(), null)
+//            .attr("invalidSizeMessage", fileUpload.getInvalidSizeMessage(), null)
+//            .attr("fileLimitMessage", fileUpload.getFileLimitMessage(), null)
+//            .attr("messageTemplate", fileUpload.getMessageTemplate(), null)
+//            .attr("previewWidth", fileUpload.getPreviewWidth(), 80)
+//            .attr("disabled", fileUpload.isDisabled(), false)
+//            .callback("onstart", "function()", fileUpload.getOnstart())
+//            .callback("onerror", "function()", fileUpload.getOnerror())
+//            .callback("oncomplete", "function()", fileUpload.getOncomplete());
+//
+//        if(fileUpload.getAllowTypes() != null) {
+//            wb.append(",allowTypes:").append(fileUpload.getAllowTypes());
+//        }
 
         wb.finish();
     }

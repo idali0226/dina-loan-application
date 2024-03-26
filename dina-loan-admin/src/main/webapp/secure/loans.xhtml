@@ -1,0 +1,124 @@
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:p="http://primefaces.org/ui"   
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core" >
+    <head>
+        <title>Loans</title>
+    </head>
+    <body>      
+        <ui:composition template="/templates/masterLayout.xhtml">      
+            <ui:define name="windowTitle">
+                loans
+            </ui:define> 
+
+            <ui:define name="content">   
+                <h:form id="loansForm" >   
+
+                    <h:panelGroup layout="block" id="loansPanel" styleClass="main" > 
+                        <h:panelGroup layout="block" 
+                                      style="text-align: center; margin-left: auto; margin-right: auto; width: 100%;">
+                            <h1>Loan Request Handling</h1>
+                        </h:panelGroup>
+
+                        <br /> 
+                        <p:accordionPanel>
+                            <p:tab title="Loan filters">
+
+                                <h:panelGrid id="departmentcheckboxpanel" columns="7" 
+                                             columnClasses="alignTop,alignTop,alignTop,alignTop,alignTop,alignTop,alignTop">  
+                                    <p:fieldset legend="Select departments" styleClass="queryfieldset"> 
+                                        <p:selectManyCheckbox id="departmentCheckBox" layout="pageDirection"
+                                                              value="#{search.selectedDepartments}" >
+                                            <f:selectItem itemValue="All" itemLabel="All departments"  itemDisabled="true"   />
+                                            <f:selectItem itemValue="Botany" itemLabel="Botany" itemDisabled="true"  />
+                                            <f:selectItem itemValue="Environmental Specimen Bank" itemLabel="Environmental Specimen Bank"  itemDisabled="true" />
+                                            <f:selectItem itemValue="Geology" itemLabel="Geology"  itemDisabled="true" />
+                                            <f:selectItem itemValue="Palaeobiology" itemLabel="Palaeobiology"  itemDisabled="true" />
+                                            <f:selectItem itemValue="Zoology" itemLabel="Zoology"   />  
+
+                                            <p:ajax listener="#{search.filterLoansByDepartment}" 
+                                                    update=":loansForm:loans departmentcheckboxpanel"  />
+                                        </p:selectManyCheckbox>
+                                    </p:fieldset>
+
+                                    <p:spacer width="10" />
+ 
+                                    <p:fieldset legend="Select purpose of loans" styleClass="queryfieldset"> 
+                                        <p:selectManyCheckbox id="purposeCheckBox" value="#{search.selectedPurposes}" layout="pageDirection">
+                                            <f:selectItem itemValue="All" itemLabel="All purposes"   />
+                                            <f:selectItem itemValue="Scientific purpose" itemLabel="Scientific"   />
+                                            <f:selectItem itemValue="Education/Exhibition" itemLabel="Education / Exhibition"   />
+                                            <f:selectItem itemValue="Commercial/art/other" itemLabel="Commercial / Art / Other"   /> 
+
+                                            <p:ajax listener="#{search.filterLoansByPurpose()}" 
+                                                    update=":loansForm:loans departmentcheckboxpanel"  />
+                                        </p:selectManyCheckbox>
+                                    </p:fieldset>
+
+                                    <p:spacer width="10" />
+
+                                    <p:fieldset legend="Select type of loans" styleClass="queryfieldset"> 
+                                        <p:selectManyCheckbox id="typeCheckBox" value="#{search.selectedTypes}" layout="pageDirection">
+                                            <f:selectItem itemValue="All" itemLabel="All types"   />
+                                            <f:selectItem itemValue="Physical" itemLabel="Physical"   />
+                                            <f:selectItem itemValue="Photo" itemLabel="Photo"   /> 
+                                            <f:selectItem itemValue="Information" itemLabel="Infomation"   /> 
+                                            <p:ajax listener="#{search.filterLoansByType}"
+                                                    update=":loansForm:loans departmentcheckboxpanel" />
+                                        </p:selectManyCheckbox>
+                                    </p:fieldset>
+
+                                    <p:spacer width="10" />
+
+                                    <p:fieldset legend="Select date range" styleClass="queryfieldset"> 
+
+                                        <h:selectOneRadio id="dateRadio" value="#{search.dateForSearch}">
+                                            <f:selectItem itemValue="submitDate" itemLabel="Date requested" />   
+                                            <f:selectItem itemValue="closeDate" itemLabel="Date request closed"/>      
+                                            <p:ajax event="valueChange" listener="#{search.dateSearch}" 
+                                                    update=":loansForm:loans departmentcheckboxpanel"/>  
+                                        </h:selectOneRadio>
+                                        <br /> 
+                                        <h:panelGrid columns="3" id="calPanel"> 
+                                            <p:calendar pattern="yyyy-MM-dd" showButtonPanel="true" navigator="true"  size="15"
+                                                        id="fromdate" value="#{search.fromDate}" pages="3" 
+                                                        maxdate="#{search.maxDate}"     >  
+                                                <p:ajax event="dateSelect" listener="#{search.handleDateSelect}" 
+                                                        update="calPanel :loansForm:loans departmentcheckboxpanel" />  
+                                            </p:calendar> 
+                                            <h:outputText value=" -- " />
+                                            <p:calendar pattern="yyyy-MM-dd" showButtonPanel="true" navigator="true"  size="15"
+                                                        id="todate" value="#{search.toDate}" pages="3" 
+                                                        maxdate="#{search.maxDate}" mindate="#{search.mindate}"    >    
+
+                                                <p:ajax event="dateSelect" listener="#{search.dateSearch}" 
+                                                        update=":loansForm:loans departmentcheckboxpanel" />  
+                                            </p:calendar> 
+                                            <h:outputText value="From" />
+                                            <p:spacer width="10" />
+                                            <h:outputText value="To" /> 
+                                        </h:panelGrid>  
+                                    </p:fieldset>
+
+                                    <p:spacer width="10" />
+                                    <p:spacer width="10" />
+                                    <p:spacer width="10" />
+                                    <p:spacer width="10" />
+                                    <p:spacer width="10" />
+                                    <p:spacer width="10" />
+                                    <p:spacer width="10" /> 
+                                </h:panelGrid>
+                            </p:tab>
+                        </p:accordionPanel>  
+                        
+                        <ui:include src="/secure/loanstable.xhtml" />  
+                        
+                         
+                      
+                    </h:panelGroup>  
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

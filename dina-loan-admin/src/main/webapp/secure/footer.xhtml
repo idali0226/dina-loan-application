@@ -1,22 +1,30 @@
 <html xmlns="http://www.w3.org/1999/xhtml"   
       xmlns:ui="http://java.sun.com/jsf/facelets"  
       xmlns:h="http://java.sun.com/jsf/html" >
-  <body>
-    <ui:composition>    
-      <h:panelGrid styleClass="back" cellpadding="0" cellspacing="0">  
-        <h:panelGrid class="footstyle" cellpadding="0" cellspacing="0" >  
-          <h:panelGrid columns="2"  style="padding: 20px 0px 10px 0px; width: 100%;">
-            <h:panelGrid columns="2" style="float: left; text-align:left; width: 25%;" > 
-              <h:outputText value="#{msg.contact}:"  /> 
-              <h:outputLink value="mailto:tobias.malm@nrm.se"  style="color: #FFFFFF;">tobias.malm@nrm.se</h:outputLink>
-            </h:panelGrid> 
-            <h:panelGrid style="float: right; text-align:right; width: 75%;" > 
-              <h:outputText value="Login as: #{request.userPrincipal.name}" rendered="#{not empty request.remoteUser}"/> 
-            </h:panelGrid>
-          </h:panelGrid>   
-        </h:panelGrid>
-      </h:panelGrid> 
-    </ui:composition>
-  </body>
+    <head>
+        <title>Footer</title>
+    </head>
+    <body>
+        <ui:composition>     
+            <h:panelGroup  layout="block"   id="foot" styleClass="footstyle"  >   
+                <h:panelGroup layout="block" styleClass="footText" >
+                    <h:panelGrid columns="2"  style="padding: 20px 10px 10px 10px; width: 100%;">
+                        <h:panelGrid columns="2" style="float: left; text-align:left; width: 25%;" > 
+                            <h:outputText value="#{msg.contact}:"  /> 
+                            <h:outputLink value="mailto:#{loanAdmin.contactEmail}" style="color: #FFFFFF;">
+                                #{loanAdmin.contactEmail}
+                            </h:outputLink>
+                        </h:panelGrid> 
+                        <h:panelGrid style="float: right; text-align:right; width: 60%;" > 
+                            <h:outputText value="Login as:     #{request.userPrincipal.name}" 
+                                          rendered="#{not empty request.remoteUser}"/> 
+                        </h:panelGrid>
+                    </h:panelGrid> 
+                </h:panelGroup>
+            </h:panelGroup> 
+            <div id="grad1"></div>    
+        </ui:composition>
+
+    </body>
 </html>
 
