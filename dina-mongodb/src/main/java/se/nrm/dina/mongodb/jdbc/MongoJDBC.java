@@ -71,8 +71,7 @@ public class MongoJDBC implements Serializable {
 
     private final String updateGroupQry = "{$set: {group: '";
     private final String manageQry = "', manager: '";
-    private final String groupQry = "{group: '";
-
+    private final String groupQry = "{group: '"; 
     private final String sortName1 = "{name:1}";
     private final String sortEmail1 = "{email:1}";
     private final String nameQry = "{name: '";
@@ -275,9 +274,106 @@ public class MongoJDBC implements Serializable {
     
     
     
+    // Loan admin
+    public Map<String, List<Collection>> findCollectionsByDepartment(String department) {
+        log.info("findCollectionsByDepartment : {} ", department);
+ 
+        collections = findAllCollectionByDepartment(department, sortName1);
+
+        collectionResults = new ArrayList<>();
+        Util.stream(collections)
+                .forEach(c -> collectionResults.add(c));
+
+        collectionMap = new TreeMap<>();
+        collectionResults.stream()
+                .forEach((Collection c) -> {
+                    if (collectionMap.containsKey(c.getGroup())) {
+                        collectionMap.get(c.getGroup()).add(c);
+                    } else {
+                        List<Collection> list = new ArrayList<>();
+                        list.add(c);
+                        collectionMap.put(c.getGroup(), list);
+                    }
+                });
+        log.info("collectionMap size : {}", collectionMap.size());
+        return collectionMap;
+    }
     
+    private Iterable<Collection> findAllCollectionByDepartment(String department, String sort) {
+        return collectionCollection.find(buildDepartmentQry(department))
+                .sort(sort).as(Collection.class);
+    }
     
+    private String buildDepartmentQry(String department) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(detartmentQry1);
+        sb.append(department);
+        sb.append(qryEnd);
+        return sb.toString().trim();
+    }
     
+    public void updateNonScientificLoansManager(String email) {
+        log.info("updateNonScientificLoansManager: {}", email);
+
+        Collection collection = collectionCollection
+                .findOne(nonScientificCollectionQry)
+                .as(Collection.class);
+        collection.setManager(email);
+        collection.setEmail(email);
+        collectionCollection.update(nonScientificCollectionQry).with(collection);
+    }
+     
+    public void removeWholeCollection(String groupName) {
+        collectionCollection.remove(buildQry(groupQry, groupName));
+    }
+     
+    public void removeCollection(Collection collection) {
+        collectionCollection.remove(buildQry(nameQry, collection.getName()));
+    }
+      
+    private String buildQry(String qryName, String name) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(qryName);
+        sb.append(name);
+        sb.append(qryEnd);
+        return sb.toString().trim();
+    }
+    
+    public void updateCollection(Collection collection) {
+        log.info("updateCollection");
+        collectionCollection.update(Oid.withOid(collection.getId()))
+                .with(collection);
+    }
+    
+     public List<Notification> findNotifications() {
+        Iterable<Notification> notifications = notificationCollection
+                .find()
+                .sort(sortByIdDecQry)
+                .as(Notification.class);
+
+        List<Notification> results = new ArrayList<>();
+        Util.stream(notifications).forEach(l -> results.add(l));
+        return results;
+    }
+
+    public void saveNotification(Notification notification) {
+        notificationCollection.insert(notification);
+    }
+   
+    public void deleteNotification(Notification notification) {
+        log.info("deleteNotification: {}", notification.getId());
+
+        notificationCollection.remove(new ObjectId(notification.getId()));
+    }
+
+    public void updateNotification(Notification notification) {
+        log.info("updateNotification: {}", notification.isIsActive());
+
+        notificationCollection
+                .update(Oid.withOid(notification.getId()))
+                .with(notification);
+    }
+
     
     
     
@@ -315,16 +411,7 @@ public class MongoJDBC implements Serializable {
 
 
 
-    public void updateNonScientificLoansManager(String email) {
-        log.info("updateNonScientificLoansManager: {}", email);
-
-        Collection collection = collectionCollection
-                .findOne(nonScientificCollectionQry)
-                .as(Collection.class);
-        collection.setManager(email);
-        collection.setEmail(email);
-        collectionCollection.update(nonScientificCollectionQry).with(collection);
-    }
+    
 
     public void updateCollectionGroupName(String oldGroup, String newGroup,
             String newManager, String department) {
@@ -348,56 +435,18 @@ public class MongoJDBC implements Serializable {
         return sb.toString().trim();
     }
 
-    public void removeCollection(Collection collection) {
-        collectionCollection.remove(buildNameQry(collection.getName()));
-    }
+    
 
-    private String buildNameQry(String name) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(nameQry);
-        sb.append(name);
-        sb.append(qryEnd);
-        return sb.toString().trim();
-    }
 
-    public void updateCollection(Collection collection) {
-        log.info("updateCollection");
-        collectionCollection.update(Oid.withOid(collection.getId())).with(collection);
-    }
 
     public void saveCollection(Collection collection) {
         log.info("saveCollection : {}", collection);
         collectionCollection.insert(collection);
     }
 
-    public void updateNotification(Notification notification) {
-        log.info("updateNotification: {}", notification.isIsActive());
+   
+ 
 
-        notificationCollection
-                .update(Oid.withOid(notification.getId()))
-                .with(notification);
-    }
-
-    public List<Notification> findNotifications() {
-        Iterable<Notification> notifications = notificationCollection
-                .find()
-                .sort(sortByIdDecQry)
-                .as(Notification.class);
-
-        List<Notification> results = new ArrayList<>();
-        Util.stream(notifications).forEach(l -> results.add(l));
-        return results;
-    }
-
-    public void deleteNotification(Notification notification) {
-        log.info("deleteNotification: {}", notification.getId());
-
-        notificationCollection.remove(new ObjectId(notification.getId()));
-    }
-
-    public void saveNotification(Notification notification) {
-        notificationCollection.insert(notification);
-    }
 
     public List<Loan> findAllLoans() {
         log.info("findAllLoans");
@@ -410,32 +459,7 @@ public class MongoJDBC implements Serializable {
                 .collect(Collectors.toList());
     }
 
-    public Map<String, List<Collection>> findCollectionsByDepartment(String department) {
-        log.info("findCollectionsByDepartment : {} ", department);
-
-//        collections = collectionCollection
-//                .find(buildDepartmentQry(department))
-//                .sort(sortName1).as(Collection.class);
-        collections = findAllCollectionByDepartment(department, sortName1);
-
-        collectionResults = new ArrayList<>();
-        Util.stream(collections)
-                .forEach(c -> collectionResults.add(c));
-
-        collectionMap = new TreeMap<>();
-        collectionResults.stream()
-                .forEach((Collection c) -> {
-                    if (collectionMap.containsKey(c.getGroup())) {
-                        collectionMap.get(c.getGroup()).add(c);
-                    } else {
-                        List<Collection> list = new ArrayList<>();
-                        list.add(c);
-                        collectionMap.put(c.getGroup(), list);
-                    }
-                });
-        log.info("collectionMap size : {}", collectionMap.size());
-        return collectionMap;
-    }
+    
 
     public List<String> findAllCollectionNameListByDepartmentName(String department) {
         log.info("findAllCollectionNameListByDepartmentName : {}", department);
@@ -462,18 +486,9 @@ public class MongoJDBC implements Serializable {
                 .collect(Collectors.toList());
     }
 
-    private Iterable<Collection> findAllCollectionByDepartment(String department, String sort) {
-        return collectionCollection.find(buildDepartmentQry(department))
-                .sort(sort).as(Collection.class);
-    }
 
-    private String buildDepartmentQry(String department) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(detartmentQry1);
-        sb.append(department);
-        sb.append(qryEnd);
-        return sb.toString().trim();
-    }
+
+
 
     public List<Notification> findActiveNotifications() {
         Iterable<Notification> notifications
@@ -644,7 +659,8 @@ public class MongoJDBC implements Serializable {
 
     public void updateLoan(Loan loan, boolean removeReleventCollection) {
         loanCollection.update("{_id: '" + loan.getId() + "'}").with(loan);
-        loanCollection.findAndModify("{_id: '" + loan.getId() + "'}").with("{$unset: { releventCollection: \"\" }}").as(Loan.class);
+        loanCollection.findAndModify("{_id: '" + loan.getId() + "'}")
+                .with("{$unset: { releventCollection: \"\" }}").as(Loan.class);
     }
 
     public void updateAllCollections(String name, String email, String group) {
@@ -659,27 +675,24 @@ public class MongoJDBC implements Serializable {
 
     public Map<String, List<String>> findAllCollectionNames() {
         log.info("findAllCollection");
-        Iterable<Collection> collections = collectionCollection.find().as(Collection.class);
+        collections = collectionCollection.find().as(Collection.class);
 
         List<Collection> results = new ArrayList<>();
         Util.stream(collections).forEach(c -> results.add(c));
 
-        Map<String, List<String>> map = new LinkedHashMap<>();
+        Map<String, List<String>> collectionNameMap = new LinkedHashMap<>();
         results.stream().forEach((Collection c) -> {
-            if (map.containsKey(c.getGroup())) {
-                map.get(c.getGroup()).add(c.getName());
+            if (collectionNameMap.containsKey(c.getGroup())) {
+                collectionNameMap.get(c.getGroup()).add(c.getName());
             } else {
                 List<String> list = new ArrayList<>();
                 list.add(c.getName());
-                map.put(c.getGroup(), list);
+                collectionNameMap.put(c.getGroup(), list);
             }
         });
-        return map;
+        return collectionNameMap;
     }
 
-    public void removeWholeCollection(String groupName) {
-        collectionCollection.remove("{group: '" + groupName + "'}");
-    }
 
     public int getNextSequence() {
         Counters counters = countersCollection.findAndModify("{_id: 'loanid'}")

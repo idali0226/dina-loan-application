@@ -27,16 +27,30 @@ public class AccountDao implements Serializable {
     private final String findByUsernameNamedQuery = "TblUsers.findByUsername";
     
     private final String findByEmailNamedQuery = "TblUsers.findByEmail";
+    private final String findNonLoanGroupNamedQuery = "TblGroups.findNonInventoryGroups";
     
     private final String jpql = "SELECT Count(u) FROM TblUsers u JOIN u.tblGroupsList g WHERE g.username = u.username AND g.groupname IN (:group_params) AND u.email = :email";
     
     private final String queryUsernameParamKey = "username";
     private final String queryGroupParamKey = "group_params";
     private final String queryEmailParamKey = "email";
+     
+    private final String userGroupInventory = "inventory";
+    private final String userGroupSuperuser = "superuser";
+    private final String userGroupVegadare = "vegadare";
+    private final String scientist = "scientist";
+    
+    private final String userRole = "user";
+    private final String managerRole = "manager";
+    private final String adminRole = "admin";
+    
+    private final String groupnamesKey = "groupnames";
     
     
     private final String usernameKey = "Username: ";
     private final String usernameNotFoundError = " not found.";
+    
+    private final String userAccountUpdateError = "Failed to update user account: ";
     
     
       
@@ -48,14 +62,41 @@ public class AccountDao implements Serializable {
     
     public AccountDao() {
         excludeGroups = new ArrayList<>();
-        excludeGroups.add("inventory");
-        excludeGroups.add("superuser");
-        excludeGroups.add("vegadare");
+        excludeGroups.add(userGroupInventory);
+        excludeGroups.add(userGroupSuperuser);
+        excludeGroups.add(userGroupVegadare);
+        excludeGroups.add(scientist);
         
         loanGroup = new ArrayList();
-        loanGroup.add("user");
-        loanGroup.add("admin");
-        loanGroup.add("manager"); 
+        loanGroup.add(userRole);
+        loanGroup.add(adminRole);
+        loanGroup.add(managerRole); 
+    }
+    
+    // admin
+        
+    public List<TblGroups> findLoanGroupByNamedQuery() {
+        log.info("findGroupByNamedQuery");
+        
+        Query query = entityManager.createNamedQuery(findNonLoanGroupNamedQuery); 
+        query.setParameter(groupnamesKey, excludeGroups);
+         
+        return query.getResultList();
+    }
+    
+    public TblUsers mergeAccount(TblUsers user) {
+        log.info("mergeAccount: {}", user);
+
+        TblUsers tmp = user;
+        try { 
+            tmp = entityManager.merge(user); 
+            entityManager.flush();     
+        } catch (OptimisticLockException | ConstraintViolationException e) { 
+            throw new ManagerException(userAccountUpdateError + e.getMessage()); 
+        } catch (Exception e) {  
+            throw new ManagerException(userAccountUpdateError + e.getMessage()); 
+        }  
+        return tmp;
     }
     
     public void delete(TblUsers user) {
@@ -71,18 +112,9 @@ public class AccountDao implements Serializable {
             log.error(e.getMessage());
         }
     }
-     
-    public TblUsers findByUserName(String username) {
-        log.info("findByUserName");
-        
-        Query query = entityManager.createNamedQuery(findByUsernameNamedQuery); 
-        query.setParameter(queryUsernameParamKey, username);
-         
-        try {
-            return (TblUsers)query.getSingleResult();
-        } catch (javax.persistence.NoResultException | javax.persistence.NonUniqueResultException ex) {
-            throw new ManagerException(usernameKey + username + usernameNotFoundError); 
-        } 
+    
+    public int validateUser(String username, String email) { 
+        return !validateUserName(username) ? 1 : !validateEmail(email) ? 2 : 0;
     }
     
     public boolean validateUserName(String username) {  
@@ -101,6 +133,27 @@ public class AccountDao implements Serializable {
         log.info("number : {}", number);
         return number.intValue() < 1;   
     }
+    
+    // end admin
+    
+    
+    
+
+     
+    public TblUsers findByUserName(String username) {
+        log.info("findByUserName");
+        
+        Query query = entityManager.createNamedQuery(findByUsernameNamedQuery); 
+        query.setParameter(queryUsernameParamKey, username);
+         
+        try {
+            return (TblUsers)query.getSingleResult();
+        } catch (javax.persistence.NoResultException | javax.persistence.NonUniqueResultException ex) {
+            throw new ManagerException(usernameKey + username + usernameNotFoundError); 
+        } 
+    }
+    
+   
     
     public TblUsers createAccount(TblUsers user) {
         log.info("createAccount: {}", user);
@@ -180,20 +233,7 @@ public class AccountDao implements Serializable {
     }
 
 
-    public TblUsers mergeAccount(TblUsers user) {
-        log.info("mergeAccount: {}", user);
 
-        TblUsers tmp = user;
-        try { 
-            tmp = entityManager.merge(user); 
-            entityManager.flush();     
-        } catch (OptimisticLockException | ConstraintViolationException e) { 
-            throw new ManagerException("Failed to update user account: " + e.getMessage()); 
-        } catch (Exception e) {  
-            throw new ManagerException("Failed to update user account: " + e.getMessage()); 
-        }  
-        return tmp;
-    }
     
 
     public List<TblGroups> findAll() {
@@ -203,15 +243,7 @@ public class AccountDao implements Serializable {
          
         return query.getResultList();
     }
-    
-    public List<TblGroups> findGroupByNamedQuery(String namedQuery, List<String> groups) {
-        log.info("findGroupByNamedQuery : {}", namedQuery);
-        
-        Query query = entityManager.createNamedQuery(namedQuery); 
-        query.setParameter("groupnames", groups);
-         
-        return query.getResultList();
-    }
+
 
     
     public List<TblUsers> findByEmail(String email) {
