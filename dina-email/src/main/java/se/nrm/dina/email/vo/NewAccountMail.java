@@ -1,66 +1,70 @@
 package se.nrm.dina.email.vo;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+ 
+import lombok.extern.slf4j.Slf4j;
 
 /**
  *
  * @author idali
  */
+@Slf4j
 public class NewAccountMail {
+ 
 
-  private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
-  private final String START_DIV_TAG_WITH_FONT = "<div style=\"font-size: 1.2em; \">";
-  private final String START_DIV_TAG = "<div>";
-  private final String END_DIV_TAG = "</div>";
-  private final String BR_TAG = "<br />";
-  private final String START_LINK_TAG = "<a href=\"";
-
-  private final boolean isLocal;
+  private final String startDivTagWithFont = "<div style=\"font-size: 1.2em; \">";
+  private final String startDivTag = "<div>";
+  private final String endDivTag = "</div>";
+  private final String brTag = "<br />";
+  private final String start3Tag = "<h3>";
+  private final String endH3Tag = "</h3>";
+  private final String startLingTag = "<a href=\"";
+  
+  private final String link = "\" target=\"_blank\">NRM Online Loan Form Administration</a>";
+  
+  private final String usernamelbl = "Username: ";
+  private final String passwordlbl = "Passwork: ";
+  
+  private final String hi = "Hi ";
+  private final String newAccountCreateMsg = "Your online loan account has been created with the following information:  ";
+  private final String changePasswordMsg = " to login and change password";
+  
+//  private final boolean isLocal;
 
   public NewAccountMail() {
-    isLocal = System.getProperty("os.name").trim().equals("Mac OS X");
+//    isLocal = System.getProperty("os.name").trim().equals("Mac OS X");
   }
 
-  public String appendMailBody(String username, String password) {
-
-    logger.info("Account ");
+  public String appendMailBody(String username, String password, String host) { 
+    log.info("Account ");
 
     StringBuilder sb = new StringBuilder();
-    sb.append(START_DIV_TAG_WITH_FONT);
-    sb.append(START_DIV_TAG);
-    sb.append("<h3>");
-    sb.append("Hi ");
+    sb.append(startDivTagWithFont);
+    sb.append(startDivTag);
+    sb.append(start3Tag);
+    sb.append(hi);
     sb.append(username);
-    sb.append("</h3>");
-    sb.append(BR_TAG);
-    sb.append(BR_TAG);
+    sb.append(endH3Tag);
+    sb.append(brTag);
+    sb.append(brTag);
 
-    sb.append("Your online loan account has been created with the following information:  ");
-    sb.append(BR_TAG);
-    sb.append(BR_TAG);
-    sb.append("Username: ");
+    sb.append(newAccountCreateMsg);
+    sb.append(brTag);
+    sb.append(brTag);
+    sb.append(usernamelbl);
     sb.append(username);
-    sb.append(BR_TAG);
-    sb.append("Password: ");
+    sb.append(brTag);
+    sb.append(passwordlbl);
     sb.append(password);
-    sb.append(BR_TAG);
-    sb.append(BR_TAG);
+    sb.append(brTag);
+    sb.append(brTag);
     sb.append("Click ");
-    sb.append(START_LINK_TAG);
-    if (isLocal) {
-      sb.append("http://localhost:8080/loan-admin\"");
-//        } else if (host.contains("dina-loans")) {
-//            sb.append("http://dina-loans.nrm.se/loan-admin\"");
-    } else {
-      sb.append("https://www.dina-web.net/loan-admin\"");
-    }
-    sb.append(" target=\"_blank\">NRM Online Loan Form Administration</a>");
-    sb.append(" to login and change password");
-    sb.append(END_DIV_TAG);
-    sb.append(END_DIV_TAG);
-
+    sb.append(startLingTag);
+    sb.append(host);
+     
+    sb.append(link);
+    sb.append(changePasswordMsg);
+    sb.append(endDivTag);
+    sb.append(endDivTag); 
+    
     return sb.toString();
   }
 

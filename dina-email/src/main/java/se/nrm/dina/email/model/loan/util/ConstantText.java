@@ -1,9 +1,7 @@
 package se.nrm.dina.email.model.loan.util;
  
 import java.util.HashMap;
-import java.util.Map;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.Map; 
 
 
 /**
@@ -11,13 +9,12 @@ import org.slf4j.LoggerFactory;
  * @author idali
  */
 public class ConstantText {
+     
     
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final String loanRequestEn;
+    private final String loanRequestSv;
     
-    private final String LOAN_REQUEST_EN;
-    private final String LOAN_REQUEST_SV;
-    
-    private final String INFORMATION_REQUEST;
+    private final String informationRequest;  
     
     private final String LOAN_REFERENCE_EN;
     private final String LOAN_REFERENCE_SV;
@@ -25,8 +22,8 @@ public class ConstantText {
     private final String RECEIPT_EN;
     private final String RECEIPT_SV;
     
-    private final String DEAR_EN;
-    private final String DEAR_SV;
+    private final String dearEn;
+    private final String dearSv;
     
     private final String HI_EN;
     private final String HI_SV;
@@ -34,14 +31,14 @@ public class ConstantText {
     private final String AND_EN;
     private final String AND_SV;
     
-    private final String LOAN_BODY_TEXT_EN;
-    private final String LOAN_BODY_TEXT_SV;
+    private final String loanBodyTextEn;
+    private final String loanBodyTextSv;
     
-    private final String LOAN_SUMMARY_LINK_EN;
-    private final String LOAN_SUMMARY_LINK_SV;
+    private final String loanSummaryLinkEn;
+    private final String loanSummaryLinkSv;
     
-    private final String SINCERELY_EN;
-    private final String SINCERELY_SV;
+    private final String sincerelyEn;
+    private final String sincerelySv;
     private final String COLLECTION_MANAGER_EN;
     private final String COLLECTION_MENAGER_SV; 
     
@@ -56,8 +53,8 @@ public class ConstantText {
     private final String PRIMARY_MAIL_TEXT_SV;
     
     
-    private final String LOAN_POLICY_LINK_EN;
-    private final String LOAN_POLICY_LINK_SV;
+    private final String loanPolicyLinkEn;
+    private final String loanPolicyLinkSv;
     
     private final String CURATOR_EMAIL1_EN;
     private final String CURATOR_EMAIL1_SV;
@@ -65,8 +62,8 @@ public class ConstantText {
     private final String CURATOR_EMAIL2_EN;
     private final String CURATOR_EMAIL2_SV;
       
-    private final String LOAN_ACCEPTANCE_TEXT_EN;
-    private final String LOAN_ACCEPTANCE_TEXT_SV;
+    private final String loanAcceptanceTextEn;
+    private final String loanAcceptanceTextSv;
     
     
     private final String AGREEMENT_ACCEPT_EN;
@@ -81,48 +78,37 @@ public class ConstantText {
     
     private final String BR; 
     private static ConstantText instance = null;
-    
-    private final String LOCAL_EXTERNAL_FILES = "http://localhost:8080/dina-external-datasource/pdf?id=";
-    private final String REMOTE_EXTERNAL_FILES_LOAN = "http://dina-loans.nrm.se/dina-external-datasource/pdf?id=";
-    private final String REMOTE_EXTERNAL_FILES_AS = "https://dina-web.net/dina-external-datasource/pdf?id=";
- 
-    
-    private final String LOCAL_EXTERNAL_POLICY_FILES = "http://localhost:8080/dina-external-datasource/pdf?pdf=";
-    private final String REMOTE_EXTERNAL_POLICY_FILES_LOAN = "http://dina-loans.nrm.se/dina-external-datasource/pdf?pdf=";
-    private final String REMOTE_EXTERNAL_POLICY_FILES_AS = "https://dina-web.net/dina-external-datasource/pdf?pdf=";
-    
-    
-    
+     
     
     private final String LOAN_AGREEMENT_EN;
     private final String LOAN_AGREEMENT_SV;
     
-    private final String LOAN_REQUEST_ATTACHMENT_EN;
-    private final String LOAN_REQUEST_ATTACHMENT_SV;
+    private final String loanRequestAttachmentEn;
+    private final String loanRequestAttachmentSv;
     
-    private final String INFORMATION_REQUEST_ATTACHMENT;
+    private final String informationRequestAttachment; 
     
     private final String RESPONSIBLE_CUROTOR_EN;
     private final String RESPONSIBLE_CUROTOR_SV;
   
-    private final String CURATOR_MAIL_TITLE;
-    private final String CURATOR_MAIL_TEXT;
-    private final String CURATOR_MAIL_TEXST_INFORMATION;
+    private final String curatorMailTitle;
+    private final String curatorMailText;
+    private final String curatorMailTextInformation; 
     
-    private final String CURATOR_MAIL_TEXT_NON_SCIENTIFIC;
-    private final String CURATOR_MAIL_TEXT_1;
+    private final String curatorMailTextNonScientiric;
+    private final String curatorMailText1; 
     
-    private final String CURATOR_MAIL_PRIMARY_TEXT;
+    private final String curatorMailPrimaryText; 
     
-    private final String BORROWER;
-    private final String PRIMARY_BORROWER;
-    private final String SECONDARY_BORROWER;
+    private final String borrower;
+    private final String primaryBorrower;
+    private final String secondaryBorrower;
     
-    private final String LOAN_INFORMATION;
-    private final String REQUEST_INFORMATION;
+    private final String loanInformation;
+    private final String requestInformation; 
     
-    private final String REQUEST_SUMMARY_1;
-    private final String REQUEST_SUMMARY_2;
+    private final String requestSummary1;
+    private final String requestSummary2;
     
     
     private final String OUT_OF_OFFICE_EN;
@@ -139,23 +125,23 @@ public class ConstantText {
         RECEIPT_EN = "Receipt";
         RECEIPT_SV = "Kvitto";
         
-        LOAN_REQUEST_EN = "Loan request";
-        LOAN_REQUEST_SV = "Låneansökan";
+        loanRequestEn = "Loan request";
+        loanRequestSv = "Låneansökan";
         
         LOAN_REFERENCE_EN = "Reference #: ";
         LOAN_REFERENCE_SV = "Referens #: ";
         
-        INFORMATION_REQUEST = "Information request";
+        informationRequest = "Information request";
                 
           
         PRIMARY_MAIL_TEXT_EN = "A request for a loan was submitted to the Swedish Museum of Natural History by the person listed below, and with you listed as primary borrow.";
         PRIMARY_MAIL_TEXT_SV = "En låneansökan har inkommit till Naturhistoriska Riksmuseet I Stockholm, med dig som primär låntagare.";
         
-        LOAN_POLICY_LINK_EN = "Please read our Loan Policy here.";
-        LOAN_POLICY_LINK_SV = "Du kan läsa vår utlånspolicy här.";
+        loanPolicyLinkEn = "Please read our Loan Policy here.";
+        loanPolicyLinkSv = "Du kan läsa vår utlånspolicy här.";
         
-        LOAN_ACCEPTANCE_TEXT_EN = "The loan request will not be considered before we have recieved your acceptance.";
-        LOAN_ACCEPTANCE_TEXT_SV = "Låneansökan kommer inte att beaktas innan vi fått ditt godkännande.";
+        loanAcceptanceTextEn = "The loan request will not be considered before we have recieved your acceptance.";
+        loanAcceptanceTextSv = "Låneansökan kommer inte att beaktas innan vi fått ditt godkännande.";
          
         CURATOR_EMAIL1_EN = "Please forward this email to the responsible curator ";
         CURATOR_EMAIL1_SV = "Vänligen returnera detta mail till vår ansvarig personal "; 
@@ -169,19 +155,19 @@ public class ConstantText {
         AGREEMENT_DECLINE_EN = "I decline to take responsibility as primary borrower of the requested loan";
         AGREEMENT_DECLINE_SV = "Jag nekar till ansvar för det berörda lånet.";
         
-        LOAN_BODY_TEXT_EN = "We have received your loan request and will process it in due course.";
-        LOAN_BODY_TEXT_SV = "Vi har tagit emot din låneansökan och kommer att bearbeta den så fort vi kan.";
-        LOAN_SUMMARY_LINK_EN = "Review loan request summary";
-        LOAN_SUMMARY_LINK_SV = "Granska låneansökan";
+        loanBodyTextEn = "We have received your loan request and will process it in due course.";
+        loanBodyTextSv = "Vi har tagit emot din låneansökan och kommer att bearbeta den så fort vi kan.";
+        loanSummaryLinkEn = "Review loan request summary";
+        loanSummaryLinkSv = "Granska låneansökan";
         
-        LOAN_REQUEST_ATTACHMENT_EN = "Loan request is attached.";
-        LOAN_REQUEST_ATTACHMENT_SV = "Loan request is attached.";
+        loanRequestAttachmentEn = "Loan request is attached.";
+        loanRequestAttachmentSv = "Loan request is attached.";
         
-        INFORMATION_REQUEST_ATTACHMENT = "Information request is attached";
+        informationRequestAttachment = "Information request is attached";
         
         
-        SINCERELY_EN = "Sincerely,";
-        SINCERELY_SV = "Vänliga hälsningar,";
+        sincerelyEn = "Sincerely,";
+        sincerelySv = "Vänliga hälsningar,";
         COLLECTION_MANAGER_EN = "Collection Manager";
         COLLECTION_MENAGER_SV = "Collection Manager";
         
@@ -218,8 +204,8 @@ public class ConstantText {
         COUNTRY_EN = "Sweden";
         COUNTRY_SV = "Sveriga";
         
-        DEAR_EN = "Dear";
-        DEAR_SV = "Hej";
+        dearEn = "Dear";
+        dearSv = "Hej";
         
         HI_EN = "Hi";
         HI_SV = "Bäste";
@@ -233,24 +219,24 @@ public class ConstantText {
         RESPONSIBLE_CUROTOR_SV = "Please forward this mail to responsible curator: ";
         
         
-        CURATOR_MAIL_TITLE = "Dear responsible curator ";
-        CURATOR_MAIL_TEXT = "A loan request regarding specimens of ";
-        CURATOR_MAIL_TEXST_INFORMATION = "An information request regarding specimens of ";
-        CURATOR_MAIL_TEXT_NON_SCIENTIFIC = "A loan request ";
-        CURATOR_MAIL_TEXT_1 = " has been submitted, as shown below.";
+        curatorMailTitle = "Dear responsible curator ";
+        curatorMailText = "A loan request regarding specimens of ";
+        curatorMailTextInformation = "An information request regarding specimens of ";
+        curatorMailTextNonScientiric = "A loan request ";
+        curatorMailText1 = " has been submitted, as shown below.";
     
-        CURATOR_MAIL_PRIMARY_TEXT = "This loan request involves a primary borrower.  Before taking action - wait for a letter of responsibility acceptance from the primary borrower.";
+        curatorMailPrimaryText = "This loan request involves a primary borrower.  Before taking action - wait for a letter of responsibility acceptance from the primary borrower.";
         
-        LOAN_INFORMATION = "Loan information";
-        REQUEST_INFORMATION = "Request information";
+        loanInformation = "Loan information";
+        requestInformation = "Request information";
         
-        BORROWER = "Borrower";
-        PRIMARY_BORROWER = "Primary borrower";
-        SECONDARY_BORROWER = "Secondary borrower";
+        borrower = "Borrower";
+        primaryBorrower = "Primary borrower";
+        secondaryBorrower = "Secondary borrower";
         
-        REQUEST_SUMMARY_1 = "Check and download request summary and attached files at the ";
+        requestSummary1 = "Check and download request summary and attached files at the ";
         
-        REQUEST_SUMMARY_2 = ".  If you don't have an account you should contact your department's Collection Manager who can create one for you.";
+        requestSummary2 = ".  If you don't have an account you should contact your department's Collection Manager who can create one for you.";
     
     
         OUT_OF_OFFICE_EN = " - Responsible curator away from office.";
@@ -274,11 +260,11 @@ public class ConstantText {
     }
     
     public String getRequestSummary1() {
-        return REQUEST_SUMMARY_1;
+        return requestSummary1;
     }
     
     public String getRequestSummary2() {
-        return REQUEST_SUMMARY_2;
+        return requestSummary2;
     }
     
     public String getReferenceNumber(boolean isSwedish) {
@@ -286,11 +272,11 @@ public class ConstantText {
     }
     
     public String getLoanRequest(boolean isSwedish) {
-        return isSwedish ? LOAN_REQUEST_SV : LOAN_REQUEST_EN;
+        return isSwedish ? loanRequestSv : loanRequestEn;
     }
     
     public String getInformationRequest() {
-        return INFORMATION_REQUEST;
+        return informationRequest;
     }
     
     public String getPrimaryText(boolean isSwedish) {
@@ -298,11 +284,11 @@ public class ConstantText {
     }
 
     public String getLoanPolicyLinkText(boolean isSwedish) {
-        return isSwedish ? LOAN_POLICY_LINK_SV : LOAN_POLICY_LINK_EN;
+        return isSwedish ? loanPolicyLinkSv : loanPolicyLinkEn;
     }
     
     public String getLoanSummaryLinkText(boolean isSwedish) {
-        return isSwedish ? LOAN_SUMMARY_LINK_SV : LOAN_SUMMARY_LINK_EN;
+        return isSwedish ? loanSummaryLinkSv : loanSummaryLinkEn;
     }
     
     public String getManagerText1(boolean isSwedish) { 
@@ -325,8 +311,8 @@ public class ConstantText {
         return isSwedish ? RECEIPT_SV : RECEIPT_EN;
     } 
 
-    public String getDEAR(boolean isSwedish) {
-        return isSwedish ? DEAR_SV : DEAR_EN;
+    public String getDear(boolean isSwedish) {
+        return isSwedish ? dearSv : dearEn;
     } 
     
     public String getHi(boolean isSwedish) {
@@ -338,28 +324,28 @@ public class ConstantText {
     }
     
     public String getAcceptText(boolean isSwedish) {
-        return isSwedish ? LOAN_ACCEPTANCE_TEXT_SV : LOAN_ACCEPTANCE_TEXT_EN;
+        return isSwedish ? loanAcceptanceTextSv : loanAcceptanceTextEn;
     }
     
     public String getPrimaryBorrower() {
-        return PRIMARY_BORROWER;
+        return primaryBorrower;
     }
     
     public String getBorrower() {
-        return BORROWER;
+        return borrower;
     }
     
     public String getSecondaryBorrower() {
-        return SECONDARY_BORROWER;
+        return secondaryBorrower;
     }
             
     
-    public String getLOAN_BODY_TEXT(boolean isSwedish) {
-        return isSwedish ? LOAN_BODY_TEXT_SV : LOAN_BODY_TEXT_EN;
+    public String getLoanBodyText(boolean isSwedish) {
+        return isSwedish ? loanBodyTextSv : loanBodyTextEn;
     }
   
-    public String getSINCERELY(boolean isSwedish) {
-        return isSwedish ? SINCERELY_SV : SINCERELY_EN;
+    public String getSincerely(boolean isSwedish) {
+        return isSwedish ? sincerelySv : sincerelyEn;
     }
  
     public String getCOLLECTION_MANAGER(boolean isSwedish) {
@@ -390,18 +376,7 @@ public class ConstantText {
     public String getCOUNTRY (boolean isSwedish) {
         return isSwedish ? COUNTRY_SV : COUNTRY_EN;
     } 
-    
-    public String getBaseExternalFilePath(String host) { 
-        if(host.contains("localhost")) {
-            return LOCAL_EXTERNAL_FILES;
-        } else if(host.contains("dina-loans")) {
-            return REMOTE_EXTERNAL_FILES_LOAN;
-        } else {
-            return REMOTE_EXTERNAL_FILES_AS; 
-        } 
-    }
-    
-    
+     
         
     public String getBaseExternalPolicyFilePath(String host) { 
         if(host.contains("localhost")) {
@@ -412,47 +387,45 @@ public class ConstantText {
     }
     
     public String getCuratorMailTitle() {
-        return CURATOR_MAIL_TITLE;
+        return curatorMailTitle;
     }
     
     public String getCuratorMailText() {
-        return CURATOR_MAIL_TEXT;
+        return curatorMailText;
     }
     
     public String getCuratorMailTextInformation() {
-        return CURATOR_MAIL_TEXST_INFORMATION;
+        return curatorMailTextInformation;
     }
 
     public String getCuratorMailTextNonScientific() {
-        return CURATOR_MAIL_TEXT_NON_SCIENTIFIC;
+        return curatorMailTextNonScientiric;
     }
-    
-    
-
-    public String getCURATOR_MAIL_TEXT_1() {
-        return CURATOR_MAIL_TEXT_1;
+     
+    public String getCuratorMailText1() {
+        return curatorMailText1;
     }
     
     
      
     public String getCuratorMailPrimaryText() {
-        return CURATOR_MAIL_PRIMARY_TEXT;
+        return curatorMailPrimaryText;
     } 
     
     public String getLoanInformation() {
-        return LOAN_INFORMATION;
+        return loanInformation;
     }
  
     public String getRequestInformation() {
-        return REQUEST_INFORMATION;
+        return requestInformation;
     }
  
     public String getLoanRequestAttachment(boolean isSwedish) {
-        return isSwedish ? LOAN_REQUEST_ATTACHMENT_SV : LOAN_REQUEST_ATTACHMENT_EN;
+        return isSwedish ? loanRequestAttachmentSv : loanRequestAttachmentEn;
     }
     
     public String getInformationRequestAttachment() {
-        return INFORMATION_REQUEST_ATTACHMENT;
+        return informationRequestAttachment;
     }
     
     public String getLoanAgreement(boolean isSwedish) {

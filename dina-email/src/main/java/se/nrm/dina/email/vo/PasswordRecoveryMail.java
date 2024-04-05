@@ -1,21 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package se.nrm.dina.email.vo;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+ 
 
 /**
  *
  * @author idali
  */
 public class PasswordRecoveryMail {
-    
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    
+     
     private final String START_DIV_TAG_WITH_FONT = "<div style=\"font-size: 1.2em; \">";
     private final String START_DIV_TAG = "<div>"; 
     private final String END_DIV_TAG = "</div>";

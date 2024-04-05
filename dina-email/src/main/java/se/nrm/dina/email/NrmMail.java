@@ -20,219 +20,298 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.internet.MimeUtility;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import se.nrm.dina.email.vo.LoanMail;
-import se.nrm.dina.email.vo.NewAccountMail;
-import se.nrm.dina.email.vo.PasswordRecoveryMail;
+import se.nrm.dina.email.vo.NewAccountMail; 
 
 /**
  *
  * @author idali
  */
 @Stateless
+@Slf4j
 public class NrmMail {
 
-  private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final String smtpHost = "mail.smtp.host"; 
+    private final String mailHost = "mail.nrm.se";
+     
 
-  private final static String SMTP_HOST_NAME = "mail.smtp.host";
-//    private final static String HOST = "mailserver.nrm.se";  
-  private final static String HOST = "mail.nrm.se";
+    private LoanMail loan;
+ 
+    private final String fromMail = "no-reply@nrm.se";
 
-  private final String LOCAL_LOAN_PDF = "/Users/idali/Documents/onlineloans/loan_files/";
-//    private final String REMOTE_LOAN_PDF_LOAN = "/home/admin/wildfly-8.0.0-2/loans/";
-  private final String REMOTE_LOAN_PDF_AS = "/home/admin/wildfly-8.1.0-0/loans/";
-
-  private LoanMail loan;
-  private NewAccountMail account;
-  private PasswordRecoveryMail recovery;
-
-  private String pdfFileName;
-
-  private final String FROM_MAIL = "no-reply@nrm.se";
+//    private final String testAdminMail = "bioinformatics@nrm.se";
+//    private final String testCuratorEmail = "ida.li@nrm.se";
+//    private final String testBorrowMail = "ida.li@nrm.se";
+    
+    private final String newAccountSubject = "Loan admin new account";
+//    private final String passwordRecordSubject = "Loan admin password recovery";
+    private final String utf8 = "utf-8";
+    private final String encodB = "B";
+    
+    private final String dash = "-";
+    private final String slash = "/";
+    
+    private final String textHtml = "text/html; charset=ISO-8859-1";
+    
+    private final String adminSummaryFile = "adminSummaryFile";
+    private String pdfPath;
+    
+    private NewAccountMail account; 
+ 
+    private String pdfAdminFileName;
+    
+    private Properties props;
+    private Session session;
+    private Message message;
+    
 
 //    private String testEmail;
-  public NrmMail() {
+    public NrmMail() {
 
-  }
-
-  /**
-   * Email send to new admin user when new admin account created
-   *
-   * @param username
-   * @param password
-   * @param emailAddress
-   */
-  public void sendNewAdminAccountMail(String username, String password, String emailAddress) {
-    logger.info("sendNewAdminAccountMail : {} ", emailAddress);
-
-    Properties props = new Properties();
-    props.put(SMTP_HOST_NAME, HOST);
-    Session session = Session.getInstance(props, null);
-
-    Message message = new MimeMessage(session);
-    session.setDebug(true);
-
-    account = new NewAccountMail();
-
-    try {
-      message.addRecipient(Message.RecipientType.TO, new InternetAddress(emailAddress));
-      message.setSubject(MimeUtility.encodeText("Loan admin new account", "utf-8", "B"));
-      message.setFrom(new InternetAddress(FROM_MAIL));
-
-      message.setContent(account.appendMailBody(username, password), "text/html; charset=ISO-8859-1");
-      Transport.send(message);
-    } catch (MessagingException | UnsupportedEncodingException ex) {
-      logger.error(ex.getMessage());
     }
-  }
 
-  public void sendPasswordRecoverEmail(final String email, final String password) {
-    logger.info("sendPasswordRecoverEmail : {}", email);
+    /**
+     * Email send to new admin user when new admin account created
+     *
+     * @param username
+     * @param password
+     * @param emailAddress
+     * @param host
+     */
+    public void sendNewAdminAccountMail(String username, String password, 
+            String emailAddress, String host) {
+        log.info("sendNewAdminAccountMail : {} ", emailAddress);
 
-    Properties props = new Properties();
-    props.put(SMTP_HOST_NAME, HOST);
+        props = new Properties();
+        props.put(smtpHost, mailHost);
+        session = Session.getInstance(props, null);
 
-    Session session = Session.getInstance(props, null);
-    Message message = new MimeMessage(session);
-    try {
-      recovery = new PasswordRecoveryMail();
-      message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
-      message.setSubject(MimeUtility.encodeText("Loan admin password recovery", "utf-8", "B"));
-      message.setFrom(new InternetAddress(FROM_MAIL));
-      message.setContent(recovery.buildPasswordRecoveryMsg(password), "text/html; charset=ISO-8859-1");
+        message = new MimeMessage(session);
+        session.setDebug(true);
 
-      Transport.send(message);
-    } catch (MessagingException | UnsupportedEncodingException ex) {
-      logger.warn(ex.getMessage());
+        account = new NewAccountMail(); 
+        try {
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(emailAddress));
+            message.setSubject(MimeUtility.encodeText(newAccountSubject, utf8, encodB));
+            message.setFrom(new InternetAddress(fromMail));
+
+            message.setContent(account.appendMailBody(username, password, host), textHtml);
+            Transport.send(message);
+        } catch (MessagingException | UnsupportedEncodingException ex) {
+            log.error(ex.getMessage());
+        }
     }
-  }
+     
+     
+    
+    /**
+     * Email send to curator and loan requester when a new loan request created
+     *
+     * @param map  
+     * @throws AddressException
+     * @throws MessagingException
+     * @throws UnsupportedEncodingException
+     */
+    public void send(Map<String, String> map) throws AddressException,
+            MessagingException, UnsupportedEncodingException {
+        log.info("send primary -- secondary: {} -- {}", map.get("primaryemail"), map.get("secondaryemail"));
+        log.info("send 1 manager -- curratormail : {} -- {}", map.get("manager"), map.get("curratormail"));
 
-  /**
-   * Email send to curator and loan requester when a new loan request created
-   *
-   * @param map
-   * @throws AddressException
-   * @throws MessagingException
-   * @throws UnsupportedEncodingException
-   */
-  public void send(Map<String, String> map) throws AddressException, MessagingException, UnsupportedEncodingException {
+        props = new Properties();
+        props.put(smtpHost, mailHost);
+        session = Session.getInstance(props, null);
+        session.setDebug(true);
 
-    logger.info("send : {} -- {}", map.get("primaryemail"), map.get("secondaryemail"));
+        loan = new LoanMail(map);
+        pdfPath = map.get("pdfPath");
+        
+        pdfAdminFileName = buildPdfFilePath(map, adminSummaryFile, pdfPath);
 
-    Properties props = new Properties();
-    props.put(SMTP_HOST_NAME, HOST);
-    Session session = Session.getInstance(props, null);
-    session.setDebug(true);
+        String primaryEmail = map.get("primaryemail");
+        String secondaryEmail = map.get("secondaryemail");
 
-    loan = new LoanMail(map);
-    buildPdfFilePath(map, "adminSummaryFile");
+        String adminEmail = map.get("manager");
+        String curatorEmail = map.get("curratormail");
 
-    String primaryEmail = map.get("primaryemail");
-    String secondaryEmail = map.get("secondaryemail");
-
-    String adminEmail = map.get("manager");
-    String curatorEmail = map.get("curratormail");
+        log.info("email ... : {} -- {}", adminEmail, curatorEmail);
+        log.info("email 2... : {} -- {}", primaryEmail, secondaryEmail);
 
 //        testEmail = primaryEmail;
-//        // for testing now
-//        adminEmail = borrowerEmail;
-    String outofoffice = map.get("outofoffice");
-    boolean isOut = outofoffice == null ? false : Boolean.valueOf(outofoffice);
+        // for testing now
+//        adminEmail = testAdminMail;
+//        curatorEmail = testCuratorEmail;
+//
+//        primaryEmail = testBorrowMail;
+//        secondaryEmail = testBorrowMail;
 
-    Message message = new MimeMessage(session);
-    if (Boolean.valueOf(map.get("hasPrimaryContact"))) {
-      sendMailToPrimaryBorrower(primaryEmail, message);
-      message = new MimeMessage(session);
-      sendMailToBorrower(secondaryEmail, message);
-    } else {
-      sendMailToBorrower(primaryEmail, message);
+        String outofoffice = map.get("outofoffice");
+        boolean isOut = outofoffice == null ? false : Boolean.parseBoolean(outofoffice);
+
+        message = new MimeMessage(session);
+ 
+        
+        if (Boolean.parseBoolean(map.get("hasPrimaryContact"))) {
+            sendMailToPrimaryBorrower(primaryEmail, message);
+            message = new MimeMessage(session);
+            sendMailToBorrower(secondaryEmail, message);
+        } else {
+            sendMailToBorrower(primaryEmail, message);
+        } 
+        message = new MimeMessage(session);
+        sendMailToAdmin(adminEmail, curatorEmail, message);
+ 
+        if (isOut) {  
+            message = new MimeMessage(session);
+            sendOutOfOfficeNotification(primaryEmail, secondaryEmail, message);
+        }
     }
 
-    message = new MimeMessage(session);
-    sendMailToAdmin(adminEmail, curatorEmail, message);
+    private String buildPdfFilePath(Map<String, String> map, String key, String pdfPath) {
 
-    if (isOut) {
-      message = new MimeMessage(session);
-      sendOutOfOfficeNotification(primaryEmail, secondaryEmail, message);
-    }
-  }
+        StringBuilder sb = new StringBuilder();  
+        sb.append(pdfPath); 
+  
+        sb.append(map.get(key).replace(dash, slash));
 
-  private void buildPdfFilePath(Map<String, String> map, String key) {
-
-    StringBuilder sb = new StringBuilder();
-    String host = map.get("isLocal");
-    if (host.contains("localhost")) {
-      sb.append(LOCAL_LOAN_PDF);
-//        } else if(host.contains("dina-loans")) {
-//            sb.append(REMOTE_LOAN_PDF_LOAN);
-    } else {
-      sb.append(REMOTE_LOAN_PDF_AS);
-    }
-    sb.append(map.get(key).replace("-", "/"));
-
-    pdfFileName = sb.toString();
-  }
-
-  private void sendOutOfOfficeNotification(String primary, String secondary, Message message) throws MessagingException, UnsupportedEncodingException {
-    message.addRecipient(Message.RecipientType.TO, new InternetAddress(primary));
-
-    if (secondary != null && !secondary.isEmpty()) {
-      message.addRecipient(Message.RecipientType.CC, new InternetAddress(secondary));
+        return sb.toString(); 
     }
 
-    message.setSubject(MimeUtility.encodeText(loan.buildOutOfOfficeSubject(), "utf-8", "B"));
-    message.setFrom(new InternetAddress(FROM_MAIL));
+    private void sendOutOfOfficeNotification(String primary, String secondary, Message message)
+            throws MessagingException, UnsupportedEncodingException {
+        message.addRecipient(Message.RecipientType.TO, new InternetAddress(primary));
 
-    message.setContent(loan.buildOutOfOfficeMailBody(), "text/html; charset=ISO-8859-1");
-    Transport.send(message);
-  }
+        if (secondary != null && !secondary.isEmpty()) {
+            message.addRecipient(Message.RecipientType.CC, new InternetAddress(secondary));
+        }
 
-  private void sendMailToBorrower(String emailAddress, Message message) throws MessagingException {
-    message.addRecipient(Message.RecipientType.TO, new InternetAddress(emailAddress));
-    message.setSubject(loan.buildSubject());
-    message.setFrom(new InternetAddress(FROM_MAIL));
+        message.setSubject(MimeUtility.encodeText(
+                loan.buildOutOfOfficeSubject(), utf8, encodB));
+        message.setFrom(new InternetAddress(fromMail));
 
-    message.setContent(loan.buildBorrowerMailBody(), "text/html; charset=ISO-8859-1");
-    Transport.send(message);
-  }
+        message.setContent(loan.buildOutOfOfficeMailBody(), textHtml);
+        Transport.send(message);
+    }
 
-  private void sendMailToPrimaryBorrower(String emailAddress, Message message) throws MessagingException, UnsupportedEncodingException {
+    private void sendMailToBorrower(String emailAddress, Message message) throws MessagingException {
+        message.addRecipient(Message.RecipientType.TO, new InternetAddress(emailAddress));
+        message.setSubject(loan.buildSubject());
+        message.setFrom(new InternetAddress(fromMail));
 
-    message.addRecipient(Message.RecipientType.TO, new InternetAddress(emailAddress));
-    message.setSubject(loan.buildSubject());
-    message.setFrom(new InternetAddress(FROM_MAIL));
+        message.setContent(loan.buildBorrowerMailBody(), "text/html; charset=ISO-8859-1");
+        Transport.send(message);
+    }
 
-    message.setContent(loan.buildPrimaryBorrowerMailBody(), "text/html; charset=ISO-8859-1");
-    Transport.send(message);
-  }
+    private void sendMailToPrimaryBorrower(String emailAddress, Message message) throws MessagingException, UnsupportedEncodingException {
 
-  private void sendMailToAdmin(String adminEmail, String curatorEmail, Message message) throws MessagingException, UnsupportedEncodingException {
-    logger.info("sendAdminMail : {} -- {}", adminEmail, curatorEmail);
+        message.addRecipient(Message.RecipientType.TO, new InternetAddress(emailAddress));
+        message.setSubject(loan.buildSubject());
+        message.setFrom(new InternetAddress(fromMail));
 
-    message.addRecipient(Message.RecipientType.TO, new InternetAddress(adminEmail));
-    message.addRecipient(Message.RecipientType.CC, new InternetAddress(curatorEmail));
-    message.setFrom(new InternetAddress(FROM_MAIL));
-    message.setSubject(MimeUtility.encodeText(loan.buildAdminMailSubject(), "utf-8", "B"));
+        message.setContent(loan.buildPrimaryBorrowerMailBody(), textHtml);
+        Transport.send(message);
+    }
+    
+    
+    private void sendMailToAdmin(String adminEmail, String curatorEmail, Message message)
+            throws MessagingException, UnsupportedEncodingException {
+        log.info("sendAdminMail : {} -- {}", adminEmail, curatorEmail);
 
-    String body = loan.buildAdminEmailBody();
+        message.addRecipient(Message.RecipientType.TO, new InternetAddress(adminEmail));
+        message.addRecipient(Message.RecipientType.CC, new InternetAddress(curatorEmail));
+        message.setFrom(new InternetAddress(fromMail));
+        message.setSubject(MimeUtility.encodeText(
+                loan.buildAdminMailSubject(), utf8, encodB));
 
-    BodyPart messageBodyPart1 = new MimeBodyPart();
-    messageBodyPart1.setContent(body, "text/html; charset=ISO-8859-1");
+        String body = loan.buildAdminEmailBody();
 
-    File pdfFile = new File(pdfFileName);
+        BodyPart messageBodyPart1 = new MimeBodyPart();
+        messageBodyPart1.setContent(body, textHtml);
 
-    MimeBodyPart messageBodyPart2 = new MimeBodyPart();
-    DataSource source = new FileDataSource(pdfFile);
-    messageBodyPart2.setDataHandler(new DataHandler(source));
+        File pdfFile = new File(pdfAdminFileName);
 
-    messageBodyPart2.setFileName(loan.getPdfFileName());
+        MimeBodyPart messageBodyPart2 = new MimeBodyPart();
+        DataSource source = new FileDataSource(pdfFile);
+        messageBodyPart2.setDataHandler(new DataHandler(source));
 
-    Multipart multipart = new MimeMultipart();
-    multipart.addBodyPart(messageBodyPart1);
-    multipart.addBodyPart(messageBodyPart2);
+        messageBodyPart2.setFileName(loan.getPdfFileName());
 
-    message.setContent(multipart);
-    Transport.send(message);
-  }
+        Multipart multipart = new MimeMultipart();
+        multipart.addBodyPart(messageBodyPart1);
+        multipart.addBodyPart(messageBodyPart2);
+
+        message.setContent(multipart);
+        Transport.send(message);
+    }
+    
+
+    
+    
+    //    public void sendPasswordRecoverEmail(final String email, final String password) {
+//        log.info("sendPasswordRecoverEmail : {}", email);
+//
+//        props = new Properties();
+//        props.put(smtpHost, mailHost);
+//
+//        session = Session.getInstance(props, null);
+//        message = new MimeMessage(session);
+//        try {
+//            recovery = new PasswordRecoveryMail();
+//            message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
+//            message.setSubject(MimeUtility.encodeText(passwordRecordSubject, utf8, encodB));
+//            message.setFrom(new InternetAddress(fromMail));
+//            message.setContent(recovery.buildPasswordRecoveryMsg(password), textHtml);
+//
+//            Transport.send(message);
+//        } catch (MessagingException | UnsupportedEncodingException ex) {
+//            log.warn(ex.getMessage());
+//        }
+//    }
+
+    
+    
+    
+    
+    
+//    private void sendMailToAdmin1(String adminEmail, String curatorEmail, Message message)
+//            throws MessagingException, UnsupportedEncodingException {
+//        log.info("sendAdminMail : {} -- {}", adminEmail, curatorEmail);
+//          
+//        message.addRecipient(Message.RecipientType.TO, new InternetAddress(adminEmail));
+//        message.addRecipient(Message.RecipientType.CC, new InternetAddress(curatorEmail));
+//      
+//        message.setSubject(MimeUtility.encodeText(loan.buildAdminMailSubject(), "utf-8", "B") );
+//
+//        String body = loan.buildAdminEmailBody(); 
+//        
+//        BodyPart messageBodyPart1 = new MimeBodyPart();
+//        messageBodyPart1.setContent(body, "text/html; charset=ISO-8859-1");
+//         
+//        File pdfFile = new File(pdfFileName);
+//         
+//        MimeBodyPart messageBodyPart2 = new MimeBodyPart();
+//        DataSource source = new FileDataSource(pdfFile);
+//        messageBodyPart2.setDataHandler(new DataHandler(source));
+//        
+//        
+//        messageBodyPart2.setFileName(loan.getPdfFileName());
+//
+//        Multipart multipart = new MimeMultipart();
+//        multipart.addBodyPart(messageBodyPart1);
+//        multipart.addBodyPart(messageBodyPart2);
+//
+//        message.setContent(multipart);
+//        Transport.send(message);  
+//    } 
+//    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
