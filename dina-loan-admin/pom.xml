@@ -8,13 +8,13 @@
     <parent>
         <artifactId>dina-loan</artifactId>
         <groupId>se.nrm.dina</groupId>
-        <version>0.1-SNAPSHOT</version>
+        <version>1.0</version>
     </parent>
  
     <artifactId>dina-loan-admin</artifactId> 
     <packaging>war</packaging>
 
-    <name>dina-loan-admin</name>
+    <name>${project.artifactId}</name>
 
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
@@ -91,7 +91,8 @@
         <dependency>  
             <groupId>org.primefaces</groupId>  
             <artifactId>primefaces</artifactId>   
-            <version>5.3</version>
+            <!--<version>5.3</version>-->
+            <version>7.0</version> 
         </dependency>  
  
         <dependency>
