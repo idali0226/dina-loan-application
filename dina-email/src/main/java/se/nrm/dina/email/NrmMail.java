@@ -39,13 +39,8 @@ public class NrmMail {
     private LoanMail loan;
  
     private final String fromMail = "no-reply@nrm.se";
-
-//    private final String testAdminMail = "bioinformatics@nrm.se";
-//    private final String testCuratorEmail = "ida.li@nrm.se";
-//    private final String testBorrowMail = "ida.li@nrm.se";
-    
-    private final String newAccountSubject = "Loan admin new account";
-//    private final String passwordRecordSubject = "Loan admin password recovery";
+ 
+    private final String newAccountSubject = "Loan admin new account"; 
     private final String utf8 = "utf-8";
     private final String encodB = "B";
     
@@ -136,14 +131,7 @@ public class NrmMail {
 
         log.info("email ... : {} -- {}", adminEmail, curatorEmail);
         log.info("email 2... : {} -- {}", primaryEmail, secondaryEmail);
-
-//        testEmail = primaryEmail;
-        // for testing now
-//        adminEmail = testAdminMail;
-//        curatorEmail = testCuratorEmail;
-//
-//        primaryEmail = testBorrowMail;
-//        secondaryEmail = testBorrowMail;
+ 
 
         String outofoffice = map.get("outofoffice");
         boolean isOut = outofoffice == null ? false : Boolean.parseBoolean(outofoffice);
@@ -242,76 +230,6 @@ public class NrmMail {
 
         message.setContent(multipart);
         Transport.send(message);
-    }
-    
-
-    
-    
-    //    public void sendPasswordRecoverEmail(final String email, final String password) {
-//        log.info("sendPasswordRecoverEmail : {}", email);
-//
-//        props = new Properties();
-//        props.put(smtpHost, mailHost);
-//
-//        session = Session.getInstance(props, null);
-//        message = new MimeMessage(session);
-//        try {
-//            recovery = new PasswordRecoveryMail();
-//            message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
-//            message.setSubject(MimeUtility.encodeText(passwordRecordSubject, utf8, encodB));
-//            message.setFrom(new InternetAddress(fromMail));
-//            message.setContent(recovery.buildPasswordRecoveryMsg(password), textHtml);
-//
-//            Transport.send(message);
-//        } catch (MessagingException | UnsupportedEncodingException ex) {
-//            log.warn(ex.getMessage());
-//        }
-//    }
-
-    
-    
-    
-    
-    
-//    private void sendMailToAdmin1(String adminEmail, String curatorEmail, Message message)
-//            throws MessagingException, UnsupportedEncodingException {
-//        log.info("sendAdminMail : {} -- {}", adminEmail, curatorEmail);
-//          
-//        message.addRecipient(Message.RecipientType.TO, new InternetAddress(adminEmail));
-//        message.addRecipient(Message.RecipientType.CC, new InternetAddress(curatorEmail));
-//      
-//        message.setSubject(MimeUtility.encodeText(loan.buildAdminMailSubject(), "utf-8", "B") );
-//
-//        String body = loan.buildAdminEmailBody(); 
-//        
-//        BodyPart messageBodyPart1 = new MimeBodyPart();
-//        messageBodyPart1.setContent(body, "text/html; charset=ISO-8859-1");
-//         
-//        File pdfFile = new File(pdfFileName);
-//         
-//        MimeBodyPart messageBodyPart2 = new MimeBodyPart();
-//        DataSource source = new FileDataSource(pdfFile);
-//        messageBodyPart2.setDataHandler(new DataHandler(source));
-//        
-//        
-//        messageBodyPart2.setFileName(loan.getPdfFileName());
-//
-//        Multipart multipart = new MimeMultipart();
-//        multipart.addBodyPart(messageBodyPart1);
-//        multipart.addBodyPart(messageBodyPart2);
-//
-//        message.setContent(multipart);
-//        Transport.send(message);  
-//    } 
-//    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    } 
     
 }
