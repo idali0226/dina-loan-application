@@ -12,9 +12,7 @@ import javax.inject.Named;
  */
 @Named("imageBeans")
 @SessionScoped
-public class ImageBeans implements Serializable {
-    
-//    private final Logger logger = LoggerFactory.getLogger(this.getClass()); 
+public class ImageBeans implements Serializable { 
     
     private final List<String> images;   
     

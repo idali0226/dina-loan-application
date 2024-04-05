@@ -24,6 +24,7 @@ public class InitialProperties implements Serializable {
     private String loanFilePath;  
     
     private String adminPdfFilePath;  
+    private String host;
     
  
     public InitialProperties() {
@@ -34,13 +35,15 @@ public class InitialProperties implements Serializable {
             @ConfigurationValue("swarm.loan.policies.educational") String educationalPolicy,   
             @ConfigurationValue("swarm.loan.file.loan") String loanFilePath, 
             @ConfigurationValue("swarm.loan.adminPdfPath") String adminPdfFilePath, 
-            @ConfigurationValue("swarm.contact.email") String contactMail) {
+            @ConfigurationValue("swarm.contact.email") String contactMail,
+            @ConfigurationValue("swarm.host") String host) {
         this.scientificPolicy = scientificPolicy;
         this.educationalPolicy = educationalPolicy;  
         this.loanFilePath = loanFilePath; 
         this.adminPdfFilePath = adminPdfFilePath;
         
         this.contactMail = contactMail;
+        this.host = host;
         log.info("InitialProperties : {}", contactMail);
     }
  
@@ -78,5 +81,13 @@ public class InitialProperties implements Serializable {
             throw new RuntimeException(CONFIG_INITIALLISING_ERROR);
         }
         return contactMail;
+    }  
+    
+    public String getHost() {
+        log.info("getHost");
+        if (host == null) {
+            throw new RuntimeException(CONFIG_INITIALLISING_ERROR);
+        }
+        return host;
     }  
 }

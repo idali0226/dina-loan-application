@@ -1,16 +1,12 @@
 package se.nrm.dina.loan.admin.controllers;
-
-//import java.io.IOException;
+ 
 import java.io.IOException;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext; 
-import javax.inject.Inject;
+import javax.faces.context.FacesContext;  
 import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-//import javax.servlet.http.HttpServletRequest;
-//import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpSession; 
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -24,6 +20,7 @@ public class IdleMonitorView {
       
     private final String idle = "No activity";
     private final String idleMsg = "Page is inactive for two hours. Session is expired. Redirect to start page.";
+    private final String contexPath = "/admin";
     
     public void onIdle() {
         log.info("onIdle");
@@ -44,7 +41,7 @@ public class IdleMonitorView {
             session.invalidate();
             log.info("Redirect path : {}", 
                     FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath());
-            ctx.getExternalContext().redirect("/");
+            ctx.getExternalContext().redirect(contexPath);
         } catch (IOException ex) {
             log.error(ex.getMessage());
         } 

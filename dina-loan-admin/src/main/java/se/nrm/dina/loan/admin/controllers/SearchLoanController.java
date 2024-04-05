@@ -36,28 +36,11 @@ public class SearchLoanController implements Serializable {
     private final String slash = "/";
     private final String adminFile = "_admin.pdf";
     private final String loanrequest = "/loanrequest_";
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+     
     private List<Loan> loans; 
     private List<Loan> filteredLoans;
     private List<String> curators;  
-    
-    
      
-    
-    
-    
-    
-    
     private String loanId;
     private String status;
     private String curator;
@@ -71,16 +54,10 @@ public class SearchLoanController implements Serializable {
     private final List<String> statusList;
 
     private SelectItem[] curatorOptions;
-    
-
+     
     private SelectItem[] collectionOptions;
     private List<String> collections;
-
-
-    
-    
-    
-    
+  
     private Loan editedLoan;
 
     private List<String> collectionGroups;
@@ -189,13 +166,8 @@ public class SearchLoanController implements Serializable {
         log.info("init");
         if (loans == null || loans.isEmpty()) {
             loans = mongo.findAllLoans(); 
-            log.info("loans : {}", loans.size());
-//            loans = new ArrayList<>();
-//            loans = mongo.findAllLoans().stream()
-//                    .filter(l -> !l.isEmailFailed())
-//                    .collect(Collectors.toList());
-        }
-     
+            log.info("loans : {}", loans.size()); 
+        } 
 
         if (curators == null || curators.isEmpty()) {
 //            curators = new ArrayList();
@@ -248,15 +220,10 @@ public class SearchLoanController implements Serializable {
 
     
     public void refreshLoans() {
-        log.info("refreshLoans : {}", loans.size());
-        
-        
+        log.info("refreshLoans : {}", loans.size()); 
         searchFilterLoans();
     }
-
-    
-    
-    
+ 
     public void filterLoansByDepartment() {
         log.info("filterLoansByDepartment: {}", selectedDepartments);
 
@@ -329,29 +296,7 @@ public class SearchLoanController implements Serializable {
                 .collect(Collectors.toList());
         filteredLoans = null;
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+     
     public void cancel() {
         loanId = null;
         curator = null;
@@ -403,9 +348,7 @@ public class SearchLoanController implements Serializable {
                 .filter(name -> name.toLowerCase().contains(query.toLowerCase()))
                 .collect(Collectors.toList());
     }
-
-   
-
+ 
     public void filterLoansByType() {
         log.info("filterLoansByType: {}", selectedTypes);
 
@@ -457,9 +400,7 @@ public class SearchLoanController implements Serializable {
         }
         searchFilterLoans();
     }
-
-   
-
+ 
     public void handleDateSelect() {
         log.info("handleDateSelect");
 
@@ -647,10 +588,5 @@ public class SearchLoanController implements Serializable {
 
     public void setCollections(List<String> collections) {
         this.collections = collections;
-    }
-
- 
-    
-    
-
+    } 
 }

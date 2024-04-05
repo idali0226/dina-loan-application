@@ -9,9 +9,7 @@ public class CollectionManager {
     private String group;
     private String newGroupName;
     private String manager;
-    
-    
-    
+     
     public CollectionManager(String group, String newGroupName, String manager) {
         this.group = group;
         this.newGroupName = newGroupName;
@@ -32,9 +30,7 @@ public class CollectionManager {
 
     public void setNewGroupName(String newGroupName) {
         this.newGroupName = newGroupName;
-    }
- 
-
+    } 
     
     public String getManager() {
         return manager;

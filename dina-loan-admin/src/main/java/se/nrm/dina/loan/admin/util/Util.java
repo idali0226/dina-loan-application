@@ -1,6 +1,5 @@
 package se.nrm.dina.loan.admin.util;
-
-//import java.text.DateFormat;
+ 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -44,10 +43,7 @@ public class Util {
             return null;
         } 
     }
-    
- 
-    
-    
+     
     /**
      * Convert Date to String with "yyyy-MM-dd" format
      *

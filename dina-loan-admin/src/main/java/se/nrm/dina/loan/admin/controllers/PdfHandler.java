@@ -40,42 +40,22 @@ public class PdfHandler implements Serializable   {
         
     public StreamedContent getPdfFile(Loan loan) { 
         log.info("getPdfFile");
-        String path = buildFilePath(loan.getUuid(), loan.getId());
-//        String path = "/Users/idali/Documents/loans/ede9301c/3927/47c6/af01/d8107cd7e153/loanrequest_ReqNo002204_admin.pdf";
-//                    "/Users/idali/Documents/loans/ede9301c/3927/47c6/af01/d8107cd7e153/loanrequest_ReqNo002204_admin.pdf"
-//                    "/Users/idali/Documents/loans/ede9301c/3927/47c6/af01/d8107cd7e153/loanrequest_ReqNo002204_admin.pdf"
-        log.info("what is the path : {}", path);
+        String path = buildFilePath(loan.getUuid(), loan.getId());  
         try { 
-            File pdf = new File(path);
+            File pdf = new File(path); 
             
-            log.info("pdf name : {}", pdf.getName());
-            
-            StreamedContent sc = new DefaultStreamedContent(new FileInputStream(pdf), contentType, pdf.getName());
-            log.info("sc ? {}", sc);
-            return sc;
+            return new DefaultStreamedContent(new FileInputStream(pdf), 
+                    contentType, pdf.getName());
+//            StreamedContent sc = new DefaultStreamedContent(new FileInputStream(pdf), contentType, pdf.getName());
+//       
+//            return sc;
 //            return new DefaultStreamedContent(new FileInputStream(pdf), contentType, pdf.getName());
         } catch (FileNotFoundException ex) {
             log.error(ex.getMessage());
         }
         return null;
     }
-    
-    public StreamedContent getPdfFile1(Loan loan) { 
-        log.info("getPdfFile");
-        
-        try { 
-            File pdf = new File(buildFilePath(loan.getUuid(), loan.getId()));
-            
-            log.info("pdf name : {} -- {}", pdf.getName(), pdf.exists());
-             
-            return new DefaultStreamedContent(new FileInputStream(pdf), contentType, pdf.getName());
-        } catch (FileNotFoundException ex) {
-            log.error(ex.getMessage());
-        }
-        return null;
-    }
-    
-        
+  
     private String buildFilePath(String uuid, String loanNamber) {
         StringBuilder sb = new StringBuilder();
         sb.append(properities.getLoanFilePath());
