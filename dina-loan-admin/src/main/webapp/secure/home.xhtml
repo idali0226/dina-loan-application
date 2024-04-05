@@ -8,14 +8,16 @@
     <body> 
         <ui:composition  template="/templates/masterLayout.xhtml">     
             <ui:define name="content"  >    
-                <h:form id="adminform" enctype="multipart/form-data" prependId="false">      
+                <h:form id="adminform" enctype="multipart/form-data" prependId="false">  
+                    <ui:include src="/secure/monitor.xhtml" />  
+
                     <h:panelGroup styleClass="main" layout="block" id="mainpanel" 
                                   style="min-height: 200px; overflow: auto;">    
-        
+
                         <h:panelGroup style="width: 100%; " >    
                             <h:panelGroup layout="block" styleClass="centralpanel">  
                                 <h:panelGroup style="padding-left: 120px;">
-                                     This is the loan request administration page.
+                                    This is the loan request administration page.
                                     <br />
                                     <br />   
                                     <h:panelGrid columns="5" id="vacationpanel" 
@@ -34,40 +36,40 @@
                                     <br />
                                     <br /> 
                                 </h:panelGroup>
-                                    
+
                                 <h:panelGroup layout="block" style="padding-left: 120px;">  
                                     <h:panelGroup layout="block" style="border: none; width: 100%;" 
-                                                 rendered="#{request.isUserInRole('admin') || request.isUserInRole('manager') || request.isUserInRole('superuser')}">
-                                        <p:commandLink actionListener="#{loanAdmin.manageAccount()}" 
+                                                  rendered="#{request.isUserInRole('admin') || request.isUserInRole('manager') || request.isUserInRole('superuser')}">
+                                        <p:commandLink actionListener="#{navigate.gotoManageUser()}" 
                                                        value="Manage user account"  
                                                        process="@this" global="false" update="mainpanel"   
                                                        styleClass="clink"  />  
                                     </h:panelGroup> 
                                     <h:panelGroup layout="block" style="border: none; width: 100%;" 
                                                   rendered="#{request.isUserInRole('admin') || request.isUserInRole('manager') || request.isUserInRole('superuser')}">
-                                        <p:commandLink actionListener="#{loanAdmin.manageCollection()}" 
+                                        <p:commandLink actionListener="#{navigate.gotoCollections()}" 
                                                        value="Manage collection"  
                                                        process="@this" global="false" 
                                                        update="mainpanel " styleClass="clink"  />  
                                     </h:panelGroup>
- 
+
                                     <h:panelGroup layout="block" style="border: none; width: 100%;" >
-                                        <p:commandLink actionListener="#{loanAdmin.manageLoans()}" value="Manage loan requests"  
+                                        <p:commandLink actionListener="#{navigate.gotoLoans()}" value="Manage loan requests"  
                                                        process="@this" global="false" 
                                                        update="mainpanel " styleClass="clink"  />  
                                     </h:panelGroup>
 
                                     <h:panelGroup layout="block" style="border: none; width: 100%;" 
-                                                 rendered="#{request.isUserInRole('admin') || request.isUserInRole('manager') || request.isUserInRole('superuser')}">
-                                        <p:commandLink actionListener="#{loanAdmin.managePolicyDocuments()}"
+                                                  rendered="#{request.isUserInRole('admin') || request.isUserInRole('manager') || request.isUserInRole('superuser')}">
+                                        <p:commandLink actionListener="#{navigate.gotoLoanPolicies()}"
                                                        value="Manage policy documents"  
                                                        process="@this" global="false" 
                                                        update="mainpanel " styleClass="clink"  />  
                                     </h:panelGroup> 
 
                                     <h:panelGroup layout="block" style="border: none; width: 100%;" 
-                                                 rendered="#{request.isUserInRole('admin') || request.isUserInRole('manager') || request.isUserInRole('superuser')}">
-                                        <p:commandLink actionListener="#{loanAdmin.managePortalPopup()}" 
+                                                  rendered="#{request.isUserInRole('admin') || request.isUserInRole('manager') || request.isUserInRole('superuser')}">
+                                        <p:commandLink actionListener="#{navigate.gotoNotification()}" 
                                                        value="Manage portal notifications"  
                                                        process="@this" global="false" 
                                                        update="mainpanel " styleClass="clink"  />  

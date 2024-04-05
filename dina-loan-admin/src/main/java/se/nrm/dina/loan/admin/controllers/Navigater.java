@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 public class Navigater implements Serializable {
 
     private final String homePath = "/faces/secure/home.xhtml";
-    private final String changePasswordPath = "changePassword.xhtml";
+    private final String changePasswordPath = "/faces/secure/changePassword.xhtml";
     private final String loanPolicyPath = "/faces/secure/policies.xhtml";
     
     private final String userAccountPath = "/faces/secure/userAccount.xhtml";

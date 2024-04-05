@@ -20,24 +20,19 @@
     </navigation-rule>-->
     
     
-    <render-kit>
+<!--    <render-kit>
         <renderer>
             <component-family>org.primefaces.component</component-family>
             <renderer-type>org.primefaces.component.FileUploadRenderer</renderer-type>
             <renderer-class>se.nrm.dina.loan.admin.fileupload.MyFileUploadRenderer</renderer-class>
         </renderer>
-    </render-kit>
+    </render-kit>-->
     
     <lifecycle>
         <phase-listener>
             se.nrm.dina.loan.admin.phaseListener.UACompatibleHeaderPhaseListener
         </phase-listener>
-    </lifecycle>
-    
-    
-    
-    
-    
+    </lifecycle> 
     
     <application>
         <locale-config>

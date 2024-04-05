@@ -1,0 +1,65 @@
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:ui="http://java.sun.com/jsf/facelets"  
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:f="http://java.sun.com/jsf/core"> 
+    <head>
+        <title>Collection table</title>
+    </head>
+    <body>
+        <ui:composition>    
+            <h:panelGroup layout="block" id="collectionTblPanel">
+                <ui:repeat var="map"
+                           value="#{collection.map.keySet().toArray()}" 
+                           varStatus="status">   
+ 
+                    <p:dataTable var="c" rowKey="#{c.name}"
+                                 value="#{collection.map.get(map)}" 
+                                 editable="true" style="margin-bottom:20px"  >
+                        <f:facet name="header">
+                            #{map} (Collection manager: #{collection.managermail(map)}   ) 
+                        </f:facet> 
+                        <p:ajax event="rowEdit" listener="#{collection.onRowEdit}"   />
+                        <p:ajax event="rowEditCancel" listener="#{collection.onRowCancel}"  /> 
+
+                        <p:column headerText="Collection name">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{c.name}" />
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText  value="#{c.name}" style="width:100%"/>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column> 
+                        <p:column headerText="Curator's email">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{c.email}" />
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText value="#{c.email}" style="width:100%"/>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column> 
+                        <p:column style="width:32px">
+                            <p:rowEditor  />
+                        </p:column>
+
+                        <p:column styleClass="alignTop" style="width: 20px; font-size: 12px;">   
+                            <p:commandLink title="Remove" process="@this" global="false"  
+                                           action="#{collection.removeSubCollection(c)}"
+                                           update="@form">   
+                                <p:graphicImage value="/resources/images/button_remove.gif" 
+                                                styleClass="images" />
+                                <p:collector value="#{c}" unique="true"   
+                                             removeFrom="#{collection.map.get(map)}" />  
+                            </p:commandLink>  
+                        </p:column>  
+                    </p:dataTable>  
+                    <p:spacer width="750" height="40" />
+                </ui:repeat>  
+            </h:panelGroup>
+        </ui:composition>
+    </body>
+</html>

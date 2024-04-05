@@ -13,12 +13,13 @@
             </ui:define> 
 
             <ui:define name="content">   
-                <h:form id="loansForm" >   
-
+                <h:form id="loansForm" >    
                     <h:panelGroup layout="block" id="loansPanel" styleClass="main" > 
                         <h:panelGroup layout="block" 
                                       style="text-align: center; margin-left: auto; margin-right: auto; width: 100%;">
-                            <h1>Loan Request Handling</h1>
+                     
+                            <p:outputLabel value="Loan Request Handling"
+                                           style="font-size: 20px; font-weight: bold;"  /> 
                         </h:panelGroup>
 
                         <br /> 
@@ -43,7 +44,7 @@
                                     </p:fieldset>
 
                                     <p:spacer width="10" />
- 
+
                                     <p:fieldset legend="Select purpose of loans" styleClass="queryfieldset"> 
                                         <p:selectManyCheckbox id="purposeCheckBox" value="#{search.selectedPurposes}" layout="pageDirection">
                                             <f:selectItem itemValue="All" itemLabel="All purposes"   />
@@ -111,11 +112,11 @@
                                 </h:panelGrid>
                             </p:tab>
                         </p:accordionPanel>  
-                        
+
                         <ui:include src="/secure/loanstable.xhtml" />  
-                        
-                         
-                      
+
+
+
                     </h:panelGroup>  
                 </h:form>
             </ui:define>

@@ -24,9 +24,7 @@ import se.nrm.dina.manager.entities.TblUsers;
 @Slf4j
 public class Login implements Serializable {
 
-    private final String homePath = "/secure/home?faces-redirect=true";
-//    private final String logoutPath = "/secure/start?faces-redirect=true";
-//    private final String logoutPath = "/login?faces-redirect=true";
+    private final String homePath = "/secure/home?faces-redirect=true"; 
     private final String emptyString = "";
     private final String loginUserSessionKey = "loginuser";
 
@@ -93,21 +91,16 @@ public class Login implements Serializable {
     public void logout() {
         log.info("logout");
          
-        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext(); 
-        
-        HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
-
-        
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();  
+        HttpServletRequest request = (HttpServletRequest) externalContext.getRequest(); 
         try {
             request.logout(); 
             session.invalidate(); 
-            externalContext.redirect(contextPath);
-
+            externalContext.redirect(contextPath); 
         } catch (ServletException | IOException ex) {
             log.error(ex.getMessage());
 
-        }  
-//        return logoutPath;
+        }   
     }
 
     public String getUsername() {

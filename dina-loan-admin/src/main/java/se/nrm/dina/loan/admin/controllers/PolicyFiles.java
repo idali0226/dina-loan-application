@@ -8,10 +8,11 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import lombok.extern.slf4j.Slf4j;
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
-import se.nrm.dina.loan.admin.config.InitialProperties;
-import se.nrm.dina.mongodb.loan.vo.Loan;
+import se.nrm.dina.loan.admin.config.InitialProperties; 
+import se.nrm.dina.loan.admin.policypdf.FileHandler;
 
 /**
  *
@@ -24,56 +25,19 @@ public class PolicyFiles implements Serializable  {
     
     private final String contentType = "application/pdf"; 
     
+    private boolean isNewPolicy;
+    
     @Inject
-    private  InitialProperties properities;
+    private  InitialProperties properties;
+    @Inject
+    private FileHandler fileHandler;
     
-//    public StreamedContent getScientificPolicyPdfFilePage2() throws IOException {
-//        
-////        File file = new File(properities.getScientificPolicyPath() + pdfPage2);
-////        byte[] content = FileUtils.readFileToByteArray(file); 
-//        
-//        File pdf = new File(properities.getScientificPolicyPath());
-//        log.info("pdf name : {}", pdf.getName());
-////        InputStream is = new FileInputStream(new File(properities.getScientificPolicyPath()));
-//         
-////        log.info("is file exist : {}", pdf.exists()); 
-//  
-////        return DefaultStreamedContent.builder()
-////                .contentType(contentType)
-////                .name("scientifc.pdf")
-////                .stream(() -> is)
-////                .build();
-//   
-//
-//          
-//        return new DefaultStreamedContent(new FileInputStream(pdf), contentType, pdf.getName());
-//    }
-    
-    
-    public StreamedContent getPdfFile(Loan loan) { 
-        log.info("getPdfFile");
-        String path = "/Users/idali/Documents/loans/ede9301c/3927/47c6/af01/d8107cd7e153/loanrequest_ReqNo002204_admin.pdf"; 
-        try { 
-            File pdf = new File(path);
-            
-            log.info("pdf name : {}", pdf.getName());
-            
-            return new DefaultStreamedContent(new FileInputStream(pdf), contentType, pdf.getName());
-        } catch (FileNotFoundException ex) {
-            log.error(ex.getMessage());
-        }
-        return null;
-    }
-    
-
     public StreamedContent getScientificPolicyPdfFile() { 
         log.info("getScientificPolicyPdfFile");
         
         try { 
-            File pdf = new File(properities.getScientificPolicyPath());
-            
-            log.info("pdf name : {}", pdf.getName());
-            
+            File pdf = new File(properties.getScientificPolicyPath());
+              
             return new DefaultStreamedContent(new FileInputStream(pdf), contentType, pdf.getName());
         } catch (FileNotFoundException ex) {
             log.error(ex.getMessage());
@@ -85,9 +49,7 @@ public class PolicyFiles implements Serializable  {
         log.info("getEducationPolicyPdfFile");
          
         try { 
-            File pdf = new File(properities.getEducationalPolicyPath());
-            
-            log.info("pdf name : {}", pdf.getName());
+            File pdf = new File(properties.getEducationalPolicyPath());
              
             return new DefaultStreamedContent(new FileInputStream(pdf), contentType, pdf.getName());
         } catch (FileNotFoundException ex) {
@@ -95,4 +57,37 @@ public class PolicyFiles implements Serializable  {
         }
         return null;
     } 
+    
+    public void uploadScientificPolicyFile(FileUploadEvent event) {
+        log.info("uploadScientificPolicyFile : {} -- {}", 
+                event.getFile(), event.getFile().getFileName());
+        
+        fileHandler.saveFile(event.getFile(), properties.getScientificPolicyPath()); 
+        isNewPolicy = true;
+    }
+ 
+    public void uploadEdFile(FileUploadEvent event) { 
+        log.info("uploadEdFile : {} -- {}", 
+                event.getFile(), event.getFile().getFileName());
+        
+        fileHandler.saveFile(event.getFile(), properties.getEducationalPolicyPath()); 
+        isNewPolicy = true;
+    }
+    
+            
+    public void updatePolicy() {
+        log.info("updatePolicy"); 
+        isNewPolicy = false;
+    }
+     
+
+    public boolean isIsNewPolicy() {
+        return isNewPolicy;
+    }
+
+    public void setIsNewPolicy(boolean isNewPolicy) {
+        this.isNewPolicy = isNewPolicy;
+    }
+    
+    
 }

@@ -30,6 +30,12 @@ public class PortalNotification implements Serializable {
     
     private final String updateSummary = "Updated";
     private final String updateDetail = "Notification updated";
+    
+    private final String addSummary = "Created";
+    private final String addDetail = "Notification created";
+    
+    private final String editNotificationMsgId = "notificationMsg";
+    private final String addNotificationMsgId = "addNotificationMsg";
 
     @Inject
     private MongoJDBC mongo;
@@ -41,21 +47,39 @@ public class PortalNotification implements Serializable {
         }
     }
 
-    public void onTabChange() {
-        log.info("onTabChange");
-    }
-
-    public void activateNotification() {
-        log.info("activateNotification: {}", isActive);
-    }
-
     public void findNotifications() {
         log.info("findNotifications");
         
         notifications = mongo.findNotifications();
         log.info("notification size: {}", notifications.size());
     }
-
+ 
+    public void changeNotification(Notification notification) {
+        log.info("changeNotification: {}", notification);
+    }
+    
+    public void editNotification(Notification notification) {
+        log.info("editNotification : {}", notification);
+        
+        mongo.updateNotification(notification);
+        findNotifications();
+        FacesContext.getCurrentInstance()
+                .addMessage(editNotificationMsgId, 
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, 
+                                updateSummary, updateDetail));
+    }
+    
+    public void deleteNotification(Notification notification) {
+        log.info("deleteNotification: {}", notification);
+        
+        mongo.deleteNotification(notification);
+        findNotifications();
+    }
+    
+    public void activateNotification() {
+        log.info("activateNotification: {}", isActive);
+    }
+      
     public void addNotification() {
         log.info("addNotification");
         Notification notification = new Notification(title, descriptionEn,
@@ -66,29 +90,17 @@ public class PortalNotification implements Serializable {
         descriptionSv = null;
         isActive = true;
         orderNumber = 0;
+        
+        FacesContext.getCurrentInstance()
+                .addMessage(addNotificationMsgId, 
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, 
+                                addSummary, addDetail));
+        
         findNotifications();
-    }
-
-    public void changeNotification(Notification notification) {
-        log.info("changeNotification: {}", notification);
     }
  
-    public void editNotification(Notification notification) {
-        log.info("editNotification : {}", notification);
-        
-        mongo.updateNotification(notification);
-        findNotifications();
-        FacesContext.getCurrentInstance()
-                .addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, 
-                                updateSummary, updateDetail));
-    }
-
-    public void deleteNotification(Notification notification) {
-        log.info("deleteNotification: {}", notification);
-        
-        mongo.deleteNotification(notification);
-        findNotifications();
+    public void onTabChange() {
+        log.info("onTabChange");
     }
  
     public String getTitle() {
@@ -130,7 +142,7 @@ public class PortalNotification implements Serializable {
     public void setOrderNumber(int orderNumber) {
         this.orderNumber = orderNumber;
     }
-
+     
     public List<Notification> getNotifications() {
         return notifications;
     }

@@ -1,0 +1,17 @@
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:ui="http://java.sun.com/jsf/facelets"  
+      xmlns:p="http://primefaces.org/ui"  > 
+    <head>
+        <title>Loan results</title>
+    </head>
+    <body>
+        <ui:composition>      
+            <p:growl id="messages" showDetail="true" sticky="true" />
+
+            <p:idleMonitor timeout="300000">
+                <p:ajax event="idle" listener="#{idleMonitorView.onIdle}" update="messages" />
+                <p:ajax event="active" listener="#{idleMonitorView.onActive}" update="messages" />
+            </p:idleMonitor>
+        </ui:composition>
+    </body>
+</html>

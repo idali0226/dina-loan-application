@@ -16,13 +16,16 @@
                     <h:panelGroup layout="block" styleClass="main"  id="policyPanel"> 
                         <p:panel header="Update Loan policy documents" styleClass="nobord">
                             <br />
-                            <h:panelGrid id="updatePolicyPanel" rendered="#{loanAdmin.isNewPolicy}">
+                            <h:panelGroup layout="block" id="updatePolicyPanel" 
+                                          rendered="#{policies.isNewPolicy}">
                                 <h:outputText value="Right click here to update new policy files" 
                                               style="color: #FF0000; "/>
-                            </h:panelGrid> 
+                            </h:panelGroup> 
+                            
                             <p:contextMenu for="updatePolicyPanel"> 
-                                <p:menuitem value="Update" update="policyPanel" icon="ui-icon-refresh" 
-                                            actionListener="#{loanAdmin.updatePolicy}" 
+                                <p:menuitem value="Update" update="policyPanel" 
+                                            icon="ui-icon-refresh" 
+                                            actionListener="#{policies.updatePolicy}" 
                                             oncomplete="window.location.reload();"/>
                             </p:contextMenu>
                             <br />
@@ -32,31 +35,32 @@
                                              value="Current loan policy for scientific purpose" 
                                              type="button"  />
 
-                            <p:overlayPanel id="currentScPolicyPanel" for="scPolicyBtn" dynamic="true"  > 
+                            <p:overlayPanel id="currentScPolicyPanel" for="scPolicyBtn" dynamic="true"  >  
                                 <p:media value="#{policies.scientificPolicyPdfFile}"  
                                          height="750px" width="820px" player="pdf">
                                     Your browser can't display pdf, 
                                     <h:outputLink value="#{policies.scientificPolicyPdfFile}" >
                                         click
                                     </h:outputLink> to download pdf instead.
-                                </p:media> 
+                                </p:media>  
                             </p:overlayPanel>  
 
                             <br />
                             <br />  
                             <br />
                             <br />  
-                            <h:panelGrid styleClass="text" id="scpolicyfilePanel"> 
+                            <h:panelGroup layout="block" styleClass="text" id="scpolicyfilePanel"> 
                                 <h:outputText value="Upload loan policy for scientific purpose: " styleClass="defaultboldtext" />
                                 <br />  
-                                <h:outputText value="(Drag and drop file into upload box, or select file from file system.)" styleClass="smalltext" />
+                                <h:outputText value="(Drag and drop file into upload box, or select file from file system.)" 
+                                              styleClass="smalltext" />
                                 <br /> 
-                                <p:fileUpload fileUploadListener="#{loanAdmin.uploadScFile}" 
+                                <p:fileUpload fileUploadListener="#{policies.uploadScientificPolicyFile}" 
                                               mode="advanced"
                                               allowTypes="/(\.|\/)(pdf)$/" 
                                               styleClass="originalbutton" 
                                               update="policyPanel" />  
-                            </h:panelGrid>
+                            </h:panelGroup>
 
                             <br />
                             <br />
@@ -80,22 +84,20 @@
                             <br />  
                             <br />
                             <br />  
-                            <h:panelGrid styleClass="text" id="edpolicyfilePanel">   
+                            <h:panelGroup layout="block" styleClass="text" id="edpolicyfilePanel">   
                                 <h:outputText value="Upload loan policy for educational purpose: " 
                                               styleClass="defaultboldtext" /> 
                                 <br />
                                 <h:outputText value="(Drag and drop file into upload box, or select file from file system.)" styleClass="smalltext" />
                                 <br /> 
 
-                                <p:fileUpload fileUploadListener="#{loanAdmin.uploadEdFile}" 
+                                <p:fileUpload fileUploadListener="#{policies.uploadEdFile}" 
                                               mode="advanced"
                                               allowTypes="/(\.|\/)(pdf)$/" 
                                               styleClass="originalbutton" 
                                               update="policyPanel"  />  
-                            </h:panelGrid>
- 
-                        </p:panel>
-
+                            </h:panelGroup> 
+                        </p:panel> 
                     </h:panelGroup>  
                 </h:form>
             </ui:define>

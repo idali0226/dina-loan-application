@@ -11,54 +11,65 @@
             <ui:define name="windowTitle">
                 Collection
             </ui:define> 
-            <ui:define name="content"  >   
-                <h:form id="collectionForm" prependId="false">    
+            <ui:define name="content"  >    
+                <h:form id="collectionForm" prependId="false">     
+                    <p:growl id="collectionMsg" showDetail="true" sticky="true" />
                     <h:panelGroup styleClass="main" layout="block" id="collectionpanel" >   
                         <h:panelGroup layout="block" id="subcollectionPanel" 
                                       styleClass="subcollectionPanel text" >  
+
                             <h:panelGroup layout="block" style="width: 100%; padding-bottom: 10px; ">
-                                <p:selectOneMenu value="#{loanAdmin.department}" id="contact1title" 
-                                                 style="width:185px; font-size:  11px; font-family: Arial,sans-serif;">  
+                                <p:selectOneMenu value="#{collection.department}" id="contact1title" 
+                                                 style="width:185px; font-size: 11px; font-family: Arial,sans-serif;">  
                                     <f:selectItem itemValue="Botany" itemLabel="Botany" itemDisabled="true" />
                                     <f:selectItem itemValue="Environmental Specimen Bank" 
                                                   itemLabel="Environmental Specimen Bank" itemDisabled="true" />
                                     <f:selectItem itemValue="Geology" itemLabel="Geology" itemDisabled="true" />
-                                    <f:selectItem itemValue="Palaeobiology" itemLabel="Palaeobiology" itemDisabled="true" />
+                                    <f:selectItem itemValue="Palaeobiology" itemLabel="Palaeobiology"
+                                                  itemDisabled="true" />
                                     <f:selectItem itemValue="Zoology" itemLabel="Zoology" /> 
-                                    <p:ajax listener="#{loanAdmin.departmentChanged}" 
+                                    <p:ajax listener="#{collection.departmentChanged}" 
                                             update="subcollectionPanel" global="false" />
                                 </p:selectOneMenu>    
                             </h:panelGroup>
 
-
                             <p:accordionPanel  dynamic="true" cache="true"  id="accordionCollectionPanel" > 
-                                <p:ajax event="tabChange" listener="#{loanAdmin.onTabChange}" /> 
+                                <p:ajax event="tabChange" listener="#{collection.onTabChange}" /> 
+
                                 <p:tab title="Edit Non scientific loans" id="nonScLoanTab" > 
                                     <h:panelGroup layout="block">
                                         <h:outputLabel for="ungroupedManager" 
                                                        value="Manager for non-scientific loans [Click on the text to edit]: " 
                                                        styleClass="defaultboldtext" /> 
                                     </h:panelGroup>
-                                    <h:panelGrid cellpadding="0" cellspacing="0" columns="4" id="nonScientificPanel" 
-                                                 columnClasses="cgcol2,cgcol,cgcol2,cgcol5"> 
+                                    <h:panelGrid cellpadding="0" cellspacing="0" columns="5" id="nonScientificPanel" 
+                                                 columnClasses="cgcol2,cgcol6,cgcol2,cgcol5,cgcol1"> 
                                         <p:spacer width="10" />
-                                        <p:inplace id="ungroupedManager">
-                                            <p:inputText value="#{loanAdmin.nonScientificLoansManager}" 
-                                                         required="true"  id="nonScientificManagerEmail"
-                                                         requiredMessage="Manager's email can not be empty!" size="40"
+
+                                        <p:inplace id="ungroupedManager" editor="true" 
+                                                   styleClass="originalbutton" >  
+                                            <p:inputText id="nonScientificManagerEmail"
+                                                         required="true" size="40"
+                                                         requiredMessage="Manager's email can not be empty!"
                                                          validatorMessage="Invalid email address!"  
-                                                         styleClass="contactfieldstext" >
-                                                <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" /> 
-                                            </p:inputText> 
+                                                         styleClass="contactfieldstext" 
+                                                         value="#{collection.nonScientificLoansManager}">  
+                                                <f:validateRegex pattern="([^.@]+)(\.[^.@]+)*@([^.@]+\.)+([^.@]+)" />   
+                                            </p:inputText>   
+                                            <p:message for="nonScientificManagerEmail"    />
+                                            <p:ajax event="save" 
+                                                    listener="#{collection.updateEmail}" update="nonScientificPanel" />
                                         </p:inplace>   
+                                          
                                         <p:spacer width="20" /> 
-                                        <h:panelGrid style="padding-left: 20px; vertical-align: top;">
-                                            <p:commandButton value="Update" process="@this,nonScientificPanel"  
-                                                             update="nonScLoanTab"
-                                                             actionListener="#{loanAdmin.updateNonScientificManager}" />
-                                        </h:panelGrid> 
-                                        <p:spacer width="10" />
-                                        <p:message for="nonScientificManagerEmail" /> 
+                                        <h:panelGroup layout="block" id="saveBtnPanel" style="padding-left: 20px; vertical-align: top;">
+                                            <p:commandButton value="Save" 
+                                                             process="@this,nonScientificPanel"   
+                                                             disabled="#{collection.disableSaveBtn}"
+                                                             update="nonScientificPanel"
+                                                             actionListener="#{collection.updateNonScientificManager}" />
+                                        </h:panelGroup> 
+                                        <p:spacer width="10" /> 
                                     </h:panelGrid>
                                 </p:tab>
                                 <p:tab title="Edit Relevent Collection" id="collectionTab" > 
@@ -73,11 +84,14 @@
                                             <h:outputText value="[Click on the text to edit]" 
                                                           styleClass="defaultboldtext"/>  
                                         </h:panelGrid> 
-                                        <p:messages id="editCollectionPanelmsg" autoUpdate="true"  
-                                                    showDetail="true" showSummary="false" closable="true" 
-                                                    rendered="#{loanAdmin.activeTab == 1}"  />
 
-                                        <ui:repeat var="cm" value="#{loanAdmin.cmList}" varStatus="status">
+                                        <p:messages id="editCollectionPanelmsg"  
+                                                    showDetail="true" showSummary="false" closable="true" 
+                                                    rendered="#{collection.activeTab == 1}"  />
+
+
+                                        <ui:repeat value="#{collection.collectionManagerList}"
+                                                   varStatus="status"  var="cm" >
                                             <h:panelGrid columns="7" id="collectionManagerEditPanel" 
                                                          columnClasses="cgcol1,cgcol2,cgcol3,cgcol4,cgcol5" > 
                                                 <p:inplace id="collection">
@@ -92,12 +106,15 @@
                                                 </p:inplace>
 
                                                 <p:outputLabel value="&lt;==&gt;" style="color: #0b5e82; "  /> 
-                                                <p:commandButton value="Update" process="@this,collectionManagerEditPanel"  
-                                                                 actionListener="#{loanAdmin.updateCollection(cm)}" />
+                                                <p:commandButton value="Update" 
+                                                                 update="collectionForm"
+                                                                 process="@this,collectionManagerEditPanel"  
+                                                                 actionListener="#{collection.updateCollection(cm)}" />
                                                 <p:spacer width="5" />  
                                                 <p:commandButton value="Remove (Remove whole collection)" 
-                                                                 actionListener="#{loanAdmin.removeCollection(cm)}" 
-                                                                 process="@this,collectionManagerEditPanel"   >
+                                                                 actionListener="#{collection.removeCollection(cm)}" 
+                                                                 process="@this,collectionManagerEditPanel"
+                                                                 update="collectionForm">
                                                     <p:confirm header="Confirmation" 
                                                                message="This will delete whole collection. Are you sure?" 
                                                                icon="ui-icon-alert" /> 
@@ -109,93 +126,47 @@
                                                              styleClass="ui-confirmdialog-yes" style="color: #FFFFFF;"   />
                                             <p:commandButton value="No" type="button" 
                                                              styleClass="ui-confirmdialog-no" style="color: #FFFFFF;"   />
-                                        </p:confirmDialog>
-  
-                                        <ui:repeat var="map"
-                                                   value="#{loanAdmin.map.keySet().toArray()}" 
-                                                   varStatus="status">   
-                                            <p:dataTable var="c" value="#{loanAdmin.map.get(map) }" 
-                                                           editable="true" style="margin-bottom:20px"  >
-                                                <f:facet name="header">
-                                                    #{map} (Collection manager: #{loanAdmin.managermail(map)}   ) 
-                                                </f:facet> 
-                                                <p:ajax event="rowEdit" listener="#{loanAdmin.onRowEdit}"   />
-                                                <p:ajax event="rowEditCancel" listener="#{loanAdmin.onRowCancel}"  /> 
-                                                <p:column headerText="Collection name">
-                                                    <p:cellEditor>
-                                                        <f:facet name="output">
-                                                            <h:outputText value="#{c.name}" />
-                                                        </f:facet>
-                                                        <f:facet name="input">
-                                                            <p:inputText  value="#{c.name}" style="width:100%"/>
-                                                        </f:facet>
-                                                    </p:cellEditor>
-                                                </p:column> 
-                                                <p:column headerText="Curator's email">
-                                                    <p:cellEditor>
-                                                        <f:facet name="output">
-                                                            <h:outputText value="#{c.email}" />
-                                                        </f:facet>
-                                                        <f:facet name="input">
-                                                            <p:inputText value="#{c.email}" style="width:100%"/>
-                                                        </f:facet>
-                                                    </p:cellEditor>
-                                                </p:column> 
-                                                <p:column style="width:32px">
-                                                    <p:rowEditor />
-                                                </p:column>
-
-                                                <p:column styleClass="alignTop" style="width: 20px; font-size: 12px;">   
-                                                    <p:commandLink title="Remove" process="@this" global="false"  
-                                                                   action="#{loanAdmin.removeSubCollection(c)}"
-                                                                   update="@form">   
-                                                        <p:graphicImage value="/resources/images/button_remove.gif" 
-                                                                        styleClass="images" />
-                                                        <p:collector value="#{c}" unique="true"   
-                                                                     removeFrom="#{loanAdmin.map.get(map)}" />  
-                                                    </p:commandLink>  
-                                                </p:column>  
-                                            </p:dataTable>  
-                                            <p:spacer width="750" height="40" />
-                                        </ui:repeat>    
+                                        </p:confirmDialog> 
+                                        <ui:include src="/secure/collectionTable.xhtml" />  
                                     </h:panelGroup>
                                 </p:tab>
 
                                 <p:tab title="Create New Relevent Collection">  
                                     <h:panelGrid columns="3"  id="createNewCollectionPanel"> 
                                         <h:outputLabel for="newCollectionName" value="Collection Name: " />
-                                        <p:inputText id="newCollectionName" value="#{loanAdmin.newCollectionName}" size="30"
+                                        <p:inputText id="newCollectionName" value="#{collection.newCollectionName}" size="30"
                                                      required="true" requiredMessage="Collection name is required." />
                                         <p:message for="newCollectionName"   />
 
                                         <h:outputLabel for="newCurator" value="Curator's email: " />
-                                        <p:inputText id="newCurator" value="#{loanAdmin.newCollectionCurator}" size="30"
+                                        <p:inputText id="newCurator" value="#{collection.newCollectionCurator}" size="30"
                                                      required="true"  requiredMessage="Curator email is required." />
                                         <p:message for="newCurator"   /> 
                                         <h:outputText value="Collection group :" />  
-                                        <p:selectOneMenu id="newGroupName" value="#{loanAdmin.newCollectionGroupName}" 
+                                        <p:selectOneMenu id="newGroupName" value="#{collection.newCollectionGroupName}" 
                                                          editable="true"  
                                                          style="width:185px; font-size:  11px; font-family: Arial,sans-serif;"> 
-                                            <f:selectItems value="#{loanAdmin.collectionGroupNames}"  /> 
-                                            <p:ajax listener="#{loanAdmin.addNewCollection}" update="@this,newManager" 
+                                            <f:selectItems value="#{collection.collectionGroupNames}"  /> 
+                                            <p:ajax listener="#{collection.addNewCollection}" update="@this,newManager" 
                                                     global="false" process="@this"/> 
                                         </p:selectOneMenu>
                                         <p:spacer width="10" />
 
                                         <h:outputLabel for="newManager" value="Collection manager's email: " />
-                                        <p:inputText id="newManager" value="#{loanAdmin.newCollectionManager}" 
+                                        <p:inputText id="newManager" value="#{collection.newCollectionManager}" 
                                                      size="30" required="true" 
                                                      requiredMessage="Collection manager's email is required." 
-                                                     disabled="#{loanAdmin.managerDisable}" />
+                                                     disabled="#{collection.managerDisable}" />
                                         <p:message for="newManager"   />
 
                                         <p:spacer width="10" />
                                         <p:spacer width="10" />
-                                        <h:panelGrid style="width: 200px; float: right;">
-                                            <p:commandButton value="Save collection" action="#{loanAdmin.saveNewCollection}"  
+                                        <h:panelGroup layout="block" style="width: 200px; float: right;">
+                                            <p:commandButton value="Save collection" 
+                                                             action="#{collection.saveNewCollection}"  
                                                              global="true" process="createNewCollectionPanel" 
                                                              update=":collectionForm:collectionpanel" />
-                                        </h:panelGrid> 
+                                        </h:panelGroup> 
                                     </h:panelGrid>
                                 </p:tab> 
                             </p:accordionPanel> 
