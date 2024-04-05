@@ -6,3 +6,20 @@
 /target/
 /dina-mongodb/target/
 /dina-external-data/target/
+
+
+/notes
+/dina-loan-admin/Dockerfile
+/dina-loan-admin/Makefile
+
+/dina-loan-web/Dockerfile
+/dina-loan-web/Makefile
+
+/.DS_Store
+
+ /dina-email/.DS_Store
+
+/project-initdata-admin.yml
+/project-initdata-web.yml
+
+/dina-loan-web/src/.DS_Store
