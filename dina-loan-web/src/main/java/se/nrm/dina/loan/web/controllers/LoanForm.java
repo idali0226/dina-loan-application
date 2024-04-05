@@ -33,33 +33,18 @@ public class LoanForm implements Serializable {
     private final String loanReqNumberPrefix = "ReqNo";
     private final String loanInitialStatus = "Request pending";  
  
-    
-    private final String localhost = "localhost";
-    
-    private final String localhostAndPortal = "http://localhost:8180";
-    private final String https = "https://";
-   
+      
     private final String reqNumberFormat = "%06d";
     
-    
-    
+     
     
     private boolean openSummary = false;
-    
      
-//    private Map<String, List<Collection>> map;
-//    private List<SelectItem> collectionItems; 
- 
     private boolean holiday = false;
-
-//    private boolean isPolicyRead = false;
-
-    private String department;
-    private String purpose;
-//    private String requestType; 
-    private String sbdiBasUrl;
  
-//    private String commercialLoanType;
+    private String department;
+    private String purpose; 
+    private String sbdiBasUrl; 
  
     private Loan loan;
 
@@ -68,10 +53,12 @@ public class LoanForm implements Serializable {
     private boolean isSwedish;
     
     private String pdfPath; 
+    private String loanDocumentPath;
+    private String adminPath; 
  
 
-    @Inject
-    private BreadCrumbBean breadCrumb;
+//    @Inject
+//    private BreadCrumbBean breadCrumb;
 
     @Inject
     private MongoJDBC mongo;
@@ -83,8 +70,8 @@ public class LoanForm implements Serializable {
     @Inject
     private InitialProperties properties;
 
-    @Inject
-    private Languages languages;
+//    @Inject
+//    private Languages languages;
 
     @Inject
     private LoanFileHandler fileHander;   
@@ -95,19 +82,7 @@ public class LoanForm implements Serializable {
     @Inject
     private OtherDepartments otherDepartments;
 
-    public LoanForm() {
-//        samples = new ArrayList<>();
-//        sample = new Sample();
-//        sample.setType(NameMapping.getMsgByKey(CommonNames.PreservationTypeNotSpecified, isSwedish));
-//
-//        isSwedish = false;
-//
-//        user = new User();
-//        primaryUser = new User();
-//        user.getAddress().setCountry(swedenEn);
-//        primaryUser.getAddress().setCountry(swedenEn);
-
-//        commercialLoanType = RequestType.Physical.getText(); 
+    public LoanForm() { 
     }
 
     @PostConstruct
@@ -120,17 +95,11 @@ public class LoanForm implements Serializable {
         log.info("is holiday .... : {}", holiday);
 
         department = Department.Zoology.getText();
-        purpose = LoanPurpose.ScientificPurpose.getText();
-//        requestType = RequestType.Physical.getText();
- 
- 
-        String host = properties.getHost();
-        if(host.equals(localhost)) {
-            pdfPath = localhostAndPortal;
-        } else {
-            pdfPath = https + host;
-        }
-        
+        purpose = LoanPurpose.ScientificPurpose.getText(); 
+  
+        pdfPath = properties.getHost();
+        loanDocumentPath = properties.getLoanFilePath();
+        adminPath = properties.getAdmin();
         sbdiBasUrl = properties.getSbdiUrl();
     }
 
@@ -166,8 +135,7 @@ public class LoanForm implements Serializable {
         log.info("resetData : {}", isHome);
 
         if (isHome) {
-            department = Department.Zoology.getText();
-//            breadCrumb.resetNavigationPathToHomePage();
+            department = Department.Zoology.getText(); 
             purpose = LoanPurpose.ScientificPurpose.getText();
             openSummary = false;
 
@@ -195,12 +163,19 @@ public class LoanForm implements Serializable {
     }
 
     public boolean isSwedish() {
-        return languages.isIsSwedish();
+        return isSwedish;
     }
- 
+    
+    public void resetLocale(boolean isSwedish) {
+        this.isSwedish = isSwedish;
+        otherDepartments.setDepartmentName(Department.getDepartName(department, isSwedish));
+        otherDepartments.setUrl(properties.getDepartmentUrl(department, isSwedish));
+        otherDepartments.setDepartmentCollectionName(
+                Department.getDepartCollectionName(department, isSwedish));
+    }
 
     public Loan buildLoanInitialData() {
-        
+
         if (uuid == null) {
             uuid = getUniqueUUID();
         }
@@ -253,105 +228,7 @@ public class LoanForm implements Serializable {
                     Department.getDepartCollectionName(department, isSwedish));
         } 
     } 
-   
-
-  
-    
-//    private void sendMails(String loanId)
-//            throws MessagingException, AddressException, UnsupportedEncodingException {
-//
-//        log.info("sendMails : {}", loanId);
-//
-//        Map<String, String> emailMap = new HashMap<>();
-//        emailMap.put("isSwedish", String.valueOf(isSwedish));
-//        emailMap.put("loanId", loanId);
-//        emailMap.put("primarytitle", loan.getPrimaryUser().getTitle());
-//        emailMap.put("primarylastname", loan.getPrimaryUser().getLastname());
-//        emailMap.put("primaryFirstname", loan.getPrimaryUser().getFirstname());
-//        emailMap.put("primaryemail", loan.getPrimaryUser().getEmail());
-//
-//        emailMap.put("collection", loan.getDepartment());
-//        emailMap.put("purpose", loan.getPurpose());
-//        emailMap.put("type", loan.getType());
-//        emailMap.put("subcollection", loan.getReleventCollection());
-//
-//        if (loan.getPrimaryUser().getDepartment() != null && !loan.getPrimaryUser().getDepartment().isEmpty()) {
-//            emailMap.put("primarydepartment", loan.getPrimaryUser().getDepartment());
-//        }
-//        emailMap.put("primaryinstitution", loan.getPrimaryUser().getInstitution());
-//        emailMap.put("primarycountry", loan.getPrimaryUser().getAddress().getCountry());
-//
-////        emailMap.put("hasPrimaryContact", String.valueOf(hasPrimaryContact));
-//        emailMap.put("isLocal", String.valueOf(true));
-////        emailMap.put("isLocal", String.valueOf(server.equals(LOCALHOST)));
-//
-////        if (hasPrimaryContact) {
-////            emailMap.put("secondarytitle", loan.getSecondaryUser().getTitle());
-////            emailMap.put("secondarylastname", loan.getSecondaryUser().getLastname());
-////            emailMap.put("secondaryfirstname", loan.getSecondaryUser().getFirstname());
-////            emailMap.put("secondaryemail", loan.getSecondaryUser().getEmail());
-////            if (loan.getSecondaryUser().getDepartment() != null && !loan.getSecondaryUser().getDepartment().isEmpty()) {
-////                emailMap.put("secondarydepartment", loan.getSecondaryUser().getDepartment());
-////            }
-////            emailMap.put("secondaryinstitution", loan.getPrimaryUser().getInstitution());
-////            emailMap.put("secondarycountry", loan.getPrimaryUser().getAddress().getCountry());
-////        }
-//
-//        emailMap.put("department", Department.getDepartName(department));
-//
-//        log.info("uuid : {}", uuid);
-//        StringBuilder sb = new StringBuilder();
-//        sb.append(uuid.toString());
-//        sb.append("-loanrequest_");
-//        sb.append(loanId);
-//
-//        StringBuilder adminSb = new StringBuilder(sb.toString());
-//        adminSb.append("_admin.pdf");
-//
-//        sb.append(".pdf");
-//        emailMap.put("summaryFile", sb.toString().trim());
-//        emailMap.put("adminSummaryFile", adminSb.toString().trim());
-//
-////        String curatorEmail = null;
-////        if(loan.getCurator() != null && !loan.getCurator().isEmpty()) {
-////            curatorEmail = loan.getCurator();
-////        } else {
-////            Collection collection = (mongo.findCollection("Non scientific", "group")); 
-////            if(collection != null) {
-////                curatorEmail = collection.getManager();
-////            }
-////        }
-//        TblUsers curator = dao.findOneUserByEmail(loan.getCurator());
-//        if (curator != null) {
-//            emailMap.put("outofoffice", String.valueOf(curator.getOnvacation()));
-//        }
-//
-////        emailMap.put("curratormail", loan.getCurator());
-//        emailMap.put("curratormail", "ida.li@nrm.se");
-//        emailMap.put("manager", loan.getManager());
-//
-////        if (isScientificLoan() && selectedCollection != null) {
-////            emailMap.put("loanPolicy", "testScientificLoanPath");
-////        } else {
-////            emailMap.put("loanPolicy", "educationLoanPath");
-////        }
-//
-//        if (false) {
-//            mail.send(emailMap);
-//        } else {
-//            nrmMail.send(emailMap);
-//        }
-//    }
-
-    public void changelanguage(String locale) {
-        log.info("changelanguage - locale: {}", locale);
-
-        languages.setLocale(locale);
-        isSwedish = languages.isIsSwedish(); 
-//
-        breadCrumb.resetLocale(isSwedish);
-        departmentChanged(); 
-    }
+ 
 
     public void start() {
         log.info("start");
@@ -361,11 +238,7 @@ public class LoanForm implements Serializable {
         style.setCurrentTab(1);
         navigator.gotoHomePage();
     }
- 
-
-//    public void backtoform() {  
-//        style.setCurrentTab(1);
-//    }
+  
  
     public void saveText() {
         log.info("saveText");
@@ -382,18 +255,10 @@ public class LoanForm implements Serializable {
         return uuid;
     }
  
-//    public void purposeCheckChanged() {
-//        log.info("purposeCheckChanged"); 
-//    }
- 
     public boolean isHolidaySeason() {
         return holiday;
     }
-
-//    public boolean isIsInformation() {
-//        return RequestType.Information.isInformation(requestType);
-//    }
-
+ 
     public boolean isBotanyDepartment() {
         return Department.Botany.name().equalsIgnoreCase(department);
     }
@@ -413,10 +278,7 @@ public class LoanForm implements Serializable {
     public boolean isPalaeobiologyDepartment() {
         return Department.Palaeobiology.name().equalsIgnoreCase(department);
     }
-
-//    public boolean isIsPhysical() {
-//        return RequestType.Physical.isPhysical(requestType);
-//    }
+ 
 
     public String getDepartment() {
         return department;
@@ -433,25 +295,11 @@ public class LoanForm implements Serializable {
     public void setPurpose(String purpose) {
         this.purpose = purpose;
     }
-
-//    public String getRequestType() {
-//        return requestType;
-//    }
-//
-//    public void setRequestType(String requestType) {
-//        this.requestType = requestType;
-//    }
-// 
  
-  
     public String getSbdiBaseUrl() {
         return sbdiBasUrl;
     }
-// 
-//    public boolean isIsPhoto() {
-//        return RequestType.Photo.isPhoto(requestType);
-//    }
-// 
+ 
     public int getCurrentYear() {
         return currentYear;
     }
@@ -459,37 +307,21 @@ public class LoanForm implements Serializable {
     public String getLoanId() { 
         return loan == null ? null : loan.getId();
     }
-//
-//    public boolean isIsPolicyRead() {
-//        return isPolicyRead;
-//    }
-//
-//    public void setIsPolicyRead(boolean isPolicyRead) {
-//        this.isPolicyRead = isPolicyRead;
-//    }
-
+ 
     public boolean isScientificLoan() {
         return LoanPurpose.ScientificPurpose.isScientificPurpose(purpose);
     }
-
-//    private boolean isPhoto() {
-//        return RequestType.Photo.isPhoto(requestType);
-//    }
-//
-//    private boolean isInformational() {
-//        return RequestType.Information.isInformation(requestType);
-//    }
-// 
-//    public String getCommercialLoanType() {
-//        return commercialLoanType;
-//    }
-//
-//    public void setCommercialLoanType(String commercialLoanType) {
-//        this.commercialLoanType = commercialLoanType;
-//    }
+ 
     
     public String getPdfPath() {
         return pdfPath;
     }
- 
+
+    public String getLoanDocumentPath() {
+        return loanDocumentPath;
+    } 
+
+    public String getAdminPath() {
+        return adminPath;
+    }  
 }

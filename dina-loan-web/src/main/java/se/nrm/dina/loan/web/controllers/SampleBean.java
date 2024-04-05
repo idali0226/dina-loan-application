@@ -27,6 +27,8 @@ public class SampleBean implements Serializable {
     
     private final String emptyString = "";
     private final String emptySpace = " ";
+    private final String notSpecifiedSv = "ej specifierad";
+    private final String notSpecifiedEn = "Not specified";
     
     
     private List<Sample> samples;
@@ -57,8 +59,24 @@ public class SampleBean implements Serializable {
     @PostConstruct
     public void init() {  
         selectedCatalogNumbers = new ArrayList();
-        sbdiBaseUrl = form.getSbdiBaseUrl(); 
-        isSwedish = form.isSwedish();
+        sbdiBaseUrl = form.getSbdiBaseUrl();  
+    }
+    
+    public void resetLocale(boolean isSwedish) {
+        log.info("resetLocale : {}", isSwedish);
+        this.isSwedish = isSwedish;
+        
+        sample.setType(NameMapping.getMsgByKey(
+                CommonNames.PreservationTypeNotSpecified, isSwedish));
+        if (sample.getType().equals(notSpecifiedSv) || 
+                sample.getType().equals(notSpecifiedEn)) {
+            sample.setType(NameMapping.getMsgByKey(
+                    CommonNames.PreservationTypeNotSpecified, isSwedish));
+        }
+        samples.stream().filter((samp) -> (samp.getType().equals(notSpecifiedSv) 
+                || samp.getType().equals(notSpecifiedEn))).forEach((samp) -> {
+            samp.setType(NameMapping.getMsgByKey(CommonNames.PreservationTypeNotSpecified, isSwedish));
+        });
     }
     
     public void resetData() { 

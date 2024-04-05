@@ -6,7 +6,7 @@
     <parent>
         <artifactId>dina-loan</artifactId>
         <groupId>se.nrm.dina</groupId>
-        <version>0.1-SNAPSHOT</version>
+        <version>1.0</version>
     </parent>
  
     <artifactId>dina-loan-web</artifactId> 

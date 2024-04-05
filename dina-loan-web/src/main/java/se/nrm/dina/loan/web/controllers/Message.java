@@ -1,7 +1,6 @@
 package se.nrm.dina.loan.web.controllers;
 
-import java.io.Serializable;
-import javax.enterprise.context.RequestScoped; 
+import java.io.Serializable; 
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -34,5 +33,5 @@ public class Message implements Serializable {
     public void addWarning(String warningTitle, String warningMsg) {
         FacesContext.getCurrentInstance().addMessage(null, 
                 new FacesMessage(FacesMessage.SEVERITY_WARN, warningTitle, warningMsg));
-    }
+    } 
 }

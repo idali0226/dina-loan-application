@@ -39,6 +39,7 @@ public class InitialProperties implements Serializable {
     private String palaebotanyUrlse;
     
     private String host;
+    private String admin;
 
     public InitialProperties() {
     }
@@ -62,7 +63,8 @@ public class InitialProperties implements Serializable {
             @ConfigurationValue("swarm.collectionUrl.mineralogyurl.se") String mineralogyUrlse,
             @ConfigurationValue("swarm.collectionUrl.palaebotanyurl.en") String palaebotanyUrlen,
             @ConfigurationValue("swarm.collectionUrl.palaebotanyurl.se") String palaebotanyUrlse,
-            @ConfigurationValue("swarm.host") String host) {
+            @ConfigurationValue("swarm.host") String host,
+            @ConfigurationValue("swarm.admin") String admin) {
         this.scientificPolicy = scientificPolicy;
         this.educationalPolicy = educationalPolicy;
         this.sbdiUrl = sbdiUrl;
@@ -82,6 +84,7 @@ public class InitialProperties implements Serializable {
         this.palaebotanyUrlen = palaebotanyUrlen;
         this.palaebotanyUrlse = palaebotanyUrlse;
         this.host = host;
+        this.admin = admin;
         
         log.info("InitialProperties : {}", solrUsername);
     }
@@ -161,6 +164,13 @@ public class InitialProperties implements Serializable {
             throw new RuntimeException(CONFIG_INITIALLISING_ERROR);
         }
         return host;
+    }
+    
+    public String getAdmin() {
+        if (admin == null) {
+            throw new RuntimeException(CONFIG_INITIALLISING_ERROR);
+        }
+        return admin;
     }
 
     public String getEsbUrlen() {

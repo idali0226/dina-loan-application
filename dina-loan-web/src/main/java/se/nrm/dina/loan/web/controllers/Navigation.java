@@ -63,6 +63,7 @@ public class Navigation implements Serializable {
     
      
     private final String mailServerDownPath = "/faces/clientpages/submitFailPage.xhtml";
+    private final String requestFailedPath = "/faces/clientpages/requestFailPage.xhtml";
     
     private String formView;
     
@@ -296,6 +297,12 @@ public class Navigation implements Serializable {
         redirectPage(mailServerDownPath);
     }
     
+    public void gotoRequestFailedPage() {
+        log.info("gotoRequestFailedPage");
+        
+        formView = requestFailedPath;
+        redirectPage(requestFailedPath);
+    }
     
     public void gotoFormPage() {
         if(formView == null) {

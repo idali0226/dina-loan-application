@@ -27,7 +27,7 @@
                         </h:selectOneMenu>
                     </p:inplace>
                     <p:spacer width="5" rendered="#{not empty borrower.primaryUser.title}" /> 
-                    <br />
+                    
                     <p:inplace editor="true"  styleClass="originalbutton"> 
                         <p:inputText value="#{borrower.primaryUser.firstname}" 
                                      label="text" required="true"  />
@@ -38,7 +38,7 @@
                                      label="text" required="true"   />
                     </p:inplace> 
                 </h:panelGrid>
-                <br />
+               
                 <p:inplace editor="true"  styleClass="originalbutton">
                     <p:inputText value="#{borrower.primaryUser.email}" 
                                  label="text" required="true"   />

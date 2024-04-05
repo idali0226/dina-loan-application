@@ -53,37 +53,53 @@ public class LoanFileHandler implements Serializable {
 
         FileUtils.copyInputStreamToFile(initialStream, targetFile);
     }
-
-    public String transferFiles(String uuid) {
+    
+    public String transferFiles(String uuid) throws IOException {
         log.info("transferFiles : {}", uuid);
-
+        
         String loanFilePath = makeLoanDirectory(uuid);
-        File tempDirectory = new File(tempFileDirectory + uuid);
-
-        log.info("loanFilePath : {} -- {}", loanFilePath, tempDirectory.getPath());
-
-        File orgFile;
-        File targetFile;
-
-        if (tempDirectory.exists()) {
-            for (File tempFile : tempDirectory.listFiles()) {
-                log.info("temp file : {}", tempFile.getName());
-
-                targetFile = new File(loanFilePath, tempFile.getName());
-
-                log.info("targetFile : {}", targetFile.getName());
-                orgFile = tempFile;
-                orgFile.renameTo(targetFile);
-
-                log.info("orgFile : {}", orgFile.getName());
-            }
-
+        File trgDir = new File(loanFilePath); 
+        File srcDir = new File(tempFileDirectory + uuid);
+        
+        if(srcDir.exists()) { 
+            FileUtils.copyDirectory(srcDir, trgDir); 
             removeTempDirectory(uuid);
             log.info("loan file path : {}", loanFilePath);
-        }
-
+        } 
         return loanFilePath;
     }
+
+//    public String transferFiles1(String uuid) {
+//        log.info("transferFiles : {}", uuid);
+//
+//        String loanFilePath = makeLoanDirectory(uuid);
+//        File tempDirectory = new File(tempFileDirectory + uuid);
+//
+//        log.info("loanFilePath : {} -- {}", loanFilePath, tempDirectory.getPath());
+//
+//        File orgFile;
+//        File targetFile;
+//
+//        if (tempDirectory.exists()) {
+//            for (File tempFile : tempDirectory.listFiles()) {
+//                log.info("temp file : {}", tempFile.getName());
+//
+//                targetFile = new File(loanFilePath, tempFile.getName());
+//                 
+//
+//                log.info("targetFile : {}", targetFile.getName());
+//                orgFile = tempFile;
+//                orgFile.renameTo(targetFile);
+//
+//                log.info("orgFile : {}", orgFile.getName());
+//            }
+//
+//            removeTempDirectory(uuid);
+//            log.info("loan file path : {}", loanFilePath);
+//        }
+//
+//        return loanFilePath;
+//    }
 
     public void removeTempDirectory(String uuid) {
         log.info("removeTempDirectory {}", tempFileDirectory);

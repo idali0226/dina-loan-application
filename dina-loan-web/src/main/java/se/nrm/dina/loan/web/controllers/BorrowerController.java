@@ -1,11 +1,11 @@
 package se.nrm.dina.loan.web.controllers;
 
-import java.io.Serializable;   
+import java.io.Serializable;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import lombok.extern.slf4j.Slf4j;  
+import lombok.extern.slf4j.Slf4j;
 import se.nrm.dina.loan.web.util.CountryNames;
 import se.nrm.dina.mongodb.loan.vo.User;
 
@@ -18,9 +18,8 @@ import se.nrm.dina.mongodb.loan.vo.User;
 @Slf4j
 public class BorrowerController implements Serializable {
 
-    
     private final String swedenEn = "Sweden";
-    private final String swedenSv = "Sverige"; 
+    private final String swedenSv = "Sverige";
     private final String student = "student";
     private final String emptySpace = " ";
 
@@ -28,10 +27,8 @@ public class BorrowerController implements Serializable {
     private User user;
     private boolean hasPrimaryUser = false;
     private boolean isAgree = false;
-    
-    @Inject
-    private Languages language;
-     
+    private boolean isSwedish; 
+
     public BorrowerController() {
 
         primaryUser = new User();
@@ -39,33 +36,55 @@ public class BorrowerController implements Serializable {
         primaryUser.getAddress().setCountry(swedenEn);
         user.getAddress().setCountry(swedenEn);
         hasPrimaryUser = false;
+        isSwedish = false;
     }
     
-    public void resetData() {
+    public void resetLocale(boolean isSwedish) {
+        this.isSwedish = isSwedish;
         
+        if(primaryUser.getAddress().getAddress() == null) {
+            if (isSwedish) {
+                primaryUser.getAddress().setCountry(swedenSv);
+            } else {
+                primaryUser.getAddress().setCountry(swedenEn);
+            } 
+        }
+        
+        if(user.getAddress().getAddress() == null) {
+            if (isSwedish) {
+                user.getAddress().setCountry(swedenSv);
+            } else {
+                user.getAddress().setCountry(swedenEn);
+            } 
+        } 
+    }
+
+    public void resetData() {
+
         hasPrimaryUser = false;
         primaryUser = new User();
         user = new User();
         isAgree = false;
 
-        if (language.isIsSwedish()) {
+        if (isSwedish) {
             primaryUser.getAddress().setCountry(swedenSv);
             user.getAddress().setCountry(swedenSv);
         } else {
             primaryUser.getAddress().setCountry(swedenEn);
             user.getAddress().setCountry(swedenEn);
-        } 
+        }
     }
-    
-    public List<String> getCountryList() {
-        return CountryNames.getCountryList(language.isIsSwedish());
+ 
+
+    public List<String> getCountryList() { 
+        return CountryNames.getCountryList(isSwedish);
     }
-    
+
     public void borrowerTitleChanged() {
         log.info("borrowerTitleChanged : {}", hasPrimaryUser);
-        
+
         if (user.getTitle() != null && user.getTitle().contains(student)) {
-                addPrimaryContact();
+            addPrimaryContact();
         }
 
 //        hasPrimaryContact = false;
@@ -76,7 +95,7 @@ public class BorrowerController implements Serializable {
 //            }
 //        }
     }
-    
+
     public boolean isIsStudent() {
         log.info("isIsStudent user : {}", user);
         if (user != null && user.getTitle() != null) {
@@ -84,7 +103,7 @@ public class BorrowerController implements Serializable {
         }
         return false;
     }
-    
+
     public void addPrimaryContact() {
         log.info("addPrimaryContact : {}", hasPrimaryUser);
         hasPrimaryUser = true;
@@ -98,7 +117,7 @@ public class BorrowerController implements Serializable {
     public void onIsAgreeStatusChange() {
         log.info("onIsAgreeStatusChange : {}", isAgree);
     }
-    
+
     public void saveText() {
         log.info("saveText");
     }
@@ -126,16 +145,15 @@ public class BorrowerController implements Serializable {
     public void setHasPrimaryUser(boolean hasPrimaryUser) {
         this.hasPrimaryUser = hasPrimaryUser;
     }
-    
+
     public String getUserFullName() {
         return getFullName(user.getFirstname(), user.getLastname());
     }
-    
+
     public String getPrimaryUserFullName() {
         return getFullName(primaryUser.getFirstname(), primaryUser.getLastname());
     }
-    
-    
+
     public boolean isIsAgree() {
         return isAgree;
     }
@@ -143,7 +161,7 @@ public class BorrowerController implements Serializable {
     public void setIsAgree(boolean isAgree) {
         this.isAgree = isAgree;
     }
-    
+
     private String getFullName(String firstName, String lastName) {
         StringBuilder sb = new StringBuilder();
         sb.append(firstName);
@@ -151,5 +169,5 @@ public class BorrowerController implements Serializable {
         sb.append(lastName);
         return sb.toString();
     }
- 
+
 }

@@ -2,11 +2,11 @@ package se.nrm.dina.loan.web.beans;
 
 import java.io.Serializable;
 import javax.enterprise.context.SessionScoped;
-import javax.inject.Inject;
+//import javax.inject.Inject;
 import javax.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import org.primefaces.model.menu.DefaultMenuItem;
-import se.nrm.dina.loan.web.controllers.Languages;
+//import se.nrm.dina.loan.web.controllers.Languages;
 import se.nrm.dina.loan.web.util.BreadCrumbElement;
 import se.nrm.dina.loan.web.util.LoanPurpose;
 
@@ -48,8 +48,8 @@ public class BreadCrumbBean implements Serializable {
 
     private boolean navigationPathEnabled;
 
-    @Inject
-    private Languages language;
+//    @Inject
+//    private Languages language;
 
     public BreadCrumbBean() {
 
@@ -545,7 +545,8 @@ public class BreadCrumbBean implements Serializable {
      * Set navigation path to physical text
      */
     public void setPhiscalElement() {
-        desctructiveItem.setValue(BreadCrumbElement.Desctructive.getMainMenuTextByLocale(language.isIsSwedish()));
+//        desctructiveItem.setValue(
+//                BreadCrumbElement.Desctructive.getMainMenuTextByLocale(language.isIsSwedish()));
         desctructiveItem.setRendered(true);
         photoItem.setRendered(false);
         projectItem.setRendered(true);
@@ -676,18 +677,18 @@ public class BreadCrumbBean implements Serializable {
 
     
 
-    private void setMainPathValue() {
-        boolean isSwedish = language.isIsSwedish();
-        purposeItem.setValue(BreadCrumbElement.Purpose.getMainMenuTextByLocale(isSwedish));
-        requestTypeItem.setValue(BreadCrumbElement.RequestType.getMainMenuTextByLocale(isSwedish));
-        projectItem.setValue(BreadCrumbElement.Project.getMainMenuTextByLocale(isSwedish));
-        collectionItem.setValue(BreadCrumbElement.Collection.getMainMenuTextByLocale(isSwedish));
-        specimentsItem.setValue(BreadCrumbElement.Speciments.getMainMenuTextByLocale(isSwedish));
-        desctructiveItem.setValue(BreadCrumbElement.Desctructive.getMainMenuTextByLocale(isSwedish));
-        citesItem.setValue(BreadCrumbElement.Cites.getMainMenuTextByLocale(isSwedish));
-        contactItem.setValue(BreadCrumbElement.Contact.getMainMenuTextByLocale(isSwedish));
-        reviewItem.setValue(BreadCrumbElement.Review.getMainMenuTextByLocale(isSwedish));
-    }
+//    private void setMainPathValue() {
+//        boolean isSwedish = language.isIsSwedish();
+//        purposeItem.setValue(BreadCrumbElement.Purpose.getMainMenuTextByLocale(isSwedish));
+//        requestTypeItem.setValue(BreadCrumbElement.RequestType.getMainMenuTextByLocale(isSwedish));
+//        projectItem.setValue(BreadCrumbElement.Project.getMainMenuTextByLocale(isSwedish));
+//        collectionItem.setValue(BreadCrumbElement.Collection.getMainMenuTextByLocale(isSwedish));
+//        specimentsItem.setValue(BreadCrumbElement.Speciments.getMainMenuTextByLocale(isSwedish));
+//        desctructiveItem.setValue(BreadCrumbElement.Desctructive.getMainMenuTextByLocale(isSwedish));
+//        citesItem.setValue(BreadCrumbElement.Cites.getMainMenuTextByLocale(isSwedish));
+//        contactItem.setValue(BreadCrumbElement.Contact.getMainMenuTextByLocale(isSwedish));
+//        reviewItem.setValue(BreadCrumbElement.Review.getMainMenuTextByLocale(isSwedish));
+//    }
     
 //    private void setEducationPathValue() {
 //        boolean isSwedish = language.isIsSwedish();

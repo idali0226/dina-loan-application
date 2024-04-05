@@ -2,6 +2,7 @@ package se.nrm.dina.loan.web.controllers;
 
 import com.itextpdf.text.DocumentException;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -37,8 +38,8 @@ import se.nrm.dina.mongodb.loan.vo.Loan;
 public class ScientificLoanForm implements Serializable {
     
     private final String nameFiledKey = "name";
-    private final String educationalPdf = "/pdf?pdf=education"; 
-    private final String cientificPdf = "/pdf?pdf=scientific"; 
+//    private final String educationalPdf = "/pdf?pdf=education"; 
+    private final String scientificPdf = "/pdf?pdf=scientific"; 
     private final String emptyString = "";
     
     private final String emailFailStatus = "Email failed";
@@ -50,7 +51,7 @@ public class ScientificLoanForm implements Serializable {
     private String photoInstruction;
     private String destractive;
     
-    private String pdfPath;
+    private String loanPolicyPath;
     
     private String citesNumber;
     private boolean noCITE = false;
@@ -62,44 +63,37 @@ public class ScientificLoanForm implements Serializable {
     private String destructiveMethod;
     private boolean isPolicyRead;
     
-    private Loan loan;
+    private String servletPath;
     
+    private Loan loan; 
     private boolean isSwedish;  
     
     @Inject
-    private LoanForm form;
-
+    private LoanForm form; 
     @Inject
-    private LoanFileHandler fileHander;
-    
+    private LoanFileHandler fileHander; 
     @Inject
-    private FileManager fileManager;
-
+    private FileManager fileManager; 
     @Inject
-    private PDFCreator pdf;
-        
+    private PDFCreator pdf; 
     @Inject
-    private MongoService service; 
-     
+    private MongoService service;  
     @Inject
-    private Message message;
-    
+    private Message message; 
     @Inject
-    private MailBuilder mailBuilder;
-    
+    private MailBuilder mailBuilder; 
     @Inject
-    private BorrowerController borrower;
-    
+    private BorrowerController borrower; 
     @Inject
     private SampleBean samples;
-    
-    
+     
     public ScientificLoanForm() { 
     }
     
     @PostConstruct
     public void init() {
-        pdfPath = form.getPdfPath() + educationalPdf; 
+        servletPath = form.getPdfPath();
+        loanPolicyPath = servletPath + scientificPdf; 
         
         requestType = RequestType.Physical.getText(); 
         isPolicyRead = false;
@@ -126,11 +120,14 @@ public class ScientificLoanForm implements Serializable {
         }
     }
   
-    public void submit() throws MessagingException {
+    public void resetLocale(boolean isSwedish) {
+        this.isSwedish = isSwedish; 
+        samples.resetLocale(isSwedish);
+    }
+    
+    public void submit() throws MessagingException, Exception {
         log.info("submit");
-
-        isSwedish = form.isSwedish();
-
+ 
         loan = form.buildLoanInitialData();
         Collection collection = service.findCollection(selectedCollection, nameFiledKey);
 
@@ -146,13 +143,17 @@ public class ScientificLoanForm implements Serializable {
              
             pdf.createScientificLoanPDF(loan, requestType, isSwedish, path);
             service.saveLoan(loan);
-            mailBuilder.buildEmail(loan, pdfPath, isSwedish, false); 
+            mailBuilder.buildEmail(loan, loanPolicyPath, servletPath,
+                    form.getLoanDocumentPath(), form.getAdminPath(), 
+                    isSwedish, borrower.isHasPrimaryUser()); 
             
             resetData();
         } catch (FileNotFoundException | DocumentException ex) {
             log.error(ex.getMessage());
             message.addError(emptyString,
                     NameMapping.getMsgByKey(CommonNames.RequestFailed, isSwedish)); 
+            resetData();
+            throw new Exception(NameMapping.getMsgByKey(CommonNames.RequestFailed, isSwedish));
         } catch (MessagingException | UnsupportedEncodingException ex) { 
             log.error("sending email failed: {}", ex.getMessage());
             loan.setEmailFailed(true);
@@ -162,7 +163,13 @@ public class ScientificLoanForm implements Serializable {
                     NameMapping.getMsgByKey(CommonNames.SendingEmailsFailed, isSwedish));
             resetData();
             throw new MessagingException(NameMapping.getMsgByKey(CommonNames.SendingEmailsFailed, isSwedish));
-        } 
+        } catch (IOException ex) {
+            log.error(ex.getMessage());
+            message.addError(emptyString,
+                    NameMapping.getMsgByKey(CommonNames.RequestFailed, isSwedish)); 
+            resetData();
+            throw new Exception(NameMapping.getMsgByKey(CommonNames.RequestFailed, isSwedish));
+        }
     }
     
     private void buildLoan() {
@@ -193,6 +200,8 @@ public class ScientificLoanForm implements Serializable {
     }
     
     private void buildBorrow(boolean hasPrimaryUser) {
+        log.info("buildBorrow : {}", hasPrimaryUser);
+        
         loan.setBorrower(borrower.getUserFullName());
         
         if(hasPrimaryUser) {
@@ -206,6 +215,7 @@ public class ScientificLoanForm implements Serializable {
     }
     
     public void resetData() {  
+        log.info("resetData");
         requestType = RequestType.Physical.getText();
         selectedCollection = null;
         additionInformation = null;
@@ -365,22 +375,23 @@ public class ScientificLoanForm implements Serializable {
     }
 
     public boolean isDisableDestractiveBtn() {
-        if(destractive == null) {
+        if (destractive == null) {
             return true;
-        }  
-        return Boolean.parseBoolean(destractive) ?  StringUtils.isBlank(destructiveMethod) 
-                && fileManager.getDestructiveMethodFile() == null : true;
+        }
+
+        if (Boolean.parseBoolean(destractive)) {
+            return StringUtils.isBlank(destructiveMethod)
+                    && fileManager.getDestructiveMethodFile() == null;
+        } else {
+            return false;
+        }
     }
  
-
     public void setDestractive(String destractive) {
         this.destractive = destractive;
     }
     
-    public boolean isIsDestractiveLoan() { 
-        
+    public boolean isIsDestractiveLoan() {  
         return destractive == null ? false : Boolean.parseBoolean(destractive);
-    }
-    
-    
+    }  
 }

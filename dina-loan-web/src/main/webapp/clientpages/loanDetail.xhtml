@@ -31,8 +31,9 @@
                             <h:panelGrid columns="3" style="font-size: 12px;">
                                 <p:outputLabel value="#{msg.requestloanperiod}:" styleClass="text" />  
                                 <h:panelGrid cellspacing="0" cellpadding="0">
-                                    <p:calendar pattern="yyyy-MM-dd" showButtonPanel="true" navigator="true"   
-                                                id="fromdate" value="#{otherForm.fromDate}" pages="3" 
+                                    <p:calendar pattern="yyyy-MM-dd" showButtonPanel="true" 
+                                                navigator="true"   pages="3" 
+                                                id="fromdate" value="#{otherForm.fromDate}" 
                                                 mindate="#{otherForm.minDate}"   >    
                                         <p:ajax event="dateSelect" 
                                                 listener="#{otherForm.handleFromDateSelect()}"

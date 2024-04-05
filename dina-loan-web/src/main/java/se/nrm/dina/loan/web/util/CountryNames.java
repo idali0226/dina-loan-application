@@ -1,13 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package se.nrm.dina.loan.web.util;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -142,7 +138,7 @@ public class CountryNames {
         COUNTRY_LIST_EN.add("Kenya");
         COUNTRY_LIST_EN.add("Kiribati");
         COUNTRY_LIST_EN.add("Korea, Democratic People's Rep.");
-        COUNTRY_LIST_EN.add("Korea, Republic of");
+        COUNTRY_LIST_EN.add("Korea, Republic");
         COUNTRY_LIST_EN.add("Kosovo");
         COUNTRY_LIST_EN.add("Kuwait");
         COUNTRY_LIST_EN.add("Kyrgyzstan"); 
@@ -536,7 +532,24 @@ public class CountryNames {
         COUNTRY_LIST_SV.add("Ungern");
         
         
-        COUNTRY_LIST_SV.add("United States");
+
+    }
+    
+    public void getCountryName() {
+        Map countryMap = new HashMap();
+        
+        countryMap.put("Afghanistan", "Afghanistan");
+        countryMap.put("Albania", "Albanien"); 
+        countryMap.put("Algeria", "Algeriet");
+        countryMap.put("American Samoa", "amerikanska Samoa");  
+        countryMap.put("Andorra", "Andorra");
+        countryMap.put("Angola", "Angola"); 
+        countryMap.put("Anguilla", "Anguilla"); 
+        countryMap.put("Antarctica", "Antarktis");
+        countryMap.put("Antigua and Barbuda", "Antigua och Barbuda"); 
+        countryMap.put("Argentina", "Argentina");
+        countryMap.put("Armenia", "Armenien"); 
+        countryMap.put("Aruba", "Aruba");         COUNTRY_LIST_SV.add("United States");
         COUNTRY_LIST_SV.add("Uruguay");
         COUNTRY_LIST_SV.add("Uzbekistan");
         
@@ -557,7 +570,264 @@ public class CountryNames {
         
         
         COUNTRY_LIST_SV.add("Österrike");
-        COUNTRY_LIST_SV.add("Östtimor");
+        COUNTRY_LIST_SV.add("Östtimor"); 
+        countryMap.put("Australia", "Australien");
+        countryMap.put("Austria", "Österrike"); 
+        countryMap.put("Azerbaijan", "Azerbajdzjan");
+         
+        countryMap.put("Bahamas", "Bahamas"); 
+        countryMap.put("Bahrain", "Bahrain"); 
+        countryMap.put("Bangladesh", "Bangladesh");
+        countryMap.put("Bargados", "Bargados"); 
+        countryMap.put("Belarus", "Belarus");
+        countryMap.put("Belgium", "Belgien");  
+        countryMap.put("Belize", "Belize");
+        countryMap.put("Benin", "Benin");  
+        countryMap.put("Bermuda", "Bermuda");
+        countryMap.put("Bhutan", "Bhutan"); 
+        countryMap.put("Bolivia", "Bolivia"); 
+        countryMap.put("Bosnia and Herzegovina", "Bosnien och Hercegovina");
+        countryMap.put("Botswana", "Botswana"); 
+        countryMap.put("Brazil", "Brasilien");
+        countryMap.put("Brunei Darussalam", "Brunei Darussalam"); 
+        countryMap.put("Bulgaria", "Bulgarien"); 
+        countryMap.put("Burkina Faso", "Burkina Faso");
+        countryMap.put("Burundi", "Burundi"); 
+         
+        
+        countryMap.put("Cambodia", "Kambodja");
+        countryMap.put("Cameroon", "Kamerun");  
+        countryMap.put("Canada", "Kanada"); 
+        countryMap.put("Cape Verde", "Cape Verde");   
+        countryMap.put("Cayman Islands", "Caymanöarna");
+        countryMap.put("Central African Republic", "Centralafrikanska republiken"); 
+        countryMap.put("Chad", "Tchad"); 
+        countryMap.put("Chile", "Chile");
+        countryMap.put("China", "Kina"); 
+        countryMap.put("Christmas Island", "Julön");
+        countryMap.put("Cocos (Keeling) Islands", "Cocos (Keeling) Islands"); 
+        countryMap.put("Colombia", "Colombia"); 
+        countryMap.put("Democratic Republic of Congo (Kinshasa)", "Demokratiska republiken Kongo (Kinshasa)");
+        countryMap.put("Congo Republic of (Brazzaville)", "Republiken Kongo (Brazzaville)"); 
+        countryMap.put("Cook Islands", "Cooköarna"); 
+        countryMap.put("Costa Rica", "Costa Rica");
+        countryMap.put("Ivory Coast", "Elfenbenskusten"); 
+        countryMap.put("Croatia", "Kroatien");
+        countryMap.put("Cuba", "Kuba");  
+        countryMap.put("Cyprus", "Cypern");
+        countryMap.put("Czech Republic", "Tjeckien"); 
+         
+        countryMap.put("Denmark", "Danmark"); 
+        countryMap.put("Djibouti", "Djibouti");
+        countryMap.put("Dominica", "Dominica"); 
+        countryMap.put("Dominican Republic", "Dominikanska republiken");
+        
+        
+        countryMap.put("East Timor", "Östtimor"); 
+        countryMap.put("Ecuador", "Ecuador"); 
+        countryMap.put("Egypt", "Egypten");
+        countryMap.put("El Salvador", "El Salvador"); 
+        countryMap.put("Equatorial Guinea", "Ekvatorialguinea");  
+        countryMap.put("Eritrea", "Eritrea"); 
+        countryMap.put("Estonia", "Estland");
+        countryMap.put("Ethiopia", "Etiopien"); 
+         
+        
+        countryMap.put("Falkland Islands", "Falklandsöarna"); 
+        countryMap.put("Faroe Islands", "Färöarna"); 
+        countryMap.put("Fiji", "Fiji");
+        countryMap.put("Finland", "Finland"); 
+        countryMap.put("France", "Frankrike"); 
+        countryMap.put("French Guiana", "Franska Guyana");  
+        countryMap.put("French Polynesia", "Franska Polynesien");
+        countryMap.put("French Southern Territories", "Franska sydterritorierna");  
+         
+        
+        countryMap.put("Gabon", "Gabon");
+        countryMap.put("Gambia", "Gambia"); 
+        countryMap.put("Georgia", "Georgien"); 
+        countryMap.put("Germany", "Tyskland");
+        countryMap.put("Ghana", "Ghana"); 
+        countryMap.put("Gibraltar", "Gibraltar");
+        countryMap.put("Great Britain", "Storbritannien");  
+        countryMap.put("Greece", "Grekland"); 
+        countryMap.put("Greenland", "Grönland");
+        countryMap.put("Grenada", "Grenada");  
+        countryMap.put("Guadeloupe", "Guadeloupe"); 
+        countryMap.put("Guam", "Guam"); 
+        countryMap.put("Guatemala", "Guatemala");
+        countryMap.put("Guinea", "Guinea"); 
+        countryMap.put("Guinea-Bissau", "Guinea-Bissau");
+        countryMap.put("Guyana", "Guyana");  
+         
+        countryMap.put("Haiti", "Haiti");
+        countryMap.put("Holy See", "Heliga stolen");  
+        countryMap.put("Honduras", "Honduras");
+        countryMap.put("Hong Kong", "Hongkong"); 
+        countryMap.put("Hungary", "Hungary"); 
+        
+        
+        
+        countryMap.put("Iceland", "Island");
+        countryMap.put("India", "Indien"); 
+        countryMap.put("Indonesia", "Indonesien");
+        countryMap.put("Iran", "Iran"); 
+        countryMap.put("Iraq", "Irak"); 
+        countryMap.put("Ireland", "Irland");
+        countryMap.put("Israel", "Israel");  
+        countryMap.put("Italy", "Italien"); 
+         
+        
+        countryMap.put("Jamaica", "Jamaica");
+        countryMap.put("Japan", "Japan"); 
+        countryMap.put("Jordan", "Jordanien");
+        
+        
+        countryMap.put("Kazakhstan", "Kazakstan");  
+        countryMap.put("Kenya", "Kenya");
+        countryMap.put("Kiribati", "Kiribati"); 
+        countryMap.put("Korea, Democratic People's Rep.", "Korea, Demokratiska folk Rep."); 
+        countryMap.put("Korea, Republic", "Korea, Republiken");
+        countryMap.put("Kosovo", "Kosovo"); 
+        countryMap.put("Kuwait", "Kuwait");
+        countryMap.put("Kyrgyzstan", "Kirgizistan"); 
+        
+        
+        
+        countryMap.put("Lao", "Lao"); 
+        countryMap.put("Latvia", "Lettland");
+        countryMap.put("Lebanon", "Libanon"); 
+        countryMap.put("Lesotho", "Lesotho"); 
+        countryMap.put("Liberia", "Liberia"); 
+        countryMap.put("Libya", "Libyen"); 
+        countryMap.put("Liechtenstein", "Liechtenstein");
+        countryMap.put("Lithuania", "Litauen"); 
+        countryMap.put("Luxembourg", "Luxembourg");
+         
+        countryMap.put("Macau", "Macau");  
+        countryMap.put("Macedonia", "Makedonien");
+        countryMap.put("Madagascar", "Madagaskar");  
+        countryMap.put("Malawi", "Malawi");
+        countryMap.put("Malaysia", "Malaysia"); 
+        countryMap.put("Maldives", "Maldiverna"); 
+        countryMap.put("Mali", "Mali");
+        countryMap.put("Malta", "Malta"); 
+        countryMap.put("Marshall Islands", "Marshallöarna");
+        countryMap.put("Martinique", "Martinique"); 
+        countryMap.put("Mauritania", "Mauretanien"); 
+        countryMap.put("Mayotte", "Mayotte");
+        countryMap.put("Mexico", "Mexiko");  
+        countryMap.put("Micronesia", "Mikronesien");  
+        countryMap.put("Moldova", "Moldavien");
+        countryMap.put("Monaco", "Monaco");  
+        countryMap.put("Mongolia", "Mongoliet");
+        countryMap.put("Montenegro", "Montenegro"); 
+        countryMap.put("Montserrat", "Montserrat"); 
+        countryMap.put("Morocco", "Marocko");
+        countryMap.put("Mozambique", "Mocambique"); 
+        countryMap.put("Myanmar, Burma", "Myanmar, Burma");
+         
+        countryMap.put("Namibia", "Namibia"); 
+        countryMap.put("Nauru", "Nauru"); 
+        countryMap.put("Nepal", "Nepal");
+        countryMap.put("Netherlands", "Nederländerna");  
+        countryMap.put("Netherlands Antilles", "Nederländska Antillerna");  
+        countryMap.put("New Caledonia", "Nya Kaledonien");
+        countryMap.put("New Zealand", "Nya Zeeland");  
+        countryMap.put("Nicaragua", "Nicaragua");
+        countryMap.put("Niger", "Niger"); 
+        countryMap.put("Nigeria", "Nigeria"); 
+        countryMap.put("Niue", "Niue");  
+        countryMap.put("Northern Mariana Islands", "Nordmarianerna");
+        countryMap.put("Norway", "Norge"); 
+         
+        countryMap.put("Oman", "Oman"); 
+         
+        countryMap.put("Pakistan", "Pakistan");
+        countryMap.put("Palau", "Palau");  
+        countryMap.put("Palestinian territories", "Palestinska områdena");  
+        countryMap.put("Panama", "Panama");
+        countryMap.put("Papua New Guinea", "Papua Nya Guinea");  
+        countryMap.put("Paraguay", "Paraguay");
+        countryMap.put("Peru", "Peru"); 
+        countryMap.put("Philippines", "Filippinerna"); 
+        countryMap.put("Pitcairn Island", "Pitcairn");
+        countryMap.put("Poland", "Polen");  
+        countryMap.put("Portugal", "Portugal");  
+        countryMap.put("Puerto Rico", "Puerto Rico");
+        
+        countryMap.put("Qatar", "Qatar");  
+         
+        countryMap.put("Reunion Island", "Reunion Island");
+        countryMap.put("Romania", "Rumänien"); 
+        countryMap.put("Russian", "Ryska"); 
+        countryMap.put("Rwanda", "Rwanda");
+         
+        countryMap.put("Saint Kitts and Nevis", "Saint Kitts and Nevis"); 
+        countryMap.put("Saint Lucia", "Saint Lucia");
+        countryMap.put("Saint Vincent and the Grenadines", "Saint Vincent och Grenadinerna"); 
+        countryMap.put("Samoa", "Samoa"); 
+        countryMap.put("San Marino", "San Marino");
+        countryMap.put("Sao Tome and Principe", "Sao Tomé och Principe");  
+        countryMap.put("Saudi Arabia", "Saudiarabien");  
+        countryMap.put("Senegal", "Senegal");
+        countryMap.put("Serbia", "Serbien");  
+        countryMap.put("Seychelles", "Seychellerna");
+        countryMap.put("Sierra Leone", "Sierra Leone"); 
+        countryMap.put("Singapore", "Singapore"); 
+        countryMap.put("Slovakia", "Slovakien");
+        countryMap.put("Slovenia", "Slovenien");  
+        countryMap.put("Solomon Islands", "Salomonöarna");  
+        countryMap.put("Somalia", "Somalia");
+        countryMap.put("South Africa", "Sydafrika");  
+        countryMap.put("South Sudan", "Sydsudan");
+        countryMap.put("Spain", "Spanien"); 
+        countryMap.put("Sri Lanka", "Sri Lanka"); 
+        countryMap.put("Sudan", "Sudan");
+        countryMap.put("Suriname", "Surinam"); 
+        countryMap.put("Swaziland", "Swaziland");
+        countryMap.put("Sweden", "Sverige"); 
+        countryMap.put("Switzerland", "Schweiz"); 
+        countryMap.put("Syria", "Syrien");
+         
+        countryMap.put("Taiwan", "Taiwan");  
+        countryMap.put("Tajikistan", "Tadzjikistan");  
+        countryMap.put("Tanzania", "Tanzania");
+        countryMap.put("Thailand", "Thailand");  
+        countryMap.put("Tibet", "Tibet");
+        countryMap.put("Timo-Leste", "Timo-Leste"); 
+        countryMap.put("Togo", "Togo"); 
+        countryMap.put("Tokelau", "Tokelau");
+        countryMap.put("Tonga", "Tonga");  
+        countryMap.put("Trinidad and Tobago", "Trinidad och Tobago");  
+        countryMap.put("Tunisia", "Tunisien");
+        countryMap.put("Turkey", "Turkiet");  
+        countryMap.put("Turkmenistan", "Turkmenistan");
+        countryMap.put("Turks and Caicos Islands", "Turks-och Caicosöarna"); 
+        countryMap.put("Tuvalu", "Tuvalu"); 
+         
+        countryMap.put("Uganda", "Uganda");
+        countryMap.put("Ukraine", "Ukraina"); 
+        countryMap.put("United Arab Emirates", "Förenade arabemiraten");
+        countryMap.put("United Kingdom", "Storbritannien"); 
+        countryMap.put("United States", "United States"); 
+        countryMap.put("Uruguay", "Uruguay");
+        countryMap.put("Uzbekistan", "Uzbekistan");  
+        
+        
+        countryMap.put("Vanuatu", "Vanuatu");  
+        countryMap.put("Vatican City", "Vatikanstaten");
+        countryMap.put("Venezuela", "Venezuela");  
+        countryMap.put("Vietnam", "Vietnam");
+        countryMap.put("Virgin Islands", "Jungfruöarna"); 
+         
+        countryMap.put("Wallis and Futuna Islands", "Wallis-och Futunaöarna"); 
+        countryMap.put("Western Sahara", "Västsahara");
+        
+        countryMap.put("Yemen", "Yemen"); 
+        
+        countryMap.put("Zambia", "Zambia"); 
+        countryMap.put("Zimbabwe", "Zimbabwe");  
         
         
     }

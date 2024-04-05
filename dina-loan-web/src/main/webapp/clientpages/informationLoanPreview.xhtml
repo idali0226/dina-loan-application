@@ -70,11 +70,20 @@
                                             <p:spacer width="5" />
                                             <p:outputLabel value="#{otherForm.loanType}" style="color: #8B8786;"  />  
                                         </h:panelGrid> 
+                                        
+                                        
+                                        <h:panelGrid columns="3" rendered="#{otherForm.isEducationalLoan}"
+                                                     style="font-size: 12px; font-family:  Arial,sans-serif;" >
+                                            <p:outputLabel value="#{msg.purpose1}:" style="color: #C5C4C4;"  />
+                                            <p:spacer width="5" />
+                                            <p:outputLabel value="#{otherForm.purposeOfUse}" style="color: #8B8786;"  />  
+                                        </h:panelGrid> 
 
                                         <h:panelGroup layout="block"  
                                             style="font-size: 12px; font-family: Arial,sans-serif; padding-top: 10px; ">  
                                             <p:outputLabel value="#{msg.description}:" /> 
-                                            <p:inplace editor="true"  styleClass="originalbutton" >
+                                            <br />
+                                            <p:inplace editor="true"  styleClass="originalbutton" style="padding-left: 20px;" >
                                                 <p:inputTextarea rows="5" cols="90" 
                                                                  value="#{otherForm.loanDetailDescription}"   />
                                             </p:inplace> 
@@ -137,7 +146,8 @@
                                             <h:panelGroup layout="block"
                                                 style="font-size: 12px; font-family: Arial,sans-serif; padding-top: 10px; "  > 
                                                 <p:outputLabel value="#{msg.exhibitiondesc}:" /> 
-                                                <p:inplace editor="true"  styleClass="originalbutton" >
+                                                <br />
+                                                <p:inplace editor="true" styleClass="originalbutton" style="padding-left: 20px;">
                                                     <p:inputTextarea rows="5" cols="90" 
                                                                      value="#{otherForm.storageDescription}"   />
                                                 </p:inplace> 

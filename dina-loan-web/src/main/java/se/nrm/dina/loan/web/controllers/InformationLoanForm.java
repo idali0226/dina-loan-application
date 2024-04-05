@@ -2,9 +2,10 @@ package se.nrm.dina.loan.web.controllers;
 
 import com.itextpdf.text.DocumentException;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.Serializable; 
 import java.io.UnsupportedEncodingException;
-import java.util.Date;   
+import java.util.Date;    
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
@@ -32,8 +33,7 @@ public class InformationLoanForm implements Serializable {
 
     private final String educationExhibition = "educationexhibition";
     private final String nonScientificLoan = "Non scientific";
-    private final String educationalPdf = "/pdf?pdf=education"; 
-    
+     
     private final String educationalLoanHeaderEn = "Education / Exhibition";
     private final String commercialLoanHeaderEn = "Commercial / art / other";
     
@@ -41,6 +41,9 @@ public class InformationLoanForm implements Serializable {
     private final String commercialLoanHeaderSv = "Kommersiellt / konst / annat";
     
     private final String emailFailStatus = "Email failed";
+    private final String educationalPdf = "/pdf?pdf=education"; 
+    
+    private final String physical = "Physical";
 
     private final String name = "name";
     private final String emptyString = "";
@@ -56,11 +59,11 @@ public class InformationLoanForm implements Serializable {
     private String purposeOfUse;   
     private String storageDescription;
  
-    private boolean isAgree = false;
+    private boolean isAgree;
 
     private boolean isPolicyRead;
     private boolean isSwedish;
-    private String pdfPath;
+    private String loanPolicyPath;  
 
     private Loan loan;
     private Collection collection;
@@ -91,6 +94,7 @@ public class InformationLoanForm implements Serializable {
      
     public InformationLoanForm() {
         loanType = RequestType.Physical.getText();
+        isAgree = false;
         toMinDate = minDate;
         purposeOfUse = null;
     }
@@ -101,16 +105,18 @@ public class InformationLoanForm implements Serializable {
         toDate = null;
         minDate = Util.getInstance().addMinDate();
         collection = mongo.findCollection(nonScientificLoan, name);
-        pdfPath = form.getPdfPath() + educationalPdf; 
-        isSwedish = form.isSwedish();
+        loanPolicyPath = form.getPdfPath() + educationalPdf;   
         isPolicyRead = false;
+        isAgree = false;
+    }
+    
+    public void resetLocale(boolean isSwedish) {
+        this.isSwedish = isSwedish;
     }
 
-    public void submit() throws MessagingException {
+    public void submit() throws MessagingException, Exception {
         log.info("submitInformationLoan");
-
-        isSwedish = form.isSwedish();
-
+  
         loan = form.buildLoanInitialData();
 
         loan.setCurator(collection.getEmail());
@@ -124,16 +130,21 @@ public class InformationLoanForm implements Serializable {
         buildBorrow();
 
         try { 
-            String path = fileHander.transferFiles(loan.getUuid());
+            String  path = fileHander.transferFiles(loan.getUuid());
+            
             pdf.createInformationLoanPDF(loan, isEducationalLoan, isSwedish, path);
             mongo.save(loan);
-            mailBuilder.buildEmail(loan, pdfPath, isSwedish, false); 
+            mailBuilder.buildOtherLoanMail(loan, loanPolicyPath, form.getPdfPath(),
+                    form.getLoanDocumentPath(), form.getAdminPath(), isSwedish); 
             
-            resetData();
+            resetData(); 
+            
         } catch (FileNotFoundException | DocumentException ex) {
             log.error(ex.getMessage());
             message.addError(emptyString,
                     NameMapping.getMsgByKey(CommonNames.RequestFailed, isSwedish)); 
+            resetData();
+            throw new Exception(NameMapping.getMsgByKey(CommonNames.RequestFailed, isSwedish));
         } catch (MessagingException | UnsupportedEncodingException ex) { 
             log.error("sending email failed: {}", ex.getMessage());
             loan.setEmailFailed(true);
@@ -143,12 +154,18 @@ public class InformationLoanForm implements Serializable {
                     NameMapping.getMsgByKey(CommonNames.SendingEmailsFailed, isSwedish));
             resetData();
             throw new MessagingException(NameMapping.getMsgByKey(CommonNames.SendingEmailsFailed, isSwedish));
-        } 
+        }  catch (IOException ex) {
+            log.error(ex.getMessage());
+            message.addError(emptyString,
+                    NameMapping.getMsgByKey(CommonNames.RequestFailed, isSwedish)); 
+            resetData();
+            throw new Exception(NameMapping.getMsgByKey(CommonNames.RequestFailed, isSwedish));
+        }
     }
  
 
     private void buildInformationLoan(boolean isEducationalLoan) {
-        log.info("buildInformationLoan");
+        log.info("buildInformationLoan : {}", loanType);
 
         loan.setLoanDescription(loanDetailDescription);
         if (fileManager.getLoanDetailFile() != null) {
@@ -161,6 +178,7 @@ public class InformationLoanForm implements Serializable {
             log.info("storageDescription : {}", storageDescription);
             loan.setExhPorpuseDesc(storageDescription);
             loan.setEduPurpose(purposeOfUse); 
+             loan.setType(physical);
         } else {
             loan.setType(loanType);
         } 
@@ -178,11 +196,11 @@ public class InformationLoanForm implements Serializable {
         minDate = Util.getInstance().addMinDate(
                 RequestType.Physical.isPhysical(loanType));
 
-        isAgree = !isPhysicalLoan();
+//        isAgree = !isPhysicalLoan();
     }
 
     public void handleFromDateSelect() {
-        log.info("handleFromDateSelect");
+        log.info("handleFromDateSelect : {}", fromDate);
 
         toMinDate = fromDate;
     }
@@ -206,21 +224,27 @@ public class InformationLoanForm implements Serializable {
     
      public void purposeOfUseCheckChanged() {
         log.info("purposeOfUseCheckChanged : {}", purposeOfUse);
+        loanType = RequestType.Physical.getText();
+        isAgree = false;
     }
 
 
     public void resetData() {
+        log.info("resetData.....");
         fromDate = null;
         toDate = null;
         minDate = Util.getInstance().addMinDate();
         toMinDate = minDate;
+        
         loanType = RequestType.Physical.getText();
         loanDetailDescription = null;
         fileManager.setLoanDetailFile(null);
         fileManager.setLoanDetailFileName(null);
-        borrower.setUser(null);
+        borrower.resetData();
         purposeOfUse = null;
         isPolicyRead = false;
+        storageDescription = null;
+        isAgree = false;
     }
 
     public String getLoanDetailDescription() {
