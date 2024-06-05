@@ -6,7 +6,7 @@
     <parent>
         <artifactId>dina-loan</artifactId>
         <groupId>se.nrm.dina</groupId>
-        <version>1.0</version>
+        <version>1.3</version>
     </parent>
  
     <artifactId>dina-loan-web</artifactId> 
@@ -17,7 +17,7 @@
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <version.mysql>5.1.38</version.mysql> 
+        <!--<version.mysql>5.1.38</version.mysql>--> 
     </properties>
       
     <dependencies> 
