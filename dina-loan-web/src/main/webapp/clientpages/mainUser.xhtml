@@ -59,6 +59,17 @@
                                  styleClass="contactfieldstext" >     
                     </p:inputText> 
                     <p:message for="userInstitution" display="icon"  />
+                    
+               
+                    
+                    <h:outputLabel for="userEoricode" value="#{msg.eoricode}:" />
+                    <p:inputText id="userEoricode" 
+                                 value="#{borrower.user.eoricode}" 
+                                 size="30" styleClass="contactfieldstext"  >   
+                        <p:ajax event="blur"  global="false" process="@this" 
+                                listener="#{borrower.saveText()}" />
+                    </p:inputText> 
+                    <p:spacer width="5" />
 
                     <h:outputLabel for="userDetartment" value="#{msg.department}:" />
                     <p:inputText id="userDetartment" 

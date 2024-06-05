@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package se.nrm.dina.loan.web.vo;
 
 import java.io.Serializable; 
@@ -22,9 +16,12 @@ public class SolrRecord implements Serializable {
     
     @Field("id")
     String id;
-      
+    
     @Field("catalogNumber")
     String catalogNum;
+      
+    @Field("collectionId")
+    String collectionId;
        
     @Field("species")
     String fullname; 
@@ -50,6 +47,11 @@ public class SolrRecord implements Serializable {
     @Field("prepration")
     String[] preparations;
     
+    @Field("preservation") 
+    public String preservation;
+    
+    
+        
     @Field("storage")
     String[] storage;
  
@@ -58,6 +60,15 @@ public class SolrRecord implements Serializable {
     
     @Field("startDate")
     Date startDate;
+    
+    private final String evCode = "ev";
+    private final String etCode = "et";
+    private final String mammalCode = "ma";
+    private final String birdCode = "va";
+    private final String herpsCode = "herps";
+    private final String fishCode = "fish";
+    
+    private final String entomologyCode = "163840";
     
 //    @Field("img")
 //    String[] imgMbids;
@@ -179,9 +190,72 @@ public class SolrRecord implements Serializable {
     }
     
     public String getPreparationString() { 
+  
+        if(isEvCollection()) {
+            return preservation;
+        }
+        
+        if(isEtCollection()) {
+            return preservation;
+        }
+        
+        if(isFishCollection()) {
+            return preservation;
+        }
+        
+        if(isHerpsCollection()) {
+            return preservation;
+        }
         return StringUtils.join(preparations, "; "); 
     }
 
+    public String getPreservation() {
+        return preservation;
+    }
+
+    public void setPreservation(String preservation) {
+        this.preservation = preservation;
+    }
+
+    public String getCollectionId() {
+        return collectionId;
+    }
+
+    public void setCollectionId(String collectionId) {
+        this.collectionId = collectionId;
+    }
+
+    public boolean isEvCollection() {
+        return collectionId.equals(evCode);
+    }
+    
+    public boolean isEtCollection() {
+        return collectionId.equals(etCode);
+    }
+    
+    public boolean isMammalCollection() {
+        return collectionId.equals(mammalCode);
+    }
+    
+    public boolean isBirdCollection() {
+        return collectionId.equals(birdCode);
+    }
+        
+    public boolean isFishCollection() {
+        return collectionId.equals(fishCode);
+    }
+    
+            
+    public boolean isHerpsCollection() {
+        return collectionId.equals(herpsCode);
+    }
+       
+    
+        
+    public boolean isEntomologyCollection() {
+        return collectionId.equals(entomologyCode);
+    }
+    
     public String[] getStorage() {
         return storage;
     }

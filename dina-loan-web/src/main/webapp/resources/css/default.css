@@ -1,7 +1,7 @@
 /* 
     Document   : loan.css
     Created on : 2013-nov-22, 14:14:41
-    Author     : Sofia Ivarsson, Ida Li
+    Author     : Ida Li
     Description: Baserad på NRMs grafiska profil och pollenrapporten -sitevision.
     Stylesheet for dina-loan-web, NRM
 */
@@ -64,10 +64,6 @@
     padding-top: 20px; 
 }
 
-
-
-
-
 /*main*/ 
 .main {
     background-color:#ffffff;
@@ -77,12 +73,6 @@
     /*max-width:960px;*/ 
     /*width: 100%;*/ 
 }
-
-
-
-
-
-
 
 .subpage {
     background-color:#ffffff;
@@ -216,18 +206,6 @@
   width: 200px;
   float: left;
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -833,8 +811,11 @@ r
 
 .ui-button-text {
     background-color:  #0b5e82;
-    font-size: 12px;
+    font-size: 12px !important; 
+    /*font-size: 14px !important;*/
+    /*padding: 6px !important;*/
 }
+
 .ui-button-text-only .ui-button-text {
     font-size: 9pt; 
     color: #FFFFFF;
@@ -842,14 +823,37 @@ r
 
 .originalbutton .ui-button-text {
     background:  #D2CFCF;
+/*    background-color:  #0b5e82 !important;
+    color: #FFFFFF !important; 
+    width: 100px;*/
 }
 
+.homepagebutton .ui-button-text { 
+    font-size: 16px !important; 
+    padding: 10px !important;
+    
+/*    background-color:  #0b5e82 !important;
+    color: #FFFFFF !important; 
+    width: 100px;*/
+}
+
+ 
+
+.uploadbutton .ui-button-text {
+    background-color:  #0b5e82 !important;
+    color: #FFFFFF !important;   
+}
+ 
+/*.uploadbutton .ui-fileupload-buttonbar .ui-icon { 
+    visibility: hidden !important;
+}*/
 
  
 
 .largebutton .ui-button-text {
-    background-color: #0b5e82;
-    width: 100px;
+    background-color: #0b5e82; 
+    font-size: 14px !important;
+    padding: 6px;
 }
 
 

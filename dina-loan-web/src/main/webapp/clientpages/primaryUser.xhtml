@@ -58,6 +58,16 @@
                                 global="false" process="@this" />
                     </p:inputText> 
                     <p:message for="primaryUserInstitution" display="icon"  />
+                    
+                    <h:outputLabel for="primaryEoricode" value="#{msg.eoricode}:" />
+                    <p:inputText id="primaryEoricode" 
+                                 value="#{borrower.primaryUser.eoricode}" 
+                                 size="30" 
+                                 styleClass="contactfieldstext" >    
+                        <p:ajax event="blur"  global="false" process="@this"  
+                                listener="#{borrower.saveText()}" />
+                    </p:inputText> 
+                    <p:spacer width="5" />
 
                     <h:outputLabel for="primaryUserDetartment" value="#{msg.department}:" />
                     <p:inputText id="primaryUserDetartment" 

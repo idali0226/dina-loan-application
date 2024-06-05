@@ -8,11 +8,12 @@
 
     <body>
         <ui:composition>   
-            <p:panel  style="width: 920px; height: 850px; font-size: 10px; font-weight: normal; " > 
+            <p:panel  style="width: 100%; height: 500px; font-size: 10px; font-weight: normal; " > 
                 <p:dataTable id="records" var="record" value="#{sampleBean.records}" 
                              rowKey="#{record.id}"  
                              selection="#{sampleBean.selectedRecord}" 
-                             selectionMode="single"  scrollable="true" scrollWidth="920" >
+                             selectionMode="single"  scrollable="true"  
+                             style="width: 100%; ">
 
                     <p:ajax event="rowSelect" listener="#{sampleBean.onRowSelect}"  
                             update="specimentForm" 
@@ -65,10 +66,10 @@
                     </p:column>
 
                     <p:column headerText="#{msg.typespecimen}" width="100"
-                              style="font-size: 12px;">
+                              style="font-size: 12px;"  >
                         <h:outputText value="#{record.preparationString}" style="font-size: 11px;"/>   
                     </p:column> 
-
+                      
                 </p:dataTable>
             </p:panel>
         </ui:composition>

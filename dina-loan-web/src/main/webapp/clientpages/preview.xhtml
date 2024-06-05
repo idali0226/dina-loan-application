@@ -42,7 +42,8 @@
                                                  action="#{loan.reviewrequest()}" 
                                                  update="summaryPanel summaryViewBtnPanel" 
                                                  rendered="#{!loan.openSummary}" 
-                                                 global="false" process="@this" /> 
+                                                 global="false" process="@this"
+                                                 style="width: 100px;"/> 
                             </h:panelGroup> 
                             <br />
                             <br />  
@@ -63,19 +64,11 @@
                                                      styleClass="defaultboldtext" >
                                             <p:outputLabel value="#{msg.contactdetail}"  />
                                         </h:panelGroup> 
-
-
+ 
                                         <ui:include src="/clientpages/userPreview.xhtml" /> 
-
-
-                                       
-
-
+ 
                                         <ui:include src="/clientpages/informationLoanPreview.xhtml" />  
-                                        
-                                        
-                                        
-                                        
+                                         
                                         <ui:include src="/clientpages/scientificLoanPreview.xhtml" />  
  
                                     </p:panel> 

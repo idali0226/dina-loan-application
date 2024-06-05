@@ -218,16 +218,7 @@
                                                 <p:outputLabel value="N/A" style="color: #8B8786;" 
                                                                rendered="#{empty scientificLoanForm.additionInformation}"/>   
                                             </h:panelGroup> 
-                                            <ui:remove>
-                                                <h:panelGroup layout="block"
-                                                              style="font-size: 12px; font-family:  Arial,sans-serif; "  
-                                                              rendered="#{empty scientificLoanForm.additionInformation}">
-                                                    <p:outputLabel value="#{msg.additioninfor}:" />   
-                                                    <br/>
-                                                    <p:outputLabel value="N/A" style="color: #8B8786;"  />   
-                                                </h:panelGroup> 
-                                            </ui:remove>
-
+                             
                                         </h:panelGroup>  
                                     </p:panel> 
 
@@ -371,8 +362,7 @@
                                 </p:commandButton> 
                                 <p:spacer width="10" />
                                 <p:commandButton value="#{msg.submitloan}" 
-                                                 action="#{viewBean.gotoScientificConfirmationPage()}" 
-                                                 styleClass="largebutton"  
+                                                 action="#{viewBean.gotoScientificConfirmationPage()}"  
                                                  disabled="#{scientificLoanForm.submitBtnDisabled}"/>
                             </h:panelGroup> 
 

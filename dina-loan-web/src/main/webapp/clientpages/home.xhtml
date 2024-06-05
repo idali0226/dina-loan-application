@@ -50,8 +50,7 @@
                                            style="font-size: 16px; font-weight: bold;"  />  
                         </h:panelGroup>
                         <br />
-                        <br />
-                        <br />
+                        <br /> 
                         
                         <ui:include src="/clientpages/notification.xhtml" />
  
@@ -62,8 +61,19 @@
                             <br />
                             <br />
                         </h:panelGroup>
-
-                  
+                        
+                        <h:form id="loanform">
+                            <h:panelGroup layout="block" style=" text-align: center; padding-top: 20px;"> 
+                                <p:commandButton value="#{msg.gotoonlineform}"  
+                                                 actionListener="#{viewBean.goToDepartments()}"   
+                                                 global="false" process="@this"
+                                                 styleClass="homepagebutton" /> 
+                            </h:panelGroup> 
+                        </h:form>
+                        
+                        <br />
+                        <br />
+                        <br />
  
                         <h:panelGroup  id="statisticpanel" layout="block"> 
                             <h:panelGrid columns="3" columnClasses="aligntop,aligntop,aligntop" 
@@ -93,16 +103,7 @@
                             </h:panelGroup>
                             
                         </h:panelGroup>
-
-
-                        <h:form id="loanform">
-                            <h:panelGroup layout="block" style=" text-align: center; padding-top: 20px;"> 
-                                <p:commandButton value="#{msg.gotoonlineform}" 
-                                                 actionListener="#{viewBean.goToDepartments()}"   
-                                                 global="false" process="@this" /> 
-                            </h:panelGroup> 
-                        </h:form>
-
+ 
                     </h:panelGroup>
                 </h:panelGroup>
 

@@ -9,6 +9,8 @@
     <body>    
         <ui:composition  template="/templates/masterLayout.xhtml">     
             <ui:define name="content"  >   
+                  
+                
                 <h:panelGroup id="openWindow">
                     <h:outputScript rendered="#{not empty sampleBean.sbdiSearchUrl}">
                         window.open('#{sampleBean.sbdiSearchUrl}', '_blank')
@@ -16,14 +18,14 @@
                 </h:panelGroup>
                 <h:panelGroup styleClass="main" layout="block" id="specimen"  > 
                     <ui:include src="/clientpages/breadcrumb.xhtml" />  
-                    <h:form id="specimentForm">  
-                        <p:dialog id="speciesdialog" header="#{msg.searchreault}" 
+                    <p:dialog id="speciesDlg" header="#{msg.searchreault}" 
                                   widgetVar="speciesDlg"  
-                                  style="width: 1000px; font-size: 20px; font-weight: bold; " 
+                                  style="width: 100%; height: 500px; font-size: 20px; font-weight: bold; " 
                                   draggable="false"> 
                             <ui:include src="/clientpages/speciesSearchResult.xhtml" />   
-                        </p:dialog> 
-
+                    </p:dialog> 
+                    <h:form id="specimentForm">  
+                         
                         <h:panelGroup layout="block" id="page51panel"  styleClass="sectionstyle2"  >  
                             <h:panelGroup id="samplelistpanel" style="width: 80%;"
                                           rendered="#{sampleBean.samples.size() > 0}">    
@@ -56,12 +58,30 @@
                                                        style="font-size: 12px;  "/> 
                                     </li>
                                     <li>
-                                        <p:outputLabel value="#{msg.page5additionaltext3}" 
+                                        <p:outputLabel value="#{msg.specimentext31}" 
                                                        style="font-size: 12px; "/> 
+                                        <h:outputLink value="#{msg.samlingarlink}" target="_blank" style="text-decoration: none !important;" > 
+                                            <h:outputText value=" #{msg.samlingartext} " 
+                                                      style="color: #8B8786; font-style: normal; font-size: 12px; " /> 
+                                        </h:outputLink> 
+                                        <p:outputLabel value="#{msg.specimentext32}" 
+                                                       style="font-size: 12px;  "/> 
                                     </li>
                                     <li>
-                                        <p:outputLabel value="#{msg.page5additionaltext4}" 
-                                                       style="font-size: 12px; "/>    
+                                        <p:outputLabel value="#{msg.specimentext41}" 
+                                                       style="font-size: 12px; "/> 
+                                        <h:outputLink value="#{msg.samlingarlink}" target="_blank" style="text-decoration: none !important;" > 
+                                            <h:outputText value=" #{msg.samlingartext} " 
+                                                      style="color: #8B8786; font-style: normal; font-size: 12px; " /> 
+                                        </h:outputLink> 
+                                        <p:outputLabel value="#{msg.specimentext42}" 
+                                                       style="font-size: 12px;  "/> 
+                                        <h:outputLink value="#{msg.sbdiurl}" target="_blank" style="text-decoration: none !important;" > 
+                                            <h:outputText value=" #{msg.sbditext} " 
+                                                      style="color: #8B8786; font-style: normal; font-size: 12px; " /> 
+                                        </h:outputLink> 
+                                        <p:outputLabel value="#{msg.specimentext43}" 
+                                                       style="font-size: 12px;  "/>  
                                     </li>  
                                 </ul> 
                             </h:panelGroup> 
@@ -87,7 +107,7 @@
                                     <p:outputLabel value="&lt;==&gt;" style="color: #0b5e82; "  /> 
                                     <p:commandButton value="#{msg.dina}" id="btnCatNum" 
                                                      process="@this,samplecatalognumber"
-                                                     update="newrequestpanel speciesSearchmsg speciesdialog" 
+                                                     update="newrequestpanel speciesSearchmsg speciesDlg" 
                                                      actionListener="#{sampleBean.searchWithCatalogNumber}" />
                                     <p:spacer width="5" />
 
@@ -100,7 +120,7 @@
                                     <p:commandButton value="#{msg.dina}" 
                                                      actionListener="#{sampleBean.searchWithFamily()}" 
                                                      process="@this,samplefamily"
-                                                     update="newrequestpanel speciesSearchmsg speciesdialog" />
+                                                     update="newrequestpanel speciesSearchmsg speciesDlg" />
                                     <p:commandButton value="#{msg.sbdi}" global="false"
                                                      actionListener="#{sampleBean.searchFromSbdi(sampleBean.sample.family)}" 
                                                      process="@this,samplefamily"  
@@ -114,7 +134,7 @@
                                     <p:commandButton value="#{msg.dina}" 
                                                      actionListener="#{sampleBean.searchWithGenus()}" 
                                                      process="@this,samplegenus" 
-                                                     update="newrequestpanel speciesSearchmsg speciesdialog"  />
+                                                     update="newrequestpanel speciesSearchmsg speciesDlg"  />
                                     <p:commandButton value="#{msg.sbdi}" global="false"
                                                      actionListener="#{sampleBean.searchFromSbdi(sampleBean.sample.genus)}" 
                                                      process="@this,samplegenus" update="openWindow"   /> 
@@ -127,7 +147,7 @@
                                     <p:outputLabel value="&lt;==&gt;" style="color: #0b5e82; " />
                                     <p:commandButton value="#{msg.dina}" actionListener="#{sampleBean.searchWithSpecies()}" 
                                                      process="@this,samplespecies" 
-                                                     update="newrequestpanel speciesSearchmsg speciesdialog" />
+                                                     update="newrequestpanel speciesSearchmsg speciesDlg" />
                                     <p:commandButton value="#{msg.sbdi}" global="false"
                                                      actionListener="#{sampleBean.searchFromSbdi(sampleBean.sample.species)}" 
                                                      process="@this,samplespecies"  update="openWindow"   /> 
@@ -227,20 +247,12 @@
                             <h:panelGrid  
                                 style="border: 1px solid; border-color: #FF0000; width: 100%; margin-right: auto; margin-left: auto;   "> 
                                 <h:panelGroup>
-                                    <p:outputLabel value="#{msg.page5additionaltext5}" 
-                                                   styleClass="defaultboldtext" style="font-size: 16px; " />
-                                    <p:outputLabel value="#{msg.page5additionaltext6}" styleClass="defaulttext"  style="font-size: 16px;"  /> 
-                                    <h:outputLink value="#{msg.page5additionaltext7}" target="_blank" > 
-                                        <h:outputText value="#{msg.page5additionaltext7}" 
-                                                      style="color: #8B8786; font-style: normal; font-size: 12px; " /> 
-                                    </h:outputLink> 
-
-
-                                    <p:outputLabel value="#{msg.page5additionaltext8}" styleClass="defaulttext"  style="font-size: 16px;"  /> 
+                                    <p:outputLabel value="#{msg.specimentext5}" 
+                                                   styleClass="defaultboldtext" style="font-size: 16px; " />  
                                 </h:panelGroup>
 
                                 <p:spacer width="10" />
-                                <p:outputLabel value="#{msg.page5additionaltext9}" styleClass="defaulttext" style="font-size: 16px;"  />      
+                                <p:outputLabel value="#{msg.specimentext6}" styleClass="defaulttext" style="font-size: 18px;"  />      
                             </h:panelGrid>
                             <br /> 
 

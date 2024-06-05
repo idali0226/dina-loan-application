@@ -29,11 +29,12 @@ public class SolrService implements Serializable {
     
 //    private final static String EXCLUDED_COLLECTIONS = " -cln:(262144 294912 458752 491521)";
  
+    private final int size = 1000;
     private SolrQuery solrQuery;
     private QueryRequest request;
     private QueryResponse response;
  
-    private final String catelogNumberKey = "+catalogNumber:";
+    private final String catelogNumberKey = "+cn:";
     private final String familyKey = "+family:";
     private final String genusKey = "+genus:";
     private final String speciesKey = "+species:";
@@ -43,8 +44,8 @@ public class SolrService implements Serializable {
     
     private final String emptySpace = " ";
     private final String comma = ",";
-    private final String parenthesesStart = "(";
-    private final String parenthesesEnd = ")";
+//    private final String parenthesesStart = "(";
+//    private final String parenthesesEnd = ")";
     private final String replaceChars = "(),";
     
     private String searchCollectionText;
@@ -84,7 +85,7 @@ public class SolrService implements Serializable {
            
         try { 
             response = request.process(client); 
-            if (response.getResults().getNumFound() > 0) {
+            if (response.getResults().getNumFound() > 0) { 
                 return response.getBeans(SolrRecord.class).get(0);
             }  
         } catch (SolrServerException | IOException ex) {            
@@ -117,11 +118,34 @@ public class SolrService implements Serializable {
         return null;
     }
      
-    public List<SolrRecord> searchByFamily(Sample sample) {
-        log.info("searchByFamily :{}", sample);
+    public List<SolrRecord> searchByFamily(String family) {
+        log.info("searchByFamily :{}", family);
            
         solrQuery = new SolrQuery();
-        solrQuery.setQuery(buildSearchText(sample.getFamily(), familyKey)); 
+        solrQuery.setQuery(buildSearchText(family, familyKey)); 
+        solrQuery.setRows(size);
+        request = new QueryRequest(solrQuery);
+        request.setBasicAuthCredentials(username, password); 
+            
+        try { 
+            response = request.process(client);  
+            if (response.getResults().getNumFound() > 0) {
+                log.info("result size : {}", response.getResults().getNumFound());  
+                return response.getBeans(SolrRecord.class);
+            }  
+        } catch (SolrServerException | IOException ex) {            
+            log.error(ex.getMessage());
+            return null;
+        }     
+        return null; 
+    }
+    
+    public List<SolrRecord> searchByGunes(String genus) {
+        log.info("searchByGunes :{}", genus);
+           
+        solrQuery = new SolrQuery();
+        solrQuery.setQuery(buildSearchText(genus, genusKey)); 
+        solrQuery.setRows(size);
         request = new QueryRequest(solrQuery);
         request.setBasicAuthCredentials(username, password); 
            
@@ -137,32 +161,13 @@ public class SolrService implements Serializable {
         return null; 
     }
     
-    public List<SolrRecord> searchByGunes(Sample sample) {
-        log.info("searchByGunes :{}", sample.getGenus());
+    
+    public List<SolrRecord> searchBySpecies(String species) {
+        log.info("searchBySpecies :{}", species);
            
         solrQuery = new SolrQuery();
-        solrQuery.setQuery(buildSearchText(sample.getGenus(), genusKey)); 
-        request = new QueryRequest(solrQuery);
-        request.setBasicAuthCredentials(username, password); 
-           
-        try { 
-            response = request.process(client); 
-            if (response.getResults().getNumFound() > 0) {
-                return response.getBeans(SolrRecord.class);
-            }  
-        } catch (SolrServerException | IOException ex) {            
-            log.error(ex.getMessage());
-            return null;
-        }     
-        return null; 
-    }
-    
-    
-    public List<SolrRecord> searchBySpecies(Sample sample) {
-        log.info("searchBySpecies :{}", sample.getSpecies());
-           
-        solrQuery = new SolrQuery();
-        solrQuery.setQuery(buildSearchText(sample.getSpecies(), speciesKey)); 
+        solrQuery.setQuery(buildSearchText(species, speciesKey)); 
+        solrQuery.setRows(size);
         request = new QueryRequest(solrQuery);
         request.setBasicAuthCredentials(username, password); 
            

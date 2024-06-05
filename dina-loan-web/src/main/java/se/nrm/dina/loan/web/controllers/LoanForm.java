@@ -8,7 +8,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;  
 import lombok.extern.slf4j.Slf4j;   
-import se.nrm.dina.loan.web.beans.BreadCrumbBean;
+//import se.nrm.dina.loan.web.beans.BreadCrumbBean;
 import se.nrm.dina.loan.web.beans.StyleBean;
 import se.nrm.dina.loan.web.config.InitialProperties;
 import se.nrm.dina.loan.web.filehander.LoanFileHandler;  

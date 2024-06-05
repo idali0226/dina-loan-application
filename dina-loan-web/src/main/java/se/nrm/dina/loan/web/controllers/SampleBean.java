@@ -1,13 +1,14 @@
 package se.nrm.dina.loan.web.controllers;
 
 import java.io.Serializable;
-import java.util.ArrayList; 
-import java.util.List;
+import java.util.ArrayList;  
+import java.util.List; 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped; 
 import javax.inject.Inject;
 import javax.inject.Named;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.SelectEvent;
 import se.nrm.dina.loan.web.util.CommonNames;
@@ -29,6 +30,8 @@ public class SampleBean implements Serializable {
     private final String emptySpace = " ";
     private final String notSpecifiedSv = "ej specifierad";
     private final String notSpecifiedEn = "Not specified";
+    
+    private final String entomologyCode = "163840";
     
     
     private List<Sample> samples;
@@ -100,6 +103,7 @@ public class SampleBean implements Serializable {
         isSwedish = form.isSwedish();
         records = new ArrayList<>();
         if (sample.getCatalogNumber().isEmpty()) {
+            sample = new Sample();
             message.addError(emptyString, 
                     NameMapping.getMsgByKey(CommonNames.MissingCatNum, isSwedish));
         } else {
@@ -112,7 +116,7 @@ public class SampleBean implements Serializable {
             } else {
                 buildSolrResult(isSwedish);
             }
-        }
+        } 
     }
 
     public void searchWithFamily() {
@@ -121,14 +125,17 @@ public class SampleBean implements Serializable {
         isSwedish = form.isSwedish();
         records = new ArrayList<>();
         if (!sample.getFamily().isEmpty()) {
-            records = solr.searchByFamily(sample); 
+            records = solr.searchByFamily(StringUtils.capitalize(sample.getFamily())); 
+            
             if (records == null || records.isEmpty()) {
+                sample = new Sample();
                 message.addInfo(emptyString, 
                         NameMapping.getMsgByKey(CommonNames.NoResults, isSwedish));
             } else {
                 buildSolrResult(isSwedish);
             }
         } else {
+            sample = new Sample();
             message.addError(emptyString, 
                     NameMapping.getMsgByKey(CommonNames.MissingFamily, isSwedish));
         }
@@ -140,14 +147,16 @@ public class SampleBean implements Serializable {
         isSwedish = form.isSwedish();
         records = new ArrayList<>();
         if (!sample.getGenus().isEmpty()) {
-            records = solr.searchByGunes(sample); 
+            records = solr.searchByGunes(StringUtils.capitalize(sample.getGenus())); 
             if (records == null || records.isEmpty()) {
+                sample = new Sample();
                 message.addInfo(emptyString, 
                         NameMapping.getMsgByKey(CommonNames.NoResults, isSwedish));
             } else {
                 buildSolrResult(isSwedish);
             }
         } else {
+            sample = new Sample();
             message.addError(emptyString, 
                     NameMapping.getMsgByKey(CommonNames.MissingGenus, isSwedish));
         }
@@ -159,14 +168,16 @@ public class SampleBean implements Serializable {
         isSwedish = form.isSwedish();
         records = new ArrayList<>();
         if (!sample.getSpecies().isEmpty()) {
-            records = solr.searchBySpecies(sample); 
+            records = solr.searchBySpecies(StringUtils.capitalize(sample.getSpecies())); 
             if (records == null || records.isEmpty()) {
                 message.addInfo(emptyString, 
                         NameMapping.getMsgByKey(CommonNames.NoResults, isSwedish));
+                sample = new Sample();
             } else {
                 buildSolrResult(isSwedish);
             }
         } else {
+            sample = new Sample();
             message.addError(emptyString, 
                     NameMapping.getMsgByKey(CommonNames.MissingSpecies, isSwedish));
         }
@@ -174,13 +185,15 @@ public class SampleBean implements Serializable {
     
     private void buildSolrResult(boolean isSwedish) {
 
-        if (records.size() > 1) {
-            PrimeFaces current = PrimeFaces.current();
+        if (records.size() > 1) {  
+            PrimeFaces current = PrimeFaces.current(); 
             current.executeScript("PF('speciesDlg').show();");
         } else {
             if (records.size() == 1) {
                 SolrRecord record = records.get(0);
+                
                 String preparation = record.getPreparationString();
+        
                 if (preparation == null || preparation.isEmpty()) {
                     preparation = NameMapping.getMsgByKey(CommonNames.PreservationTypeNotSpecified, isSwedish);
                 }

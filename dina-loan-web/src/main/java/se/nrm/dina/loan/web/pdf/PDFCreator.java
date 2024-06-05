@@ -58,25 +58,7 @@ public class PDFCreator implements Serializable {
             throws FileNotFoundException, DocumentException {
         log.info("createInformationLoanPDF : {} -- {}", path, isSwedish);
 
-        this.isSwedish = isSwedish;
-
-//        StringBuilder sb = new StringBuilder();
-//        sb.append(path);
-//        sb.append(loanrequest);
-//        sb.append(loan.getId());
-
-//        File summaryAdminFile = new File(sb.toString() + adminPdf);                 // loan request summary admin pdf file (request_id_admin.pdf)
-//
-//        sb.append(pdf);
-//        File summaryFile = new File(sb.toString().trim());                      // loan request summary pdf file (request_id.pdf)
-//
-//        document = new Document(PageSize.LETTER);
-//        adminDocument = new Document(PageSize.LETTER);
-//        PdfWriter.getInstance(document, new FileOutputStream(summaryFile));
-//        PdfWriter.getInstance(adminDocument, new FileOutputStream(summaryAdminFile));
-//        document.open();
-//        adminDocument.open();
-//        addTitle(loan);
+        this.isSwedish = isSwedish; 
 
         openDocuments(loan, path);
  
@@ -174,6 +156,9 @@ public class PDFCreator implements Serializable {
         paragraph.add(new Chunk(primaryUser.getEmail() + newLine, textFont));
         paragraph.add(new Chunk(primaryUser.getPhone() + newLine, textFont));
         paragraph.add(new Chunk(primaryUser.getInstitution() + newLine, textFont));
+        if (primaryUser.getEoricode() != null && !primaryUser.getEoricode().isEmpty()) {
+            paragraph.add(new Chunk(primaryUser.getEoricode() + newLine, textFont));
+        }
         if (primaryUser.getDepartment() != null && !primaryUser.getDepartment().isEmpty()) {
             paragraph.add(new Chunk(primaryUser.getDepartment() + newLine, textFont));
         }
@@ -293,6 +278,9 @@ public class PDFCreator implements Serializable {
         paragraph.add(new Chunk(primaryUser.getEmail() + newLine, textFont));
         paragraph.add(new Chunk(primaryUser.getPhone() + newLine, textFont));
         paragraph.add(new Chunk(primaryUser.getInstitution() + newLine, textFont));
+        if (primaryUser.getEoricode() != null && !primaryUser.getEoricode().isEmpty()) {
+            paragraph.add(new Chunk(primaryUser.getEoricode()+ newLine, textFont));
+        }
         if (primaryUser.getDepartment() != null && !primaryUser.getDepartment().isEmpty()) {
             paragraph.add(new Chunk(primaryUser.getDepartment() + newLine, textFont));
         }
@@ -310,6 +298,11 @@ public class PDFCreator implements Serializable {
             paragraph.add(new Chunk(secondaryUser.getEmail() + newLine, textFont));
             paragraph.add(new Chunk(secondaryUser.getPhone() + newLine, textFont));
             paragraph.add(new Chunk(secondaryUser.getInstitution() + newLine, textFont));
+            
+            if (secondaryUser.getEoricode() != null && !secondaryUser.getEoricode().isEmpty()) {
+                paragraph.add(new Chunk(secondaryUser.getEoricode() + newLine, textFont));
+            }
+            
             if (secondaryUser.getDepartment() != null && !secondaryUser.getDepartment().isEmpty()) {
                 paragraph.add(new Chunk(secondaryUser.getDepartment() + newLine, textFont));
             }
@@ -320,81 +313,7 @@ public class PDFCreator implements Serializable {
         }
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-//    /**
-//     * Create loan request pdf files.
-//     *
-//     * @param loan
-//     * @param isSwedish
-//     * @param path
-//     * @param count
-//     * @param pathname
-//     * @throws FileNotFoundException
-//     * @throws DocumentException
-//     */
-//    public void createPDF(Loan loan, boolean isSwedish, String path,
-//            int count, String pathname) throws FileNotFoundException, DocumentException {
-//        log.info("createPDF : {} -- {}", path, isSwedish);
-//
-//        this.isSwedish = isSwedish;
-//
-//        StringBuilder sb = new StringBuilder();
-//        sb.append(path);
-//        sb.append("/loanrequest_");
-//        sb.append(loan.getId());
-//
-//        File summaryAdminFile = new File(sb.toString() + "_admin.pdf");         // loan request summary admin pdf file (request_id_admin.pdf)
-//
-//        sb.append(".pdf");
-//        File summaryFile = new File(sb.toString().trim());                      // loan request summary pdf file (request_id.pdf)
-//
-//        document = new Document(PageSize.LETTER);
-//        adminDocument = new Document(PageSize.LETTER);
-//        PdfWriter.getInstance(document, new FileOutputStream(summaryFile));
-//        PdfWriter.getInstance(adminDocument, new FileOutputStream(summaryAdminFile));
-//        document.open();
-//        adminDocument.open();
-//
-//        addTitle(loan);
-//        addContact(loan);
-//
-//        switch (count) {
-//            case 9:
-//                addLoanRequestForScientificPurpose(loan);
-//                addLoanSampleList(loan);
-//                if (!RequestType.Information.isInformation(loan.getType())) {
-//                    if (RequestType.Physical.isPhysical(loan.getType())) {
-//                        addDestructiveInformation(loan);
-//                    } else {
-//                        addPhotoInformation(loan);
-//                    }
-//                    addCITESInformation(loan);
-//                }
-//                break;
-//            case 7:
-////                addEducationRequest(loan);
-//                break;
-//            default:
-////                addCommercialInformation(loan);
-//                break;
-//        }
-//
-//        if (!RequestType.Information.isInformation(loan.getType())) {
-//            addTermsOfLoanAgreement();
-//        }
-//        document.close();
-//        adminDocument.close();
-//    }
-
+     
     private void addCITESInformation(Loan loan) throws DocumentException {
 
         paragraph = new Paragraph(CommonString.getCITE(isSwedish), sectionTitleFont);

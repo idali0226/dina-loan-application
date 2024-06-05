@@ -31,18 +31,29 @@
                             <p:outputLabel value="#{msg.aboutText1}" style="font-size: 14px;"/>  
                             <br /><br />
                             <p:outputLabel value="#{msg.aboutText2}" style="font-size: 14px;"/>  
+                            <h:outputLink value="#{msg.samlingarlink}" target="_blank" style="text-decoration: none !important;" > 
+                                <h:outputText value=" #{msg.samlingartext} " 
+                                              style="color: #8B8786; font-style: normal; font-size: 12px; " /> 
+                            </h:outputLink> 
+                            <p:outputLabel value="#{msg.aboutText21}" style="font-size: 14px;"/>  
+                            <h:outputLink value="#{msg.sbdiurl}" target="_blank" style="text-decoration: none !important;" > 
+                                <h:outputText value=" #{msg.sbditext} " 
+                                              style="color: #8B8786; font-style: normal; font-size: 12px; " /> 
+                            </h:outputLink>  
+                            <p:outputLabel value="#{msg.aboutText22}" style="font-size: 14px;"/>  
                             <br /><br />
                             <p:outputLabel value="#{msg.aboutText3}" style="font-size: 14px;" />  
                             <br /><br />
                             <p:outputLabel value="#{msg.aboutText4}" style="font-size: 14px;" />  
                             <p:commandLink actionListener="#{viewBean.contact()}" value="#{msg.problems} "  
                                            process="@this" global="false" update="@all" 
-                                           style="color: #8B8786; font-size: 14px;" />   
+                                           style="text-decoration: none !important; color: #8B8786 !important; font-size: 14px;" />    
                             <p:outputLabel value="#{msg.aboutText5}"  style="font-size: 14px;" />  
                             <h:outputLink value="mailto:#{contactBean.supportEmail}" 
-                                          style="font-size: 14px; color: #8B8786; " >
-                                #{msg.webmaster}
-                            </h:outputLink>  
+                                          style="text-decoration: none !important;" >
+                                <h:outputText value=" #{msg.webmaster}" 
+                                              style="color: #8B8786; font-style: normal; font-size: 14px; " />  
+                            </h:outputLink>.
                             <br /><br /> 
                             <br /><br /> 
                         </h:panelGroup>  

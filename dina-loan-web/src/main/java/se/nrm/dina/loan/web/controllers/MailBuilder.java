@@ -63,6 +63,12 @@ public class MailBuilder implements Serializable {
                 && !loan.getPrimaryUser().getDepartment().isEmpty()) {
             emailMap.put("primarydepartment", loan.getPrimaryUser().getDepartment());
         } 
+        
+        if(loan.getPrimaryUser().getEoricode() != null  
+                && !loan.getPrimaryUser().getEoricode().isEmpty()) {
+            emailMap.put("primaryeoicode", loan.getPrimaryUser().getEoricode());
+        } 
+        
         emailMap.put("primaryinstitution", loan.getPrimaryUser().getInstitution());
         emailMap.put("primarycountry", loan.getPrimaryUser().getAddress().getCountry());
          
@@ -99,6 +105,7 @@ public class MailBuilder implements Serializable {
         emailMap.put("loanPolicy", loanPolicyPath);  
         emailMap.put("adminPath", adminPath);
         emailMap.put("servletPath", sevletPath);
+        
         nrmMail.send(emailMap);  
     }
     
@@ -125,6 +132,10 @@ public class MailBuilder implements Serializable {
                 && !loan.getPrimaryUser().getDepartment().isEmpty()) {
             emailMap.put("primarydepartment", loan.getPrimaryUser().getDepartment());
         }
+        if (loan.getPrimaryUser().getEoricode() != null
+                && !loan.getPrimaryUser().getEoricode().isEmpty()) {
+            emailMap.put("primaryeoicode", loan.getPrimaryUser().getEoricode());
+        }
         emailMap.put("primaryinstitution", loan.getPrimaryUser().getInstitution());
         emailMap.put("primarycountry", loan.getPrimaryUser().getAddress().getCountry());
 
@@ -136,12 +147,16 @@ public class MailBuilder implements Serializable {
             emailMap.put("secondarylastname", loan.getSecondaryUser().getLastname());
             emailMap.put("secondaryfirstname", loan.getSecondaryUser().getFirstname());
             emailMap.put("secondaryemail", loan.getSecondaryUser().getEmail());
+            if (loan.getSecondaryUser().getEoricode() != null 
+                    && !loan.getSecondaryUser().getEoricode().isEmpty()) {
+                emailMap.put("secondaryeoicode", loan.getSecondaryUser().getEoricode());
+            }
             if (loan.getSecondaryUser().getDepartment() != null 
                     && !loan.getSecondaryUser().getDepartment().isEmpty()) {
                 emailMap.put("secondarydepartment", loan.getSecondaryUser().getDepartment());
             }
-            emailMap.put("secondaryinstitution", loan.getPrimaryUser().getInstitution());
-            emailMap.put("secondarycountry", loan.getPrimaryUser().getAddress().getCountry());
+            emailMap.put("secondaryinstitution", loan.getSecondaryUser().getInstitution());
+            emailMap.put("secondarycountry", loan.getSecondaryUser().getAddress().getCountry());
         }
 
         emailMap.put("department", loan.getDepartment());
@@ -157,16 +172,7 @@ public class MailBuilder implements Serializable {
         sb.append(pdf);
         emailMap.put("summaryFile", sb.toString().trim());
         emailMap.put("adminSummaryFile", adminSb.toString().trim());
-
-//        String curatorEmail = null;
-//        if(loan.getCurator() != null && !loan.getCurator().isEmpty()) {
-//            curatorEmail = loan.getCurator();
-//        } else {
-//            Collection collection = (mongo.findCollection("Non scientific", "group")); 
-//            if(collection != null) {
-//                curatorEmail = collection.getManager();
-//            }
-//        }
+ 
         TblUsers curator = dao.findOneUserByEmail(loan.getCurator());
         if (curator != null) {
             emailMap.put("outofoffice", String.valueOf(curator.getOnvacation()));
