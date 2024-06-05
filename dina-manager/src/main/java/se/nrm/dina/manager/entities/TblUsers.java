@@ -31,6 +31,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblUsers.validateUsername", query = "SELECT Count(t) FROM TblUsers t WHERE t.username = :username"),
     @NamedQuery(name = "TblUsers.validateEmail", query = "SELECT Count(t) FROM TblUsers t WHERE t.email = :email"),
     @NamedQuery(name = "TblUsers.findByEmail", query = "SELECT t FROM TblUsers t WHERE t.email = :email"),
+    @NamedQuery(name = "TblUsers.validateUser", query = "SELECT t FROM TblUsers t WHERE t.username = :username AND t.email = :email"),
     @NamedQuery(name = "TblUsers.findGroupAndEmail", query = "SELECT Count(u) FROM TblUsers u JOIN u.tblGroupsList g WHERE g.username = :username AND g.groupname IN (:group_params) AND u.email = :email")
 })
 public class TblUsers implements Serializable { 
@@ -106,9 +107,7 @@ public class TblUsers implements Serializable {
     public void setTblGroupsList(List<TblGroups> tblGroupsList) {
         this.tblGroupsList = tblGroupsList;
     }
-     
-     
-
+      
     @Override
     public int hashCode() {
         int hash = 0;

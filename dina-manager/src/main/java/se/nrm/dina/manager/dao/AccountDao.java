@@ -3,8 +3,10 @@ package se.nrm.dina.manager.dao;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;  
+import java.util.function.Predicate;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;  
+import javax.persistence.NoResultException;
 import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -25,6 +27,7 @@ public class AccountDao implements Serializable {
     
     private final String validateUsernameNamedQuery = "TblUsers.validateUsername";
     private final String findByUsernameNamedQuery = "TblUsers.findByUsername";
+    private final String validateUserNamedQuery = "TblUsers.validateUser";
     
     private final String findByEmailNamedQuery = "TblUsers.findByEmail";
     private final String findNonLoanGroupNamedQuery = "TblGroups.findNonInventoryGroups";
@@ -134,10 +137,32 @@ public class AccountDao implements Serializable {
         return number.intValue() < 1;   
     }
     
-    // end admin
+    public TblUsers validateUserByUsernameAndEmail(String username, String email) {
+        log.info("validateUserByUsernameAndEmail");
+        
+        Query query = entityManager.createNamedQuery(validateUserNamedQuery);
+        query.setParameter(queryUsernameParamKey, username); 
+        query.setParameter(queryEmailParamKey, email);
+        
+        try {
+            TblUsers user = (TblUsers) query.getSingleResult();  
+          
+            TblGroups group = user.getTblGroupsList().stream()
+                    .filter(predicate) 
+                    .findAny().get();
+           
+            return group != null ? user : null;
+        } catch (NoResultException e) {
+            log.error(e.getMessage());
+            return null;
+        } 
+    }
     
+    Predicate<TblGroups> predicate =  group -> group.getGroupname().endsWith(userRole)
+            || group.getGroupname().equals(managerRole) 
+            || group.getGroupname().equals(adminRole);
     
-    
+    // end admin 
 
      
     public TblUsers findByUserName(String username) {
@@ -192,16 +217,7 @@ public class AccountDao implements Serializable {
 
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+     
     
     
     public List<String> findAllCuratorsEmailList() {
@@ -254,14 +270,5 @@ public class AccountDao implements Serializable {
  
         return query.getResultList();
     }
-    
-
-
-
-//
-//    @PreDestroy
-//    public void destroyBean() {
-//        logger.info("The bean is being destroyed now, be careful!!!");
-//        entityManager.close();
-//    }
+     
 }

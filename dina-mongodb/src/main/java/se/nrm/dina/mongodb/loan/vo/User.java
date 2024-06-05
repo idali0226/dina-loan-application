@@ -8,104 +8,113 @@ import java.io.Serializable;
  */
 public class User implements Serializable {
 
-  private String title;
-  private String firstname;
-  private String lastname;
-  private String institution;
-  private String department;
-  private Address address;
-  private String phone;
-  private String email;
-  
-  private final String emptySpace = " ";
+    private String title;
+    private String firstname;
+    private String lastname;
+    private String institution;
+    private String eoricode;
+    private String department;
+    private Address address;
+    private String phone;
+    private String email;
 
-  public User() {
-    address = new Address();
-  }
+    private final String emptySpace = " ";
 
-  public String getTitle() {
-    return title;
-  }
+    public User() {
+        address = new Address();
+    }
 
-  public String getFirstname() {
-    return firstname;
-  }
+    public String getTitle() {
+        return title;
+    }
 
-  public String getLastname() {
-    return lastname;
-  }
+    public String getFirstname() {
+        return firstname;
+    }
 
-  public String getInstitution() {
-    return institution;
-  }
+    public String getLastname() {
+        return lastname;
+    }
 
-  public String getDepartment() {
-    return department;
-  }
+    public String getInstitution() {
+        return institution;
+    }
 
-  public Address getAddress() {
-    return address;
-  }
+    public String getDepartment() {
+        return department;
+    }
 
-  public void setTitle(String title) {
-    this.title = title;
-  }
+    public Address getAddress() {
+        return address;
+    }
 
-  public void setFirstname(String firstname) {
-    this.firstname = firstname;
-  }
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-  public void setLastname(String lastname) {
-    this.lastname = lastname;
-  }
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
 
-  public void setInstitution(String institution) {
-    this.institution = institution;
-  }
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
 
-  public void setDepartment(String department) {
-    this.department = department;
-  }
+    public void setInstitution(String institution) {
+        this.institution = institution;
+    }
 
-  public void setAddress(Address address) {
-    this.address = address;
-  }
+    public String getEoricode() {
+        return eoricode;
+    }
 
-  public String getPhone() {
-    return phone;
-  }
+    public void setEoricode(String eoricode) {
+        this.eoricode = eoricode;
+    }
 
-  public void setPhone(String phone) {
-    this.phone = phone;
-  }
+    public void setDepartment(String department) {
+        this.department = department;
+    }
 
-  public String getEmail() {
-    return email;
-  }
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 
-  public void setEmail(String email) {
-    this.email = email;
-  }
-  
-  public boolean hasTitle() {
-    return title != null && title.trim().length() > 0;
-  }
+    public String getPhone() {
+        return phone;
+    }
 
-  public String getName() {
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
-    StringBuilder sb = new StringBuilder();
-    if(title != null) {
-        sb.append(title  );
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public boolean hasTitle() {
+        return title != null && title.trim().length() > 0;
+    }
+
+    public String getName() {
+
+        StringBuilder sb = new StringBuilder();
+        if (title != null) {
+            sb.append(title);
+            sb.append(emptySpace);
+        }
+        sb.append(firstname);
         sb.append(emptySpace);
-    } 
-    sb.append(firstname);
-    sb.append(emptySpace);
-    sb.append(lastname);
-    return sb.toString().trim();
-  }
+        sb.append(lastname);
+        return sb.toString().trim();
+    }
 
-  @Override
-  public String toString() {
-    return "User : [" + title + emptySpace + firstname +  emptySpace + lastname + "] email [" + email;
-  }
+    @Override
+    public String toString() {
+        return "User : [" + title + emptySpace + firstname + emptySpace + lastname + "] email [" + email;
+    }
 }
