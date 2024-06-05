@@ -9,12 +9,13 @@
             <h:panelGroup  layout="block"   id="foot" styleClass="footstyle"  >   
                 <h:panelGroup layout="block" styleClass="footText" >
                     <h:panelGrid columns="2"  style="padding: 20px 10px 10px 10px; width: 100%;">
-                        <h:panelGrid columns="2" style="float: left; text-align:left; width: 25%;" > 
+                        <h:panelGrid columns="2" style="float: left; text-align:left; width: 200px;" > 
                             <h:outputText value="#{msg.contact}:"  /> 
                             <h:outputLink value="mailto:#{loanAdmin.contactEmail}" style="color: #FFFFFF;">
                                 #{loanAdmin.contactEmail}
                             </h:outputLink>
                         </h:panelGrid> 
+                        
                         <h:panelGrid style="float: right; text-align:right; width: 60%;" > 
                             <h:outputText value="Login as:     #{request.userPrincipal.name}" 
                                           rendered="#{not empty request.remoteUser}"/> 

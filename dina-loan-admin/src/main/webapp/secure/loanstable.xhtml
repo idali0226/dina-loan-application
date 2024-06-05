@@ -134,30 +134,7 @@
                           sortBy="#{loan.submitDate}" > 
                     <h:outputText value="#{loan.submitDate}" /> 
                 </p:column>
-
-                <p:column headerText="Request Closed"  
-                          style="min-width:130px" 
-                          sortBy="#{loan.closeDate}"  >  
-                    <h:outputText value="#{loan.closeDate}" />  
-                </p:column>
-
-                <p:column headerText="Comments" 
-                          style="min-width:130px"   
-                          sortBy="#{loan.comments}" 
-                          filterBy="#{loan.comments}" 
-                          footerText="contains"   
-                          filterMatchMode="contains" >  
-                    <p:cellEditor>
-                        <f:facet name="output">
-                            <h:outputText value="#{loan.comments}" />
-                        </f:facet>
-                        <f:facet name="input">
-                            <p:inputText value="#{loan.comments}" 
-                                         style="width:100%" label="Comments"/>
-                        </f:facet>
-                    </p:cellEditor>
-                </p:column>
-
+ 
                 <p:column headerText="Loan Number"  
                           style="min-width:130px" 
                           sortBy="#{loan.loanNumber}" 
@@ -175,7 +152,29 @@
                     </p:cellEditor>
                 </p:column> 
 
-
+                <p:column headerText="Comments" 
+                          style="min-width:130px"   
+                          sortBy="#{loan.comments}" 
+                          filterBy="#{loan.comments}" 
+                          footerText="contains"   
+                          filterMatchMode="contains" >  
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{loan.comments}" />
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText value="#{loan.comments}" 
+                                         style="width:100%" label="Comments"/>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+                
+                <p:column headerText="Request Closed"  
+                          style="min-width:130px" 
+                          sortBy="#{loan.closeDate}"  >  
+                    <h:outputText value="#{loan.closeDate}" />  
+                </p:column>
+                  
                 <p:rowExpansion> 
                     <p:panel header="Request Summary PDF" styleClass="nobord"> 
                         <h:panelGroup layout="block">
@@ -238,7 +237,7 @@
 
                                 <p:dataTable id="tbl" var="sample" value="#{loan.samples}"  
                                              rows="5"
-                                             paginator="true" style="width: 880px;">
+                                             paginator="true" style="width: 1080px;">
                                     <f:facet name="footer" >  
                                         <h:commandLink>
                                             <p:graphicImage value="/resources/images/excel.png" title="Excel" styleClass="images"/>
@@ -253,7 +252,7 @@
                                     </f:facet>
 
 
-                                    <p:column style="font-size: 11px;  " width="110">
+                                    <p:column style="font-size: 11px;  " width="120">
                                         <f:facet name="header">
                                             <h:outputText value="Cat. no" />
                                         </f:facet>
@@ -275,7 +274,7 @@
                                     </p:column>
 
 
-                                    <p:column style="font-size: 11px; "  width="140" >
+                                    <p:column style="font-size: 11px; "  width="120" >
                                         <f:facet name="header">
                                             <h:outputText value="Species"/>
                                         </f:facet>

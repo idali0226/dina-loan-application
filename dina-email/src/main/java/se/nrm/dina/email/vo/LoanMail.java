@@ -18,6 +18,7 @@ public class LoanMail implements Serializable {
     private final String primarylastName;
     private final String primaryfirstName;
     private final String primaryinstitution;
+    private final String primaryeoicode;
     private final String primarydepartment;
     private final String primarycountry;
 
@@ -25,6 +26,7 @@ public class LoanMail implements Serializable {
     private final String secondarylastName;
     private final String secondaryfirstName;
     private final String secondaryinstitution;
+    private final String secondaryeoicode;
     private final String secondarydepartment;
     private final String secondarycountry;
 
@@ -85,17 +87,15 @@ public class LoanMail implements Serializable {
     public LoanMail(Map<String, String> map) {
         this.isSwedish = Boolean.parseBoolean(map.get("isSwedish"));
         this.hasPrimary = Boolean.parseBoolean(map.get("hasPrimaryContact"));
-//    this.host = map.get("isLocal");
-
+  
         this.loanId = map.get("loanId");
-// 
-        
-        
+  
         this.primarytitle = map.get("primarytitle") != null
                 ? map.get("primarytitle").trim() : "";
         this.primarylastName = map.get("primarylastname").trim();
         this.primaryfirstName = map.get("primaryFirstname");
         this.primaryinstitution = map.get("primaryinstitution");
+        this.primaryeoicode = map.get("primaryeoicode");
         this.primarydepartment = map.get("primarydepartment");
         this.primarycountry = map.get("primarycountry");
 
@@ -107,6 +107,7 @@ public class LoanMail implements Serializable {
             this.secondarylastName = map.get("secondarylastname").trim();
             this.secondaryfirstName = map.get("secondaryfirstname").trim();
             this.secondaryinstitution = map.get("secondaryinstitution");
+            this.secondaryeoicode = map.get("secondaryeoicode");
             this.secondarydepartment = map.get("secondarydepartment");
             this.secondarycountry = map.get("secondarycountry");
         } else {
@@ -114,6 +115,7 @@ public class LoanMail implements Serializable {
             this.secondarylastName = emptyString;
             this.secondaryfirstName = emptyString;
             this.secondaryinstitution = emptyString;
+            this.secondaryeoicode = null;
             this.secondarydepartment = null;
             this.secondarycountry = emptyString;
         }
@@ -132,16 +134,12 @@ public class LoanMail implements Serializable {
 //        this.pdfPath = map.get("pdfPath");
         this.adminPath = map.get("adminPath");
     }
-    
-    
-    
      
     public String buildAdminEmailBody() {
         log.info("buildAdminEmailBody : {}", type);
 
         StringBuilder sb = new StringBuilder();
-        
-        
+         
         if (type.equals(information)) {
             appendMailTitle(sb, ConstantText.getInstance().getInformationRequest());
         } else {
@@ -153,9 +151,7 @@ public class LoanMail implements Serializable {
         sb.append(commaWithSpace);
         sb.append(brTag);
         sb.append(brTag);
-
-       
-
+ 
         if(purpose.equals(scientificPurpose)) {
             if (type.equals(information)) {
                 sb.append(ConstantText.getInstance().getCuratorMailTextInformation());
@@ -204,6 +200,10 @@ public class LoanMail implements Serializable {
         }
         sb.append(primaryinstitution);
         sb.append(brTag);
+        if (primaryeoicode != null) {
+            sb.append(primaryeoicode);
+            sb.append(brTag);
+        }
 
         sb.append(primarycountry);
         sb.append(brTag);
@@ -226,6 +226,10 @@ public class LoanMail implements Serializable {
             }
             sb.append(secondaryinstitution);
             sb.append(brTag);
+            if (secondaryeoicode != null) {
+                sb.append(secondaryeoicode);
+                sb.append(brTag);
+            } 
             sb.append(secondarycountry);
             sb.append(brTag);
             sb.append(brTag);

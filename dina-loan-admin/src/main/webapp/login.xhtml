@@ -17,43 +17,65 @@
             <ui:define name="content">      
                 <h:form id="login" prependId="false"
                         onsubmit="document.#{p:component('login')}.action = 'j_security_check';"  >   
-
-                    <h:panelGrid styleClass="loginmainpanel">
-                        <h:panelGrid>
-                            <p:messages autoUpdate="true" showDetail="true" showSummary="false" closable="true"    /> 
-                        </h:panelGrid> 
-                    </h:panelGrid> 
-
+  
                     <h:panelGrid styleClass="loginmainpanel" id="loginmainpanel"
                                  style="min-height: 450px; overflow: auto;"> 
+                        <h:panelGroup layout="block" styleClass="loginmainpanel">
+                            <h:panelGroup layout="block">
+                                <p:messages showDetail="true" showSummary="false" closable="true"    /> 
+                            </h:panelGroup> 
+                        </h:panelGroup> 
                         <p:panel header="Login" styleClass="loginPanel" id="loginPanel" >  
 
                             <p:spacer width="20" height="20" />
                             <p:spacer width="20" height="20" />  
                             <p:focus context="loginbox"/>  
                             
-                            <h:panelGrid id="loginbox" styleClass="loginbox">  
+                            <h:panelGroup layout="block" id="loginbox" styleClass="loginbox">  
                                 <h:panelGrid columns="2" cellpadding="5"  styleClass="loginAuthBox">
                                     <h:outputLabel for="username" value="Username: " />
-                                    <p:inputText id="username" value="#{login.username}" size="30" required="true" 
-                                                 requiredMessage="Username is required." />   
+                                    <p:inputText id="username" value="#{login.username}" 
+                                                 size="30" required="true" 
+                                                 requiredMessage="Username is required."
+                                                 tabindex="1"/>   
                                     <p:spacer width="5" />
                                     <p:spacer width="5" />
 
                                     <h:outputLabel for="password" value="Password: " />
-                                    <p:password id="password" value="#{login.password}"  size="30" required="true"  
-                                                requiredMessage="Password is required." />  
-                                </h:panelGrid> 
+                                    <p:password id="password" value="#{login.password}"  
+                                                size="30" required="true"  
+                                                requiredMessage="Password is required." 
+                                                tabindex="2"/>   
+                                </h:panelGrid>  
+                                <h:panelGroup layout="block" style="width: 100%; float: right; ">
+                                    <h:panelGroup layout="block" style="width: 200px; float: right">
+                                        <ui:remove>
+                                            <p:commandLink id="passwordrecover"  
+                                                       actionListener="#{navigate.gotoPasswordRecoverPage()}"
+                                                   style="margin-right:20px;">
+                                                <h:outputText value="Forgot password?" />
+                                            </p:commandLink>
+                                        </ui:remove> 
+                                        <a href="#{request.contextPath}/faces/passwordrecover.xhtml" tabindex="5">
+                                            Forget password?
+                                        </a>
+                                    </h:panelGroup>
+                                     
+                                </h:panelGroup>
 
                                 <p:spacer width="10"  /> 
                                 <p:spacer width="10" /> 
 
-                                <h:panelGrid style="width: 100px; margin-left: auto; margin-right: auto; ">
+                                <h:panelGroup layout="block" style="width: 100px; margin-left: auto; margin-right: auto; ">
                                     <p:commandButton ajax="false" id="loginButton" value="Login" 
                                                      update="@all" action="#{login.login}" 
+                                                     tabindex="3"
                                                      onclick="PF('statusDialog').show()" />
-                                </h:panelGrid> 
-                            </h:panelGrid>
+                                </h:panelGroup> 
+                                
+                                <p:spacer width="10"  /> 
+                                <p:spacer width="10" /> 
+                            </h:panelGroup>
                         </p:panel>  
                     </h:panelGrid> 
                 </h:form> 

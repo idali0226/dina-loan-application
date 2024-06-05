@@ -38,14 +38,14 @@
                                 </h:panelGroup>
 
                                 <h:panelGroup layout="block" style="padding-left: 120px;">  
-                                    <h:panelGroup layout="block" style="border: none; width: 100%;" 
+                                    <h:panelGroup layout="block" style="border: none; width: 100%; padding-bottom: 8px;" 
                                                   rendered="#{request.isUserInRole('admin') || request.isUserInRole('manager') || request.isUserInRole('superuser')}">
                                         <p:commandLink actionListener="#{navigate.gotoManageUser()}" 
                                                        value="Manage user account"  
                                                        process="@this" global="false" update="mainpanel"   
                                                        styleClass="clink"  />  
                                     </h:panelGroup> 
-                                    <h:panelGroup layout="block" style="border: none; width: 100%;" 
+                                    <h:panelGroup layout="block" style="border: none; width: 100%; padding-bottom: 8px;" 
                                                   rendered="#{request.isUserInRole('admin') || request.isUserInRole('manager') || request.isUserInRole('superuser')}">
                                         <p:commandLink actionListener="#{navigate.gotoCollections()}" 
                                                        value="Manage collection"  
@@ -53,13 +53,14 @@
                                                        update="mainpanel " styleClass="clink"  />  
                                     </h:panelGroup>
 
-                                    <h:panelGroup layout="block" style="border: none; width: 100%;" >
-                                        <p:commandLink actionListener="#{navigate.gotoLoans()}" value="Manage loan requests"  
+                                    <h:panelGroup layout="block" style="border: none; width: 100%; padding-bottom: 8px;" >
+                                        <p:commandLink actionListener="#{navigate.gotoLoans()}"
+                                                       value="Manage loan requests"  
                                                        process="@this" global="false" 
                                                        update="mainpanel " styleClass="clink"  />  
                                     </h:panelGroup>
 
-                                    <h:panelGroup layout="block" style="border: none; width: 100%;" 
+                                    <h:panelGroup layout="block" style="border: none; width: 100%; padding-bottom: 8px;" 
                                                   rendered="#{request.isUserInRole('admin') || request.isUserInRole('manager') || request.isUserInRole('superuser')}">
                                         <p:commandLink actionListener="#{navigate.gotoLoanPolicies()}"
                                                        value="Manage policy documents"  

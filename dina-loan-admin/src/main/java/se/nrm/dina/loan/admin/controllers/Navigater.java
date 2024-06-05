@@ -26,7 +26,8 @@ public class Navigater implements Serializable {
     private final String loansPath = "/faces/secure/loans.xhtml";
     private final String notificationsPath = "/faces/secure/portalPopup.xhtml";
     
-    private final String logoutPath = "/login.xhtml";
+    private final String logoutPath = "/faces/login.xhtml";
+    private final String passwordRecoverPath = "/faces/passwordrecover.xhtml";
 
     private ExternalContext externalContext;
 
@@ -73,6 +74,11 @@ public class Navigater implements Serializable {
     public void gotoLoginPage() {
         log.info("gotoLoginPage"); 
         redirectPage(logoutPath);
+    }
+    
+    public void gotoPasswordRecoverPage() {
+        log.info("gotoPasswordRecoverPage : {}", passwordRecoverPath); 
+        redirectPage(passwordRecoverPath);
     }
     
     private void redirectPage(String path) {

@@ -7,15 +7,16 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random; 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.enterprise.context.SessionScoped; 
+import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
-import javax.inject.Named; 
+import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
-import org.primefaces.event.RowEditEvent; 
+import org.primefaces.event.RowEditEvent;
 import se.nrm.dina.email.NrmMail;
 import se.nrm.dina.loan.admin.config.InitialProperties;
 import se.nrm.dina.manager.dao.AccountDao;
@@ -36,6 +37,9 @@ public class UserAccountController implements Serializable {
     private final String incorrectOldPassword = "Incorrect old password";
     private final String loginuserSessionKey = "loginuser";
 
+    private final String noAccountFind = "Username and email not found!";
+    private final String passwordRecoverSucess = "The password has been changed and the new password has been sent to your email";
+
     private final String defaultGroupname = "user";
 
     private final String sha256 = "SHA-256";
@@ -46,20 +50,19 @@ public class UserAccountController implements Serializable {
     private String email;
     private boolean isOnVacation;
     private String groupname;
- 
+
     private List<TblGroups> filteredAccounts;
     private List<TblGroups> accounts;
 
-    private TblUsers loggedinUser; 
+    private TblUsers loggedinUser;
 
     private String oldPassword = null;
     private String newPassword = null;
     private boolean isChangePasswordSuccessed;
-  
-    
+
     @EJB
     private AccountDao dao;
- 
+
     @Inject
     private InitialProperties properties;
 
@@ -76,12 +79,12 @@ public class UserAccountController implements Serializable {
     private Navigater navigate;
 
     private HttpSession session;
-    
+
     private String host;
 
-    public UserAccountController() { 
+    public UserAccountController() {
 
-        isChangePasswordSuccessed = false; 
+        isChangePasswordSuccessed = false;
     }
 
     @PostConstruct
@@ -89,14 +92,14 @@ public class UserAccountController implements Serializable {
         session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         loggedinUser = (TblUsers) session.getAttribute(loginuserSessionKey);
         host = properties.getHost();
-        
+
         if (accounts == null || accounts.isEmpty()) {
             getLoanGroupAccount();
         }
     }
 
     // user page
-    public void onRowEdit(RowEditEvent event) { 
+    public void onRowEdit(RowEditEvent event) {
         log.info("onRowEdit: {}", (TblGroups) event.getObject());
 
         TblGroups selectedGroup = (TblGroups) event.getObject();
@@ -147,20 +150,20 @@ public class UserAccountController implements Serializable {
 
             dao.createAccount(user);
             getLoanGroupAccount();
-  
+
             nrmMail.sendNewAdminAccountMail(username, password, email, host);
-             
+
             username = null;
             password = null;
             email = null;
             groupname = defaultGroupname;
         } else {
             if (validateResult == 1) {
-                msg.addDuplicateUsernameError(username); 
+                msg.addDuplicateUsernameError(username);
             } else if (validateResult == 2) {
-                msg.addDuplicateEmailError(email); 
+                msg.addDuplicateEmailError(email);
             }
-        } 
+        }
     }
 
     public List<TblGroups> getFilteredAccounts() {
@@ -172,10 +175,6 @@ public class UserAccountController implements Serializable {
     }
 
     // End of user page
-    
-    
-    
-    
     // change password page
     public void changePassword() {
         log.info("changePassword ");
@@ -190,7 +189,14 @@ public class UserAccountController implements Serializable {
         isChangePasswordSuccessed = false;
         String encodedPasswordDigest;
         try {
-            encodedPasswordDigest = hashAndEncodePassword(oldPassword);
+            encodedPasswordDigest = hashAndEncodePassword(oldPassword); 
+
+            log.info("loggedinUser password : {}", loggedinUser);
+            if (loggedinUser == null) {
+                session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+                loggedinUser = (TblUsers) session.getAttribute(loginuserSessionKey);
+                log.info("loggedinUser password : {}", loggedinUser);
+            }
             if (encodedPasswordDigest.equals(loggedinUser.getPassword())) {
                 loggedinUser.setPassword(hashAndEncodePassword(newPassword));
                 dao.mergeAccount(loggedinUser);
@@ -209,18 +215,51 @@ public class UserAccountController implements Serializable {
     }
 
     // end change password page
-    
-    
-    
-    // home page
-    
+    // password recover
+    public void recoverPasswrod() {
+        log.info("recoverPasswrod : {} -- {}", username, email);
+        TblUsers user = dao.validateUserByUsernameAndEmail(username, email);
+        if (user == null) {
+            log.info("user not find");
+            msg.addInfo(noAccountFind, noAccountFind);
+        } else {
+            try {
+                log.info("user find : {}", user);
+                
+                String randomPassword = generateRandomPassword();
+                log.info("randomPassword : {}", randomPassword);
+                
+                user.setPassword(hashAndEncodePassword(randomPassword));
+                dao.mergeAccount(user); 
+                
+                nrmMail.sendPasswordRecoverEmail(email, randomPassword, properties.getHost());
+                username = null;
+                email = null;
+                msg.addInfo(null, passwordRecoverSucess); 
+            } catch (NoSuchAlgorithmException | NoSuchProviderException | UnsupportedEncodingException ex) { 
+                log.error(ex.getMessage());
+            }
+        }
+//        navigate.gotoLoginPage();
+    }
+
+    private String generateRandomPassword() { 
+        return new Random()
+                .ints(10, 33, 122)
+                .collect(StringBuilder::new,
+                        StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
+    }
+
+    // end password recover
+    // home page 
     public void checkonvacation() {
         log.info("checkonvacation : {} -- {}", loggedinUser, loggedinUser.getOnvacation());
 
         dao.mergeAccount(loggedinUser);
         getLoanGroupAccount();
     }
-     
+
     private String hashAndEncodePassword(String password)
             throws NoSuchAlgorithmException, NoSuchProviderException, UnsupportedEncodingException {
 
@@ -317,5 +356,5 @@ public class UserAccountController implements Serializable {
 
     public void setIsChangePasswordSuccessed(boolean isChangePasswordSuccessed) {
         this.isChangePasswordSuccessed = isChangePasswordSuccessed;
-    } 
+    }
 }

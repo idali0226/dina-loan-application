@@ -12,6 +12,7 @@
             </ui:define> 
             <ui:define name="content"  >  
                 <h:form id="notificationsForm" >   
+                    <ui:include src="/secure/monitor.xhtml" />  
                     <h:panelGroup layout="block"  styleClass="main" id="notificationPanel"> 
                         <p:accordionPanel  dynamic="true" cache="true"  id="accordionNotificationPanel" >
                             <p:ajax event="tabChange" listener="#{notification.onTabChange}" />

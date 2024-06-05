@@ -14,6 +14,7 @@
 
             <ui:define name="content">   
                 <h:form id="loansForm" >    
+                    <ui:include src="/secure/monitor.xhtml" />  
                     <h:panelGroup layout="block" id="loansPanel" styleClass="main" > 
                         <h:panelGroup layout="block" 
                                       style="text-align: center; margin-left: auto; margin-right: auto; width: 100%;">
@@ -113,8 +114,7 @@
                             </p:tab>
                         </p:accordionPanel>  
 
-                        <ui:include src="/secure/loanstable.xhtml" />  
-
+                        <ui:include src="/secure/loanstable.xhtml" />   
 
 
                     </h:panelGroup>  

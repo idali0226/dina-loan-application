@@ -7,42 +7,41 @@ package se.nrm.dina.email.vo;
  */
 public class PasswordRecoveryMail {
      
-    private final String START_DIV_TAG_WITH_FONT = "<div style=\"font-size: 1.2em; \">";
-    private final String START_DIV_TAG = "<div>"; 
-    private final String END_DIV_TAG = "</div>";
-    private final String BR_TAG = "<br />"; 
-    private final String START_LINK_TAG = "<a href=\""; 
+    private final String startDivTagWithFont = "<div style=\"font-size: 1.2em; \">";
+    private final String startDivTag = "<div>"; 
+    private final String endDivTag = "</div>";
+    private final String brTag = "<br />"; 
+//    private final String START_LINK_TAG = "<a href=\""; 
     
-    private final boolean isLocal;
+    private final String hiKey = "Hi,";
+    private final String text1 = "Your online loan account password has been chaged.  You can login with the new password:  ";
+    private final String passwordKey = "Password: ";
+    private final String clickKey = "Click ";
+    private final String text2 = " to login and change password";
     
-    public PasswordRecoveryMail() {
-        isLocal = System.getProperty("os.name").trim().equals("Mac OS X");
+    public PasswordRecoveryMail() { 
     }
 
-    public String buildPasswordRecoveryMsg(final String password) {
+    public String buildPasswordRecoveryMsg(final String password, String host) {
         StringBuilder sb = new StringBuilder();
-        sb.append(START_DIV_TAG_WITH_FONT);
-        sb.append(START_DIV_TAG);
-        sb.append("Hi,");
-        sb.append(BR_TAG);
-        sb.append(BR_TAG);
-        sb.append("Your online loan account password has been chaged.  You can login with the new password:  ");
-        sb.append(BR_TAG);
-        sb.append(BR_TAG); 
-        sb.append("Password: ");
+        sb.append(startDivTagWithFont);
+        sb.append(startDivTag);
+        sb.append(hiKey);
+        sb.append(brTag);
+        sb.append(brTag);
+        sb.append(text1);
+        sb.append(brTag);
+        sb.append(brTag); 
+        sb.append(passwordKey);
         sb.append(password);
-        sb.append(BR_TAG);
-        sb.append(BR_TAG);
-        sb.append("Click ");
-        sb.append(START_LINK_TAG);
-         if (isLocal) {
-            sb.append("http://localhost:8080/loan-admin\""); 
-        } else {
-            sb.append("https://www.dina-web.net/loan-admin\"");
-        }
-        sb.append(" to login and change password");
-        sb.append(END_DIV_TAG);
-        sb.append(END_DIV_TAG);
+        sb.append(brTag);
+        sb.append(brTag);
+        sb.append(clickKey);
+//        sb.append(START_LINK_TAG); 
+        sb.append(host);  
+        sb.append(text2);
+        sb.append(endDivTag);
+        sb.append(endDivTag);
 
         return sb.toString();
     }

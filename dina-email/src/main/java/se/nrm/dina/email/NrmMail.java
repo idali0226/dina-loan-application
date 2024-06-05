@@ -23,6 +23,7 @@ import javax.mail.internet.MimeUtility;
 import lombok.extern.slf4j.Slf4j;
 import se.nrm.dina.email.vo.LoanMail;
 import se.nrm.dina.email.vo.NewAccountMail; 
+import se.nrm.dina.email.vo.PasswordRecoveryMail;
 
 /**
  *
@@ -40,6 +41,7 @@ public class NrmMail {
  
     private final String fromMail = "no-reply@nrm.se";
  
+    private final String passwordRecoverSubject = "Loan admin password recovery";
     private final String newAccountSubject = "Loan admin new account"; 
     private final String utf8 = "utf-8";
     private final String encodB = "B";
@@ -48,7 +50,7 @@ public class NrmMail {
     private final String slash = "/";
     
     private final String textHtml = "text/html; charset=ISO-8859-1";
-    
+ 
     private final String adminSummaryFile = "adminSummaryFile";
     private String pdfPath;
     
@@ -110,8 +112,10 @@ public class NrmMail {
      */
     public void send(Map<String, String> map) throws AddressException,
             MessagingException, UnsupportedEncodingException {
-        log.info("send primary -- secondary: {} -- {}", map.get("primaryemail"), map.get("secondaryemail"));
-        log.info("send 1 manager -- curratormail : {} -- {}", map.get("manager"), map.get("curratormail"));
+        log.info("send primary -- secondary: {} -- {}", 
+                map.get("primaryemail"), map.get("secondaryemail"));
+        log.info("send 1 manager -- curratormail : {} -- {}", 
+                map.get("manager"), map.get("curratormail"));
 
         props = new Properties();
         props.put(smtpHost, mailHost);
@@ -186,7 +190,7 @@ public class NrmMail {
         message.setSubject(loan.buildSubject());
         message.setFrom(new InternetAddress(fromMail));
 
-        message.setContent(loan.buildBorrowerMailBody(), "text/html; charset=ISO-8859-1");
+        message.setContent(loan.buildBorrowerMailBody(), textHtml);
         Transport.send(message);
     }
 
@@ -199,8 +203,7 @@ public class NrmMail {
         message.setContent(loan.buildPrimaryBorrowerMailBody(), textHtml);
         Transport.send(message);
     }
-    
-    
+     
     private void sendMailToAdmin(String adminEmail, String curatorEmail, Message message)
             throws MessagingException, UnsupportedEncodingException {
         log.info("sendAdminMail : {} -- {}", adminEmail, curatorEmail);
@@ -232,4 +235,26 @@ public class NrmMail {
         Transport.send(message);
     } 
     
+    public void sendPasswordRecoverEmail(final String email,
+            final String password, final String host) {
+        log.info("sendPasswordRecoverEmail : {} -- {}", email, password);
+
+        props = new Properties();
+        props.put(smtpHost, mailHost);
+        
+        session = Session.getInstance(props, null);
+        session.setDebug(true); 
+        message = new MimeMessage(session); 
+        PasswordRecoveryMail recovery = new PasswordRecoveryMail();
+        try { 
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
+            message.setFrom(new InternetAddress(fromMail));
+            message.setSubject(MimeUtility.encodeText(
+                    passwordRecoverSubject, utf8, encodB));
+            message.setContent(recovery.buildPasswordRecoveryMsg(password, host), textHtml);
+            Transport.send(message);
+        } catch (MessagingException | UnsupportedEncodingException ex) {
+            log.warn(ex.getMessage());
+        }
+    }
 }

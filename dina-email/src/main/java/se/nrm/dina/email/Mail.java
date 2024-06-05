@@ -3,14 +3,12 @@ package se.nrm.dina.email;
 import java.io.File;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
-import java.util.Map;
-//import java.util.logging.Level;
+import java.util.Map; 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
 import javax.annotation.Resource;
-import javax.ejb.Stateless;
-//import javax.ejb.Stateless;
+import javax.ejb.Stateless; 
 import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -70,7 +68,7 @@ public class Mail implements Serializable {
         }
     }
 
-    public void sendPasswordRecoverEmail(final String email, final String password) {
+    public void sendPasswordRecoverEmail(final String email, final String password, String host) {
         log.info("sendPasswordRecoverEmail : {}", email);
 
         Message message = new MimeMessage(session);
@@ -79,7 +77,7 @@ public class Mail implements Serializable {
             recovery = new PasswordRecoveryMail();
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
             message.setSubject(MimeUtility.encodeText("Loan admin password recovery", "utf-8", "B"));
-            message.setContent(recovery.buildPasswordRecoveryMsg(password), "text/html; charset=ISO-8859-1");
+            message.setContent(recovery.buildPasswordRecoveryMsg(password, host), "text/html; charset=ISO-8859-1");
             Transport.send(message);
         } catch (MessagingException | UnsupportedEncodingException ex) {
             log.warn(ex.getMessage());
