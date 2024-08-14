@@ -29,6 +29,9 @@ public class FileManager implements Serializable {
     private UploadedFile projectFile; 
     private String projectFileName;
     
+    private UploadedFile typeFile; 
+    private String typeFileName;
+    
     private UploadedFile photoInstructionFile; 
     private String photoInstructionFileName;
     
@@ -61,7 +64,23 @@ public class FileManager implements Serializable {
         projectFile = null;
         projectFileName = null;
     }
+       
+    public void handleTypeFileUpload(FileUploadEvent event) {
+        log.info("handleTypeFileUpload : {} ", event.getFile().getFileName());
+
+        typeFile = event.getFile();
+        typeFileName = typeFile.getFileName();
+        saveTempFile(typeFile);
+    }
+    
+    public void removeTypefile() {
+        log.info("removeTypefile");
         
+        fileHander.removeFileFromTempDirectory(typeFileName, loan.getUUID().toString()); 
+        typeFile = null;
+        typeFileName = null;
+    }
+    
     public void handleLoanDetailFileUpload(FileUploadEvent event) {
         log.info("handleFileUpload : {} ", event.getFile().getFileName());
  
@@ -186,6 +205,22 @@ public class FileManager implements Serializable {
 
     public void setDestructiveMethodFileName(String destructiveMethodFileName) {
         this.destructiveMethodFileName = destructiveMethodFileName;
+    }
+
+    public UploadedFile getTypeFile() {
+        return typeFile;
+    }
+
+    public void setTypeFile(UploadedFile typeFile) {
+        this.typeFile = typeFile;
+    }
+
+    public String getTypeFileName() {
+        return typeFileName;
+    }
+
+    public void setTypeFileName(String typeFileName) {
+        this.typeFileName = typeFileName;
     }
     
     

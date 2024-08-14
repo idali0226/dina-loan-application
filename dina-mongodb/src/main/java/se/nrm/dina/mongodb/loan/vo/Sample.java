@@ -12,6 +12,7 @@ public class Sample implements Serializable {
   private String catalogNumber;
   private String family;
   private String genus;
+  private String fullName;
   private String species;
   private String locality;
   private String country;
@@ -26,11 +27,12 @@ public class Sample implements Serializable {
   public Sample() {
   }
 
-  public Sample(String catalogNumber, String family, String genus, String species, String locality, String country,
+  public Sample(String catalogNumber, String family, String genus, String fullName, String species, String locality, String country,
           String collectedYear, String auctor, String collector, String typeStatus, String type, String location, String other) {
     this.catalogNumber = catalogNumber;
     this.family = family;
     this.genus = genus;
+    this.fullName = fullName;
     this.species = species;
     this.locality = locality;
     this.country = country;
@@ -66,6 +68,16 @@ public class Sample implements Serializable {
   public void setGenus(String genus) {
     this.genus = genus;
   }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+  
+  
 
   public String getSpecies() {
     return species;

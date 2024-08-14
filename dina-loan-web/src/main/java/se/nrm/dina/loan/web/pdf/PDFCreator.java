@@ -543,17 +543,40 @@ public class PDFCreator implements Serializable {
             paragraph.add(new Chunk(loanDescription, textFont));
             addEmptyLine(paragraph, 2);
 
+      if (loan.getDestructiveFile() != null && !loan.getDestructiveFile().isEmpty()) {
+            paragraph.add(new Chunk(CommonString.getAttachment(isSwedish), lableFont));
+            paragraph.add(new Chunk(loan.getDestructiveFile(), textFont));
+            addEmptyLine(paragraph, 2);
+        }
+            
+            
+            
+            
+            
+            
             // attached loan description file
             if (loan.getLoanDescriptionFile() != null && !loan.getLoanDescriptionFile().isEmpty()) {
 
-                Anchor anchor = new Anchor(loan.getLoanDescriptionFile());
-                anchor.setReference(buildBasePath(loan.getUuid(), loan.getLoanDescriptionFile()));
-                paragraph.add(anchor);
+//                Anchor anchor = new Anchor(loan.getLoanDescriptionFile());
+//                anchor.setReference(buildBasePath(loan.getUuid(), loan.getLoanDescriptionFile()));
+//                paragraph.add(anchor);
 
-//                paragraph.add(new Chunk(CommonString.getAttachment(isSwedish), LABEL_FONT));                    
-//                paragraph.add(new Chunk(loan.getLoanDescriptionFile(), TEXT_FONT));
-                addEmptyLine(paragraph, 2);
+                paragraph.add(new Chunk(CommonString.getAttachment(isSwedish), lableFont));                    
+                paragraph.add(new Chunk(loan.getLoanDescriptionFile(), textFont)); 
             }
+            
+            // attached loan type material file
+            if (loan.getTypeMaterialFile() != null && !loan.getTypeMaterialFile().isEmpty()) {
+
+//                Anchor anchor = new Anchor(loan.getTypeMaterialFile());
+//                anchor.setReference(buildBasePath(loan.getUuid(), loan.getTypeMaterialFile()));
+//                paragraph.add(anchor);
+                paragraph.add(new Chunk(loan.getLoanDescriptionFile(), textFont));  
+ 
+//                addEmptyLine(paragraph, 2);
+            }
+            addEmptyLine(paragraph, 2);
+                        
             document.add(paragraph);
             adminDocument.add(paragraph);
         }

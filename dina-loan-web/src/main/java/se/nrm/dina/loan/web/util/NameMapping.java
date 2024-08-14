@@ -175,6 +175,7 @@ public class NameMapping {
     COMMON_MAP_SV = new HashMap<>();
 
     COMMON_MAP_EN.put(CommonNames.NoResults, "No records exist in our database for this search term");
+    COMMON_MAP_EN.put(CommonNames.MissingSearchText, "Please fill in search criteria!");
     COMMON_MAP_EN.put(CommonNames.MissingCatNum, "Please fill in catalog number!");
     COMMON_MAP_EN.put(CommonNames.MissingFamily, "Please fill in family name!");
     COMMON_MAP_EN.put(CommonNames.MissingGenus, "Please fill in genus name!");
@@ -198,6 +199,7 @@ public class NameMapping {
     COMMON_MAP_EN.put(CommonNames.EmptySample, "Please fill in relevant fields!");
 
     COMMON_MAP_SV.put(CommonNames.NoResults, "Inga taxa i våran databas överensstämmer med din sökterm");
+    COMMON_MAP_SV.put(CommonNames.MissingSearchText, "Fyll i sökkriterier!");
     COMMON_MAP_SV.put(CommonNames.MissingCatNum, "Fyll i samlings-id!");
     COMMON_MAP_SV.put(CommonNames.MissingFamily, "Fyll i familjnamn!");
     COMMON_MAP_SV.put(CommonNames.MissingGenus, "Fyll i släktnamn!");

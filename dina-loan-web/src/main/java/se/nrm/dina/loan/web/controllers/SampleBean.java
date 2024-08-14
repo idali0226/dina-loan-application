@@ -31,7 +31,21 @@ public class SampleBean implements Serializable {
     private final String notSpecifiedSv = "ej specifierad";
     private final String notSpecifiedEn = "Not specified";
     
-    private final String entomologyCode = "163840";
+    private final String catelogNumberKey = "+cn:";
+    private final String familyKey = " +family:";
+    private final String genusKey = " +genus:";
+//    private final String speciesKey = " +species:";
+    private final String txKey = " +tx:";
+    private final String wildCard = "*";
+    private final String searchAndStart = " +(";
+    private final String searchAndStop = ") ";
+    
+    private final String replaceString = "[\\[\\](),]";
+    private final String replaceChars = "(),";
+    
+    private final String searchCollections = " +collectionId:(163840 ev et ma va fish herps)"; 
+    
+//    private final String entomologyCode = "163840";
     
     
     private List<Sample> samples;
@@ -44,6 +58,13 @@ public class SampleBean implements Serializable {
     private String sbdiSearchUrl;
 
     private boolean isSwedish;
+    
+    private String catalogNumber;
+    private String family;
+    private String genus;
+    private String species;
+     
+    private boolean showSearchResult;
     
     @Inject
     private Message message;
@@ -62,7 +83,8 @@ public class SampleBean implements Serializable {
     @PostConstruct
     public void init() {  
         selectedCatalogNumbers = new ArrayList();
-        sbdiBaseUrl = form.getSbdiBaseUrl();  
+        sbdiBaseUrl = form.getSbdiBaseUrl();   
+        showSearchResult = false;
     }
     
     public void resetLocale(boolean isSwedish) {
@@ -96,6 +118,101 @@ public class SampleBean implements Serializable {
 
         sbdiSearchUrl = sbdiBaseUrl + taxa;
     }
+    
+    private String buildSearchText() {
+        log.info("buildSearchText");
+          
+        catalogNumber = catalogNumber.trim();
+        family = family.trim();
+        genus = genus.trim();
+        species = species.trim();
+        
+        StringBuilder sb = new StringBuilder();
+        if(catalogNumber != null && !catalogNumber.isEmpty()) {
+            sb.append(catelogNumberKey);
+            sb.append(catalogNumber);
+        }
+        
+        if(family != null && !family.trim().isEmpty()) {
+            sb.append(familyKey);
+            sb.append(StringUtils.capitalize(family)); 
+        }
+        
+        if(genus.trim() != null && !genus.isEmpty()) {
+            sb.append(genusKey);
+            sb.append(StringUtils.capitalize(genus));
+        }
+        
+        if(species != null && !species.isEmpty()) {
+//            species = StringUtils.capitalize(species);
+            if(StringUtils.containsAny(species, replaceChars)) {
+                replaceChars(species);
+            }
+            String[] strings = species.split(emptySpace);
+            
+            if (strings.length > 1) {
+                sb.append(searchAndStart);
+                for (String s : strings) {
+                    if (!s.isEmpty()) { 
+                        sb.append(txKey);
+                        sb.append(wildCard);
+                        sb.append(s);
+                        sb.append(wildCard);
+                        sb.append(emptySpace);
+                    }
+                }
+                sb.append(searchAndStop);
+            } else {
+                sb.append(txKey);  
+                sb.append(wildCard);
+                sb.append(species); 
+                sb.append(wildCard);
+                sb.append(emptySpace);
+            } 
+        }
+        if(!sb.toString().isEmpty()) {
+            sb.append(searchCollections);
+        }
+        return sb.toString().trim();
+    }
+    
+    private String replaceChars(String value) {  
+        return value.replaceAll(replaceString, emptySpace).trim();
+    }
+    
+    public void searchFromNrmCollections() {
+        log.info("searchFromNrmCollections : {}", sample);
+
+        showSearchResult = false;
+        isSwedish = form.isSwedish();
+        records = new ArrayList<>();
+        String searchText = buildSearchText();
+        
+        log.info("searchtext : {} -- {}", searchText, searchText.isEmpty());
+        if(searchText.isEmpty()) {
+            sample = new Sample();
+            sample.setType(NameMapping.getMsgByKey(CommonNames.PreservationTypeNotSpecified, isSwedish));
+            message.addError(emptyString, 
+                    NameMapping.getMsgByKey(CommonNames.MissingSearchText, isSwedish)); 
+        } else {
+            records = solr.searchFromNrmCollections(StringUtils.capitalize(searchText)); 
+    
+            if (records == null || records.isEmpty()) {
+                sample = new Sample();
+                sample.setType(NameMapping.getMsgByKey(CommonNames.PreservationTypeNotSpecified, isSwedish));
+                message.addInfo(emptyString, 
+                        NameMapping.getMsgByKey(CommonNames.NoResults, isSwedish));
+            } else {
+                log.info("number of records : {}", records.size());
+                buildSolrResult(isSwedish);
+            }
+            
+            catalogNumber = null;
+            family = null;
+            genus = null;
+            species = null;
+        } 
+    }
   
     public void searchWithCatalogNumber() {
         log.info("searchWithCatalogNumber : {}", sample.getCatalogNumber());
@@ -108,7 +225,6 @@ public class SampleBean implements Serializable {
                     NameMapping.getMsgByKey(CommonNames.MissingCatNum, isSwedish));
         } else {
             records = solr.searchByCatalogNumber(sample.getCatalogNumber());
-
             if (records == null || records.isEmpty()) {
                 sample = new Sample();
                 message.addInfo(emptyString, 
@@ -199,11 +315,13 @@ public class SampleBean implements Serializable {
                 }
                 sample = new Sample(record.getCatalogNum(), 
                         record.getFamily(), record.getGenus(), 
-                        record.getFullname(), record.getLocality(), 
+                        record.getFullname(), record.getSpecies(),
+                        record.getLocality(), 
                         record.getCountry(), record.getCollectedYear(), 
                         record.getAuth(), record.getCollectors(), 
                         record.getType(), preparation, 
                         record.getStorageString(), emptyString);
+                showSearchResult = true;
             }
         }
     }
@@ -230,7 +348,7 @@ public class SampleBean implements Serializable {
             }
             if (!isDuplicated) {
                 samples.add(sample);
-                cleartaxafields();
+                cleartaxafields();  
             } 
         } 
     }
@@ -254,12 +372,15 @@ public class SampleBean implements Serializable {
             preparation = NameMapping.getMsgByKey(CommonNames.PreservationTypeNotSpecified, isSwedish);
         }
         sample = new Sample(selectedRecord.getCatalogNum(), 
-                selectedRecord.getFamily(), selectedRecord.getGenus(), selectedRecord.getFullname(),
+                selectedRecord.getFamily(), selectedRecord.getGenus(),
+                selectedRecord.getFullname(), selectedRecord.getSpecies(), 
                 selectedRecord.getLocality(), selectedRecord.getCountry(), 
                 selectedRecord.getCollectedYear(), selectedRecord.getAuth(),
                 selectedRecord.getCollectors(), selectedRecord.getType(), 
                 preparation, selectedRecord.getStorageString(), emptyString);
 
+        showSearchResult = true;
+        
         PrimeFaces current = PrimeFaces.current();
         current.executeScript("PF('speciesDlg').hide();");
     }
@@ -271,6 +392,12 @@ public class SampleBean implements Serializable {
 
         sample = new Sample();
         sample.setType(NameMapping.getMsgByKey(CommonNames.PreservationTypeNotSpecified, isSwedish)); 
+        
+        catalogNumber = null;
+        family = null;
+        genus = null;
+        species = null;
+        showSearchResult = false;
     }
     
     public boolean isIsEmptySample() {
@@ -316,6 +443,46 @@ public class SampleBean implements Serializable {
 
     public void setSelectedRecord(SolrRecord selectedRecord) {
         this.selectedRecord = selectedRecord;
+    } 
+
+    public String getCatalogNumber() {
+        return catalogNumber;
     }
 
+    public void setCatalogNumber(String catalogNumber) {
+        this.catalogNumber = catalogNumber;
+    }
+
+    public String getFamily() {
+        return family;
+    }
+
+    public void setFamily(String family) {
+        this.family = family;
+    }
+ 
+    public String getGenus() {
+        return genus;
+    }
+
+    public void setGenus(String genus) {
+        this.genus = genus;
+    }
+
+
+
+    public String getSpecies() {
+        return species;
+    }
+
+    public void setSpecies(String species) {
+        this.species = species;
+    }
+
+    public boolean isShowSearchResult() {
+        return showSearchResult;
+    }
+    
+    
+    
 }

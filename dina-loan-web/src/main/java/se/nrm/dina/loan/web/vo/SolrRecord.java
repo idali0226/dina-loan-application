@@ -24,6 +24,9 @@ public class SolrRecord implements Serializable {
     String collectionId;
        
     @Field("species")
+    String species; 
+    
+    @Field("txFullName")
     String fullname; 
     
     @Field("family")
@@ -88,6 +91,16 @@ public class SolrRecord implements Serializable {
     public void setFullname(String fullname) {
         this.fullname = fullname;
     } 
+
+    public String getSpecies() {
+        return species;
+    }
+
+    public void setSpecies(String species) {
+        this.species = species;
+    }
+    
+    
 
     public String getId() {
         return id;

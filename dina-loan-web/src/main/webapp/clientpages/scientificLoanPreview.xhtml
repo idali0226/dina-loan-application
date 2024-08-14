@@ -97,11 +97,25 @@
                                             <h:panelGrid columns="5" cellpadding="0" cellspacing="0"
                                                          style="font-size: 12px; font-family: Arial,sans-serif; padding-top: 10px;" 
                                                          rendered="#{not empty files.projectFile}" >
-                                                <p:outputLabel value="#{msg.attachment}:"  /> 
+                                                <p:outputLabel value="#{msg.descAttachment}:"  /> 
                                                 <p:spacer width="5" />
                                                 <p:outputLabel value="#{files.projectFileName}" />
                                                 <p:spacer width="20" />
                                                 <p:commandLink actionListener="#{files.removeProjectfile()}"  
+                                                               title="#{msg.btnremovefile}" 
+                                                               update="summaryPanel" global="false"  > 
+                                                    <h:graphicImage name="images/button_remove.gif" styleClass="images" /> 
+                                                </p:commandLink>  
+                                            </h:panelGrid> 
+                                            
+                                            <h:panelGrid columns="5" cellpadding="0" cellspacing="0"
+                                                         style="font-size: 12px; font-family: Arial,sans-serif; padding-top: 10px;" 
+                                                         rendered="#{not empty files.typeFileName}" >
+                                                <p:outputLabel value="#{msg.typeAttachment}:"  /> 
+                                                <p:spacer width="5" />
+                                                <p:outputLabel value="#{files.typeFileName}" />
+                                                <p:spacer width="20" />
+                                                <p:commandLink actionListener="#{files.removeTypefile()}"  
                                                                title="#{msg.btnremovefile}" 
                                                                update="summaryPanel" global="false"  > 
                                                     <h:graphicImage name="images/button_remove.gif" styleClass="images" /> 

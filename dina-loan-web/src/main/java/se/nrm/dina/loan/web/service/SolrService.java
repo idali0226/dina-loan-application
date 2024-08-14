@@ -1,8 +1,7 @@
 package se.nrm.dina.loan.web.service;
 
 import java.io.IOException;
-import java.io.Serializable; 
-import java.util.ArrayList;
+import java.io.Serializable;  
 import java.util.List; 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -15,8 +14,7 @@ import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.request.QueryRequest;
 import org.apache.solr.client.solrj.response.QueryResponse; 
 import se.nrm.dina.loan.web.config.InitialProperties;
-import se.nrm.dina.loan.web.vo.SolrRecord;
-import se.nrm.dina.mongodb.loan.vo.Sample;
+import se.nrm.dina.loan.web.vo.SolrRecord; 
 
 /**
  *
@@ -43,12 +41,12 @@ public class SolrService implements Serializable {
     private final String searchAndStop = ") ";
     
     private final String emptySpace = " ";
-    private final String comma = ",";
+//    private final String comma = ",";
 //    private final String parenthesesStart = "(";
 //    private final String parenthesesEnd = ")";
     private final String replaceChars = "(),";
     
-    private String searchCollectionText;
+//    private String searchCollectionText;
     
     
     private String username;
@@ -71,22 +69,19 @@ public class SolrService implements Serializable {
         password = properties.getSolrPassword(); 
     }
     
-    
-    public  SolrRecord searchByCatalogNumberOld(String catalognumber) {
-        log.info("searchCatalogNumber :{}", catalognumber);
- 
-        String searchText = catelogNumberKey + catalognumber + searchCollections;
-        log.info("search text : {}", searchText);
-         
+    public List<SolrRecord> searchFromNrmCollections(String text) {
+        log.info("searchFromNrmCollections : {}", text);
+        
         solrQuery = new SolrQuery();
-        solrQuery.setQuery(searchText); 
+        solrQuery.setQuery(text); 
+        solrQuery.setRows(size);
         request = new QueryRequest(solrQuery);
         request.setBasicAuthCredentials(username, password); 
            
         try { 
             response = request.process(client); 
-            if (response.getResults().getNumFound() > 0) { 
-                return response.getBeans(SolrRecord.class).get(0);
+            if (response.getResults().getNumFound() > 0) {
+                return response.getBeans(SolrRecord.class);
             }  
         } catch (SolrServerException | IOException ex) {            
             log.error(ex.getMessage());
@@ -94,7 +89,8 @@ public class SolrService implements Serializable {
         }     
         return null;
     }
- 
+    
+    
     public List<SolrRecord> searchByCatalogNumber(String catalognumber) {
         log.info("searchCatalogNumber :{}", catalognumber);
  
@@ -213,18 +209,52 @@ public class SolrService implements Serializable {
         return sb.toString().trim();
     }
     
-//    private String buildSearchFamilyText(String family) {
-//        
-//        if(StringUtils.containsAny(family, replaceChars)) {
-//            replaceChars(family);
+
+    
+    
+    
+    
+
+//    public List<SolrRecord> searchByTaxa(Sample sample, String field, String catalogNumbers) {
+//        log.info("searchByTaxa :{}", sample);
+// 
+//        List<SolrRecord> solrRecords = new ArrayList<>();
+//////    String searchText = isLocal ? buildSearchTextStringLocal(sample, field, catalogNumbers) :
+//////      buildSearchTextStringRemote(sample, field, catalogNumbers);
+//
+//
+//        String searchText = buildSearchTextStringRemote(sample, field, catalogNumbers);
+//        log.info("searchByTaxa: search text : {}", searchText);
+////        try {
+////            solrQuery = new SolrQuery();
+////            solrQuery.setQuery(searchText);
+////
+////            solrQuery.setStart(0);
+////            solrQuery.setRows(5000);
+////            QueryResponse response = solrServer.query(solrQuery);
+////
+////            solrRecords = response.getBeans(SolrRecord.class);
+////            logger.info("solrRecords : {}", solrRecords != null ? solrRecords.size() : 0);
+////        } catch (SolrServerException ex) {
+////            logger.warn(ex.getMessage());
+////        }
+//        return null;
+////        return solrRecords;
+//    }
+
+//    private void buildSubString(String text, String field, StringBuilder sb) {
+//
+//        if (text.contains("(") || text.contains(")") || text.contains(comma)) {
+//            replaceChars(text);
 //        }
-//        String[] strings = family.split(emptySpace);
-//        StringBuilder sb = new StringBuilder();
+//
+//        String[] strings = text.split(emptySpace);
 //        if (strings.length > 1) {
 //            sb.append("+(");
 //            for (String s : strings) {
-//                if (!s.isEmpty()) { 
-//                    sb.append(familyKey);
+//                if (!s.isEmpty()) {
+//                    sb.append("+");
+//                    sb.append(field);
 //                    sb.append(":*");
 //                    sb.append(s);
 //                    sb.append("* ");
@@ -232,109 +262,49 @@ public class SolrService implements Serializable {
 //            }
 //            sb.append(") ");
 //        } else {
-//            sb.append(familyKey); 
+//            sb.append("+");
+//            sb.append(field);
 //            sb.append(":*");
-//            sb.append(family);
+//            sb.append(text);
 //            sb.append("* ");
-//        } 
-//        sb.append(searchCollections);
+//        }
+//    }
+
+//    private String buildSearchTextStringRemote(Sample sample, String field, String catalogNumbers) {
+//        log.info("buildSearchTextStringRemote: sample : {} -- {}", 
+//                sample.getFamily(), field);
+//        StringBuilder sb = new StringBuilder();
+//
+//        if (sample.getFamily() != null && !sample.getFamily().isEmpty()) {
+//            buildSubString(sample.getFamily(), "family", sb);
+//        }
+//        log.info("buildSearchTextStringRemote : {}", sb.toString());
+//        switch (field) {
+//            case "sp":
+//                if (sample.getGenus() != null && !sample.getGenus().isEmpty()) {
+//                    buildSubString(sample.getGenus(), "species", sb);
+//                }
+//                if (sample.getSpecies() != null && !sample.getSpecies().isEmpty()) {
+//                    buildSubString(sample.getSpecies(), "species", sb);
+//                }
+//                break;
+//            case "gn":
+//                if (sample.getGenus() != null && !sample.getGenus().isEmpty()) {
+//                    buildSubString(sample.getGenus(), "species", sb);
+//                }
+//                break;
+//        }
+//
+//        sb.append("+txRank:220");
+//
+//        if (catalogNumbers != null && !catalogNumbers.isEmpty()) {
+//            sb.append(" -cn:(");
+//            sb.append(catalogNumbers);
+//            sb.append(")");
+//        }
+//        sb.append(searchCollectionText);
 //        return sb.toString().trim();
 //    }
-    
-    
-    
-    
-
-    public List<SolrRecord> searchByTaxa(Sample sample, String field, String catalogNumbers) {
-        log.info("searchByTaxa :{}", sample);
- 
-        List<SolrRecord> solrRecords = new ArrayList<>();
-////    String searchText = isLocal ? buildSearchTextStringLocal(sample, field, catalogNumbers) :
-////      buildSearchTextStringRemote(sample, field, catalogNumbers);
-
-
-        String searchText = buildSearchTextStringRemote(sample, field, catalogNumbers);
-        log.info("searchByTaxa: search text : {}", searchText);
-//        try {
-//            solrQuery = new SolrQuery();
-//            solrQuery.setQuery(searchText);
-//
-//            solrQuery.setStart(0);
-//            solrQuery.setRows(5000);
-//            QueryResponse response = solrServer.query(solrQuery);
-//
-//            solrRecords = response.getBeans(SolrRecord.class);
-//            logger.info("solrRecords : {}", solrRecords != null ? solrRecords.size() : 0);
-//        } catch (SolrServerException ex) {
-//            logger.warn(ex.getMessage());
-//        }
-        return null;
-//        return solrRecords;
-    }
-
-    private void buildSubString(String text, String field, StringBuilder sb) {
-
-        if (text.contains("(") || text.contains(")") || text.contains(comma)) {
-            replaceChars(text);
-        }
-
-        String[] strings = text.split(emptySpace);
-        if (strings.length > 1) {
-            sb.append("+(");
-            for (String s : strings) {
-                if (!s.isEmpty()) {
-                    sb.append("+");
-                    sb.append(field);
-                    sb.append(":*");
-                    sb.append(s);
-                    sb.append("* ");
-                }
-            }
-            sb.append(") ");
-        } else {
-            sb.append("+");
-            sb.append(field);
-            sb.append(":*");
-            sb.append(text);
-            sb.append("* ");
-        }
-    }
-
-    private String buildSearchTextStringRemote(Sample sample, String field, String catalogNumbers) {
-        log.info("buildSearchTextStringRemote: sample : {} -- {}", 
-                sample.getFamily(), field);
-        StringBuilder sb = new StringBuilder();
-
-        if (sample.getFamily() != null && !sample.getFamily().isEmpty()) {
-            buildSubString(sample.getFamily(), "family", sb);
-        }
-        log.info("buildSearchTextStringRemote : {}", sb.toString());
-        switch (field) {
-            case "sp":
-                if (sample.getGenus() != null && !sample.getGenus().isEmpty()) {
-                    buildSubString(sample.getGenus(), "species", sb);
-                }
-                if (sample.getSpecies() != null && !sample.getSpecies().isEmpty()) {
-                    buildSubString(sample.getSpecies(), "species", sb);
-                }
-                break;
-            case "gn":
-                if (sample.getGenus() != null && !sample.getGenus().isEmpty()) {
-                    buildSubString(sample.getGenus(), "species", sb);
-                }
-                break;
-        }
-
-        sb.append("+txRank:220");
-
-        if (catalogNumbers != null && !catalogNumbers.isEmpty()) {
-            sb.append(" -cn:(");
-            sb.append(catalogNumbers);
-            sb.append(")");
-        }
-        sb.append(searchCollectionText);
-        return sb.toString().trim();
-    }
 
 //  private String buildSearchTextStringLocal(Sample sample, String field, String catalogNumbers) { 
 //    logger.info("buildSearchTextStringLocal: sample : {} -- {}", sample.getFamily(), sample.getGenus());

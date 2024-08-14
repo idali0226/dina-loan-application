@@ -59,6 +59,17 @@
                         </f:facet>
                     </p:cellEditor>   
                 </p:column> 
+                
+                <p:column headerText="#{msg.fullname}" width="120" style="font-size: 12px; ">     
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <p:outputLabel value="#{sample.fullName}"   />
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText id="fullNameInput" value="#{sample.fullName}" style="width:100%"/>
+                        </f:facet>
+                    </p:cellEditor>      
+                </p:column> 
 
                 <p:column headerText="#{msg.species}" width="120" style="font-size: 12px; ">     
                     <p:cellEditor>

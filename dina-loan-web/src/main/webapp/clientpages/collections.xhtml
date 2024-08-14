@@ -2,6 +2,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets" 
       xmlns:p="http://primefaces.org/ui"   
       xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
       xmlns:h="http://java.sun.com/jsf/html"    > 
     <head>
         <title>Collections</title>
@@ -12,7 +13,7 @@
                 <h:panelGroup styleClass="main" layout="block" id="collection"  > 
                     <ui:include src="/clientpages/breadcrumb.xhtml" />  
                     <h:form id="collectionForm"> 
-               
+
                         <h:panelGroup layout="block" id="collectionpanel"  styleClass="descriptionPage"  >   
                             <h:panelGroup layout="block" >
                                 <p:outputLabel value="#{msg.collectionPageTitle1}" 
@@ -25,15 +26,71 @@
                             </h:panelGroup> 
                             <br />
                             <br />  
-                            <h:panelGroup layout="block" id="collectionradiopanel">
-                                <h:selectOneRadio value="#{scientificLoanForm.selectedCollection}" id="collectionRedio"
-                                                  layout="pageDirection" styleClass="collectionlistradiofont"  > 
-                                    <f:selectItems value="#{scientificLoanForm.collectionItems}" />   
-                                    <p:ajax listener="#{scientificLoanForm.collectionChanged()}" event="change" 
-                                            global="false" update="collectionpanelbtn" />
-                                </h:selectOneRadio>  
-                            </h:panelGroup>   
- 
+
+                            <h:panelGroup layout="block" id="collectionradiopanel1">
+                                
+
+                                <p:accordionPanel widgetVar="accordion" 
+                                                  multiple="true"  >  
+                                    <p:ajax event="tabChange" listener="#{scientificLoanForm.onTabChange}" 
+                                            process="@this" />
+                                    <c:forEach items="#{scientificLoanForm.collectionItemMap.entrySet().toArray()}" 
+                                               var="value" varStatus="#{myStatus}">
+                                        <p:tab title="#{value.key}"   > 
+                                            <h:selectOneRadio value="#{scientificLoanForm.selectedCollection}"  
+                                                              layout="pageDirection" styleClass="collectionlistradiofont"  > 
+                                                <f:selectItems value="#{value.value}" />   
+                                                <p:ajax listener="#{scientificLoanForm.collectionChanged()}" 
+                                                        event="change" global="false" process="@this"
+                                                        update=":collectionForm:collectionpanelbtn :collectionForm:collectionradiopanel1" />
+                                            </h:selectOneRadio>  
+                                        </p:tab> 
+                                    </c:forEach>
+                                </p:accordionPanel> 
+
+                            </h:panelGroup> 
+
+
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            <ui:remove>
+                                    <ui:repeat value="#{scientificLoanForm.collectionItemMap.entrySet().toArray()}" 
+                                               var="value" id="collectionItemsPanel" varStatus="myStatus" > 
+                                        <p:accordionPanel activeIndex="#{scientificLoanForm.activeTab}" 
+                                                          widgetVar="accordion" 
+                                                          multiple="true">  
+                                            <p:tab title="#{value.key}"   >  
+                                                <h:selectOneRadio value="#{scientificLoanForm.selectedCollection}" 
+                                                                  id="collectionRedio"
+                                                                  layout="pageDirection" styleClass="collectionlistradiofont"  > 
+                                                    <f:selectItems value="#{value.value}" />   
+                                                    <p:ajax listener="#{scientificLoanForm.collectionChanged()}" 
+                                                            event="change" global="false" 
+                                                            update=":collectionForm:collectionpanelbtn :collectionForm:collectionradiopanel1" />
+                                                </h:selectOneRadio>  
+                                            </p:tab> 
+                                        </p:accordionPanel> 
+                                    </ui:repeat> 
+                                </ui:remove>
+
+                            <ui:remove>
+                                <h:panelGroup layout="block" id="collectionradiopanel">
+                                    <h:selectOneRadio value="#{scientificLoanForm.selectedCollection}" 
+                                                      id="collectionRedio1"
+                                                      layout="pageDirection" styleClass="collectionlistradiofont"  > 
+                                        <f:selectItems value="#{scientificLoanForm.collectionItems}" />   
+                                        <p:ajax listener="#{scientificLoanForm.collectionChanged()}" event="change" 
+                                                global="false" update="collectionpanelbtn" />
+                                    </h:selectOneRadio>  
+                                </h:panelGroup> 
+                            </ui:remove>
+
+
                             <br />
                             <br />
                             <br /> 

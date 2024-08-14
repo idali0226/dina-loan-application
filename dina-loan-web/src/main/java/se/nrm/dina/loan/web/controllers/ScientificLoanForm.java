@@ -5,28 +5,29 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.model.SelectItem;
-import javax.faces.model.SelectItemGroup;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.mail.MessagingException;
-import lombok.extern.slf4j.Slf4j; 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
+import org.primefaces.component.tabview.Tab;
+import org.primefaces.event.TabChangeEvent;
 import se.nrm.dina.loan.web.filehander.LoanFileHandler;
+import se.nrm.dina.loan.web.logic.InitialData;
 import se.nrm.dina.loan.web.pdf.PDFCreator;
-import se.nrm.dina.loan.web.service.MongoService; 
+import se.nrm.dina.loan.web.service.MongoService;
 import se.nrm.dina.loan.web.util.CommonNames;
 import se.nrm.dina.loan.web.util.CommonString;
 import se.nrm.dina.loan.web.util.NameMapping;
-import se.nrm.dina.loan.web.util.RequestType;    
-import se.nrm.dina.mongodb.loan.vo.Collection; 
-import se.nrm.dina.mongodb.loan.vo.Loan; 
+import se.nrm.dina.loan.web.util.RequestType;
+import se.nrm.dina.mongodb.loan.vo.Collection;
+import se.nrm.dina.mongodb.loan.vo.Loan;
 
 /**
  *
@@ -36,223 +37,266 @@ import se.nrm.dina.mongodb.loan.vo.Loan;
 @SessionScoped
 @Slf4j
 public class ScientificLoanForm implements Serializable {
-    
+
     private final String nameFiledKey = "name";
 //    private final String educationalPdf = "/pdf?pdf=education"; 
-    private final String scientificPdf = "/pdf?pdf=scientific"; 
+    private final String scientificPdf = "/pdf?pdf=scientific";
     private final String emptyString = "";
-    
+
     private final String emailFailStatus = "Email failed";
- 
-    private String requestType; 
+
+    private String requestType;
     private String selectedCollection;
-    
+
     private String additionInformation;
     private String photoInstruction;
     private String destractive;
-    
+
     private String loanPolicyPath;
-    
+
     private String citesNumber;
     private boolean noCITE = false;
-    
+
     private List<SelectItem> collectionItems;
     private Map<String, List<Collection>> map;
-    
+
+    private Map<String, SelectItem[]> collectionItemMap;
+    private List<Collection> collections;
+
     private String descriptionOfLoan;
     private String destructiveMethod;
     private boolean isPolicyRead;
-    
+
     private String servletPath;
-    
-    private Loan loan; 
-    private boolean isSwedish;  
-    
+
+    private Loan loan;
+    private boolean isSwedish;
+    private String[] activeTab;
+
     @Inject
-    private LoanForm form; 
+    private LoanForm form;
     @Inject
-    private LoanFileHandler fileHander; 
+    private LoanFileHandler fileHander;
     @Inject
-    private FileManager fileManager; 
+    private FileManager fileManager;
     @Inject
-    private PDFCreator pdf; 
+    private PDFCreator pdf;
     @Inject
-    private MongoService service;  
+    private MongoService service;
     @Inject
-    private Message message; 
+    private Message message;
     @Inject
-    private MailBuilder mailBuilder; 
+    private MailBuilder mailBuilder;
     @Inject
-    private BorrowerController borrower; 
+    private BorrowerController borrower;
     @Inject
     private SampleBean samples;
-     
-    public ScientificLoanForm() { 
+
+    @Inject
+    private InitialData data;
+
+    public ScientificLoanForm() {
     }
-    
+
     @PostConstruct
     public void init() {
         servletPath = form.getPdfPath();
-        loanPolicyPath = servletPath + scientificPdf; 
-        
-        requestType = RequestType.Physical.getText(); 
+        loanPolicyPath = servletPath + scientificPdf;
+
+        requestType = RequestType.Physical.getText();
         isPolicyRead = false;
-         
+
+        map = data.getMap();
+
         if (map == null || map.isEmpty()) {
             map = new LinkedHashMap<>();
             map = service.findAllScientificCollection();
+        } else {
+            collectionItemMap = new LinkedHashMap<>();
 
-            collectionItems = new ArrayList<>();
+            map.entrySet()
+                    .forEach(e -> {
+                        collections = e.getValue();
+                        SelectItem[] list = new SelectItem[collections.size()];
+                        int count = 0;
+                        for (Collection value : collections) {
+                            list[count] = new SelectItem(value.getName(), value.getName());
+                            count++;
+                        }
+                        collectionItemMap.put(e.getKey(), list);
+                    });
 
-            map.entrySet().stream().map((entry) -> {
-                SelectItemGroup group = new SelectItemGroup(entry.getKey());
-                SelectItem[] list = new SelectItem[entry.getValue().size()];
-                int count = 0;
-                for (Collection value : entry.getValue()) {
-                    list[count] = new SelectItem(value.getName(), value.getName());
-                    count++;
-                }
-                group.setSelectItems(list);
-                return group;
-            }).forEach((group) -> {
-                collectionItems.add(group);
-            });
+//            collectionItems = new ArrayList<>();
+//
+//            map.entrySet().stream().map((entry) -> {
+//                SelectItemGroup group = new SelectItemGroup(entry.getKey());
+//                SelectItem[] list = new SelectItem[entry.getValue().size()];
+//                int count = 0;
+//                for (Collection value : entry.getValue()) {
+//                    list[count] = new SelectItem(value.getName(), value.getName());
+//                    count++;
+//                }
+//                group.setSelectItems(list);
+//                return group;
+//            }).forEach((group) -> {
+//                collectionItems.add(group);
+//            });
+        }
+        activeTab = new String[collectionItemMap.size()];
+        for(int i = 0; i < collectionItemMap.size(); i++) {
+            activeTab[i] = "-1";
         }
     }
-  
+
     public void resetLocale(boolean isSwedish) {
-        this.isSwedish = isSwedish; 
+        this.isSwedish = isSwedish;
         samples.resetLocale(isSwedish);
     }
-    
+
     public void submit() throws MessagingException, Exception {
         log.info("submit");
- 
+
         loan = form.buildLoanInitialData();
         Collection collection = service.findCollection(selectedCollection, nameFiledKey);
 
         loan.setCurator(collection.getEmail());
         loan.setManager(collection.getManager());
         log.info("collection email : {} -- {}", collection.getManager(), collection.getEmail());
-           
+
         buildLoan();
         buildBorrow(borrower.isHasPrimaryUser());
-        
-        try { 
+
+        try {
             String path = fileHander.transferFiles(loan.getUuid());
-             
+
             pdf.createScientificLoanPDF(loan, requestType, isSwedish, path);
             service.saveLoan(loan);
             mailBuilder.buildEmail(loan, loanPolicyPath, servletPath,
-                    form.getLoanDocumentPath(), form.getAdminPath(), 
-                    isSwedish, borrower.isHasPrimaryUser()); 
-            
+                    form.getLoanDocumentPath(), form.getAdminPath(),
+                    isSwedish, borrower.isHasPrimaryUser());
+
             resetData();
         } catch (FileNotFoundException | DocumentException ex) {
             log.error(ex.getMessage());
             message.addError(emptyString,
-                    NameMapping.getMsgByKey(CommonNames.RequestFailed, isSwedish)); 
+                    NameMapping.getMsgByKey(CommonNames.RequestFailed, isSwedish));
             resetData();
             throw new Exception(NameMapping.getMsgByKey(CommonNames.RequestFailed, isSwedish));
-        } catch (MessagingException | UnsupportedEncodingException ex) { 
+        } catch (MessagingException | UnsupportedEncodingException ex) {
             log.error("sending email failed: {}", ex.getMessage());
             loan.setEmailFailed(true);
             loan.setStatus(emailFailStatus);
             service.updateLoan(loan);
-            message.addError(emptyString, 
+            message.addError(emptyString,
                     NameMapping.getMsgByKey(CommonNames.SendingEmailsFailed, isSwedish));
             resetData();
             throw new MessagingException(NameMapping.getMsgByKey(CommonNames.SendingEmailsFailed, isSwedish));
         } catch (IOException ex) {
             log.error(ex.getMessage());
             message.addError(emptyString,
-                    NameMapping.getMsgByKey(CommonNames.RequestFailed, isSwedish)); 
+                    NameMapping.getMsgByKey(CommonNames.RequestFailed, isSwedish));
             resetData();
             throw new Exception(NameMapping.getMsgByKey(CommonNames.RequestFailed, isSwedish));
         }
     }
-    
+
     private void buildLoan() {
-        
-        if(!RequestType.Information.isInformation(requestType)) {
+
+        if (!RequestType.Information.isInformation(requestType)) {
             loan.setCitesNumber(citesNumber);
             loan.setLoanDescription(descriptionOfLoan);
             if (fileManager.getProjectFile() != null) {
-                loan.setLoanDescriptionFile(fileManager.getProjectFileName()); 
+                loan.setLoanDescriptionFile(fileManager.getProjectFileName());
             }
-            if(isIsPhoto()) {
+            if (fileManager.getTypeFile() != null) {
+                loan.setTypeMaterialFile(fileManager.getTypeFileName());
+            }
+            if (isIsPhoto()) {
                 loan.setPhotoInstraction(photoInstruction);
                 if (fileManager.getPhotoInstructionFile() != null) {
                     loan.setPhotoInstractionFile(fileManager.getPhotoInstructionFileName());
-                } 
+                }
             } else {
                 loan.setDestructiveMethod(destructiveMethod);
                 if (fileManager.getDestructiveMethodFile() != null) {
                     loan.setDestructiveFile(fileManager.getDestructiveMethodFileName());
-                } 
+                }
             }
-        }  
+        }
         loan.setType(requestType);
         loan.setReleventCollection(selectedCollection);
         loan.setSampleSetAdditionalInfo(additionInformation);
-          
-        loan.setSamples(samples.getSamples()); 
+
+        loan.setSamples(samples.getSamples());
     }
-    
+
     private void buildBorrow(boolean hasPrimaryUser) {
         log.info("buildBorrow : {}", hasPrimaryUser);
-        
+
         loan.setBorrower(borrower.getUserFullName());
-        
-        if(hasPrimaryUser) {
+
+        if (hasPrimaryUser) {
             loan.setPrimaryUser(borrower.getPrimaryUser());
-            loan.setSecondaryUser(borrower.getUser()); 
+            loan.setSecondaryUser(borrower.getUser());
         } else {
-            loan.setPrimaryUser(borrower.getUser());  
-            loan.setSecondaryUser(null); 
+            loan.setPrimaryUser(borrower.getUser());
+            loan.setSecondaryUser(null);
         }
-        
+
     }
-    
-    public void resetData() {  
+
+    public void resetData() {
         log.info("resetData");
         requestType = RequestType.Physical.getText();
         selectedCollection = null;
         additionInformation = null;
-        photoInstruction = null; 
+        photoInstruction = null;
         citesNumber = null;
         noCITE = false;
         descriptionOfLoan = null;
         destructiveMethod = null;
         isPolicyRead = false;
-        
+
         destractive = null;
-        
+
         fileManager.setPhotoInstructionFile(null);
         fileManager.setPhotoInstructionFileName(null);
         fileManager.setProjectFile(null);
         fileManager.setProjectFileName(null);
+        fileManager.setTypeFile(null);
+        fileManager.setTypeFileName(null);
         fileManager.setDestructiveMethodFile(null);
         fileManager.setDestructiveMethodFileName(null);
-        
+
         borrower.resetData();
-        
+
         samples.resetData();
     }
-    
+
     public void onIsPolicyReadStatusChange() {
         log.info("onIsPolicyReadStatusChange : {}", isPolicyRead);
     }
-    
-    
+
     public void saveText() {
         log.info("saveText");
     }
-     
+
     public void collectionChanged() {
         log.info("collectionChanged : {}", selectedCollection);
+
+//        log.info("active tab : {}", activeTab);
     }
-     
+
+    public void onTabChange(TabChangeEvent event) {
+        log.info("active tab : {}", activeTab);
+        if (event != null) {
+            Tab tab = event.getTab();
+            if (tab != null) {
+                log.info("tab changed : {} -- {}", event.getTab().getChildCount(), event.getTab().getTitle());
+            }
+        }
+    }
+
     public void onCITESChanged() {
         log.info("onCITESChanged : {}", noCITE);
 
@@ -262,33 +306,32 @@ public class ScientificLoanForm implements Serializable {
             citesNumber = null;
         }
     }
-    
+
     public void selectDestractive() {
-        log.info("selectDestractive : {}", destractive);  
+        log.info("selectDestractive : {}", destractive);
     }
- 
+
     public void handleDesctractiveMethod() {
         log.info("handleProjectDescription : {}", destructiveMethod);
 //        setIsDestractiveMethodSet();
     }
- 
- 
+
     public boolean isSubmitBtnDisabled() {
         return isIsInformation() ? false : !isPolicyRead;
     }
- 
+
     public boolean isIsPhoto() {
         return RequestType.Photo.isPhoto(requestType);
     }
-    
+
     public boolean isIsInformation() {
-        return RequestType.Information.isInformation(requestType); 
+        return RequestType.Information.isInformation(requestType);
     }
-    
+
     public boolean isIsPhysical() {
-        return RequestType.Physical.isPhysical(requestType); 
+        return RequestType.Physical.isPhysical(requestType);
     }
-    
+
     public String getRequestType() {
         return requestType;
     }
@@ -319,8 +362,8 @@ public class ScientificLoanForm implements Serializable {
 
     public void setCollectionItems(List<SelectItem> collectionItems) {
         this.collectionItems = collectionItems;
-    } 
-     
+    }
+
     public String getAdditionInformation() {
         return additionInformation;
     }
@@ -344,7 +387,6 @@ public class ScientificLoanForm implements Serializable {
     public void setDestructiveMethod(String destructiveMethod) {
         this.destructiveMethod = destructiveMethod;
     }
-    
 
     public String getCitesNumber() {
         return citesNumber;
@@ -386,12 +428,27 @@ public class ScientificLoanForm implements Serializable {
             return false;
         }
     }
- 
+
     public void setDestractive(String destractive) {
         this.destractive = destractive;
     }
-    
-    public boolean isIsDestractiveLoan() {  
+
+    public boolean isIsDestractiveLoan() {
         return destractive == null ? false : Boolean.parseBoolean(destractive);
-    }  
+    }
+
+    public Map<String, SelectItem[]> getCollectionItemMap() {
+        return collectionItemMap;
+    }
+
+    public String[] getActiveTab() {
+        return activeTab;
+    }
+
+    public void setActiveTab(String[] activeTab) {
+        this.activeTab = activeTab;
+    }
+
+ 
+
 }

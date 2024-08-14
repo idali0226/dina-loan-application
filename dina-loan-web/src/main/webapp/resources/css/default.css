@@ -1059,3 +1059,9 @@ body .ui-inputfield {
 .ui-panel .ui-panel-titlebar {
     padding: 0px !important;
 }
+
+.ui-accordion-header  {
+    background: transparent;
+    font-size: 14px;
+    font-weight: bold;
+}

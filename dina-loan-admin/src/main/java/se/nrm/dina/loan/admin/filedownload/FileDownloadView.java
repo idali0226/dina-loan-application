@@ -50,6 +50,14 @@ public class FileDownloadView implements Serializable {
         download(filePath, loan.getLoanDescriptionFile());
     }
     
+    public void downloadTypematerialfile(Loan loan) {
+        log.info("downloadTypematerialfile : {}", loan);
+        
+        filePath = buildFilePath(loan.getUuid(), loan.getTypeMaterialFile()); 
+        download(filePath, loan.getTypeMaterialFile());
+    }
+    
+    
     public void downloadPhotoInstractionFile(Loan loan) {
         log.info("photoInstractionFile : {}", loan);
         

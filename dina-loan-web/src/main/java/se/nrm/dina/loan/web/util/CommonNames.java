@@ -7,6 +7,7 @@ package se.nrm.dina.loan.web.util;
 public enum CommonNames {
     
     NoResults,
+    MissingSearchText,
     MissingCatNum,
     MissingFamily,
     MissingGenus,

@@ -193,6 +193,19 @@
                                 <br /> 
                                 
                             </h:panelGroup> 
+                            
+                            <h:panelGroup layout="block"  rendered="#{not empty loan.typeMaterialFile}">
+                                <h:outputText value="Type material original description:  " /> 
+                                <h:outputText value="  #{loan.typeMaterialFile}  " /> 
+                                
+                                <p:commandLink id="downloadLink1" value="Download" ajax="false" 
+                                               actionListener="#{download.downloadTypematerialfile(loan)}">
+                                    <p:fileDownload value="#{download.file}" />
+                                </p:commandLink>
+                                <br />
+                                <br /> 
+                                
+                            </h:panelGroup> 
 
                             <h:panelGroup layout="block"  rendered="#{not empty loan.photoInstractionFile}"> 
                                 <h:outputText value="Photo instruction:  " /> 
@@ -313,24 +326,7 @@
                             <br /> 
                         </h:panelGroup>  
                      
-                        
-                        
-                        
-                        <ui:remove>
-                            
-                            <object type="application/pdf" data="#{pdf.getPdfFile(loan)}" height="750px" width="820px"  /> 
-                            <p:media value="#{pdf.getPdfFile(loan)}" height="750px" width="820px"  player="pdf">
-                            Your browser can't display pdf, <h:outputLink
-                                value="#{pdf.getPdfFile(loan)}">click</h:outputLink> to download pdf instead.
-                        </p:media> 
-                            <p:media value="#{pdf.getPdfFile(loan)}"  
-                                         height="750px" width="820px" player="pdf">
-                                    Your browser can't display pdf, 
-                                    <h:outputLink value="#{pdf.getPdfFile(loan)}" >
-                                        click
-                                    </h:outputLink> to download pdf instead.
-                                </p:media> 
-                        </ui:remove>
+                         
                         <p:media value="#{search.getAdminPdf(loan)}"  
                                  height="750px" width="820px" player="pdf" >
                             Your browser can't display pdf, 

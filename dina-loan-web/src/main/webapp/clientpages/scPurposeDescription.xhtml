@@ -38,35 +38,26 @@
                             <br />
                             <br />  
                             <h:panelGroup style="padding: 15px;" layout="block">
-                                <p:inputTextarea id="descLoanPage3"
+                                <h:panelGroup layout="block" style="width:  100%; ">
+                                    <p:inputTextarea id="descLoanPage3"
                                                  value="#{scientificLoanForm.descriptionOfLoan}" 
                                                  rows="7" cols="120" styleClass="contactfieldstext" >  
                                     <p:ajax event="keyup" global="false" 
                                             listener="#{scientificLoanForm.saveText()}" 
                                             update="projectDescriptionButtonPanel" />
-                                </p:inputTextarea>
+                                    </p:inputTextarea>
+                                </h:panelGroup> 
+                                <p:outputLabel value="#{msg.optional}:"  style="font-size: 14px; color: #424242;" />
+                                 
                             </h:panelGroup>
-
-
-                            <h:panelGroup style="width: 100%; float: right; " 
-                                          layout="block"  id="uploadfilePanel" >
-                                <p:outputLabel value="#{msg.purposePageUploadText1}" 
-                                                   style="font-size: 12px; font-weight: bold; color: #424242;" />
-                                <p:outputLabel value="#{msg.purposePageUploadText2}" 
-                                                   style="font-size: 12px; color: #424242;" />
-                                <br />
-                                <br />
-                                <h:panelGroup layout="block" style="width: 300px; float: right; ">
-                                    
-                                    
-                                    <p:outputLabel value="#{msg.optional}:" 
-                                                   style="font-size: 12px; color: #424242;" />
-                                    <br />
-                                    <p:outputLabel value="#{msg.attachfile}:" 
-                                                   style="font-size: 12px; color: #424242;" />    
-                                    <br />  
+ 
+                            
+                            <h:panelGroup style="width: 100%; float: right; "  layout="block"  id="uploadfilePanel" > 
+                           
+                                <h:panelGroup layout="block" style="width: 500px; float: right; ">
+                                    <br />   
                                     <p:fileUpload fileUploadListener="#{files.handleProjectFileUpload}" 
-                                                      mode="advanced"   label="#{msg.uploadfile}"  
+                                                      mode="advanced"   label="#{msg.browse}"  
                                                       invalidSizeMessage="#{msg.invalidfilesiz}"
                                                       auto="true" styleClass="originalbutton" 
                                                       sizeLimit="5000000"  
@@ -95,11 +86,49 @@
                             <br />  
                             <br />
                             <br />  
-                            <br /> 
-                            <br />
+                            <hr />
                             <br />  
+                            
+                            <p:outputLabel value="#{msg.purposePageTypeMaterialText1}" 
+                                                   style="font-size: 16px; font-weight: bold; color: #424242;  " />
+                            <br />
+                            <p:outputLabel value="#{msg.purposePageTypeMaterialText2}" 
+                                                   style="font-size: 12px; color: #424242;" />
                             <br /> 
+                            <br /> 
+                            <p:outputLabel value="#{msg.originalDesc}" 
+                                                   style="font-size: 12px; color: #424242;" />
+                            <h:panelGroup style="width: 100%; float: right; " layout="block"  id="uploadTypefilePanel" > 
+                           
+                                <h:panelGroup layout="block" style="width: 500px; float: right; ">
+                                    <br />   
+                                    <p:fileUpload fileUploadListener="#{files.handleTypeFileUpload}" 
+                                                      mode="advanced"   label="#{msg.browse}"  
+                                                      invalidSizeMessage="#{msg.invalidfilesiz}"
+                                                      auto="true" styleClass="originalbutton" 
+                                                      sizeLimit="5000000"  
+                                                      update="purposeDescpanel" />  
 
+                                    <h:panelGroup layout="block"  id="uploadedFilePanelType"  
+                                                  rendered="#{not empty files.typeFile}">  
+                                        <p:panel style="border: none; font-size: 12px; " > 
+                                            <p:outputLabel value="#{files.typeFileName}" 
+                                                           style="font-size: 12px; "/> 
+                                            <p:spacer width="10" />
+                                            <p:commandLink actionListener="#{files.removeProjectfile()}" 
+                                                           process="uploadfilePanel" 
+                                                           title="#{msg.btnremovefile}" 
+                                                           update="uploadTypefilePanel" 
+                                                           global="false"  > 
+                                                <h:graphicImage name="images/button_remove.gif" 
+                                                                styleClass="images" /> 
+                                            </p:commandLink> 
+                                        </p:panel>    
+                                    </h:panelGroup>
+                                </h:panelGroup>  
+                            </h:panelGroup>   
+                            
+                            
                             <h:panelGroup layout="block" style="width: 150px; float: right; margin-top: 20px;" 
                                           id="projectDescriptionButtonPanel"> 
                                 <p:commandButton value="#{msg.back}" action="#{viewBean.navigateIndexRequestType()}"

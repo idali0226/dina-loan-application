@@ -26,6 +26,7 @@ public class Loan implements Serializable {
     private String photoInstractionFile;
     private String loanDescription;
     private String loanDescriptionFile;
+    private String typeMaterialFile;
     private String exhPorpuseDesc;
     private String releventCollection;
     private String sampleSetAdditionalInfo;
@@ -156,6 +157,16 @@ public class Loan implements Serializable {
     public void setLoanDescriptionFile(String loanDescriptionFile) {
         this.loanDescriptionFile = loanDescriptionFile;
     }
+
+    public String getTypeMaterialFile() {
+        return typeMaterialFile;
+    }
+
+    public void setTypeMaterialFile(String typeMaterialFile) {
+        this.typeMaterialFile = typeMaterialFile;
+    }
+    
+    
 
     public String getReleventCollection() {
         return releventCollection;

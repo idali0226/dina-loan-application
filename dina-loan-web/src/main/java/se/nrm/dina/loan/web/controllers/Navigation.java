@@ -80,6 +80,7 @@ public class Navigation implements Serializable {
         log.info("gotoHomePage");
         style.setCurrentTab(1);
          
+        formView = homePath;
         redirectPage(homePath);
     }
     

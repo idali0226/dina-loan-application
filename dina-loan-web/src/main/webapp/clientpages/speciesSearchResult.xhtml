@@ -34,10 +34,15 @@
                               style="font-size: 12px;">
                         <h:outputText value="#{record.genus}" style="font-size: 11px;"/> 
                     </p:column>
+                    
+                    <p:column headerText="#{msg.fullname}" width="100"
+                              style="font-size: 12px;">
+                        <h:outputText value="#{record.fullname}" style="font-size: 11px;" />  
+                    </p:column>
 
                     <p:column headerText="#{msg.species}" width="100"
                               style="font-size: 12px;">
-                        <h:outputText value="#{record.fullname}" style="font-size: 11px;" />  
+                        <h:outputText value="#{record.species}" style="font-size: 11px;" />  
                     </p:column>
 
                     <p:column headerText="#{msg.author}" width="80"
