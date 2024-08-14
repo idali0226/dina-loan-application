@@ -30,20 +30,29 @@
                                 <br />
                                 <br />  
 
-
                                 <p:panel > 
                                     <h:selectOneRadio value="#{loan.department}" layout="pageDirection">
-                                        <f:selectItem itemValue="zoology" itemLabel="#{msg.zoology}" />	  
-                                        <f:selectItem itemValue="botany" itemLabel="#{msg.botany}" />
-                                        <f:selectItem itemValue="envionmentspecimenbank" itemLabel="#{msg.esb}" />	   	
-                                        <f:selectItem itemValue="geology" itemLabel="#{msg.geology}" />	   
-                                        <f:selectItem itemValue="palaeobiology" itemLabel="#{msg.palaeobiology}" />	   
+                                        <f:selectItem itemValue="zoology" itemLabel="#{msg.zoology}" />	   	   
                                         <p:ajax event="change"  listener="#{viewBean.departmentChanged()}" 
                                                 process="@this" global="false" 
                                                 update="collectionpanel  breadcrumbpanel departmentBtnPanel" />  
                                     </h:selectOneRadio> 
                                 </p:panel>  
 
+                                <ui:remove>
+                                    <p:panel > 
+                                        <h:selectOneRadio value="#{loan.department}" layout="pageDirection">
+                                            <f:selectItem itemValue="zoology" itemLabel="#{msg.zoology}" />	  
+                                            <f:selectItem itemValue="botany" itemLabel="#{msg.botany}" />
+                                            <f:selectItem itemValue="envionmentspecimenbank" itemLabel="#{msg.esb}" />	   	
+                                            <f:selectItem itemValue="geology" itemLabel="#{msg.geology}" />	   
+                                            <f:selectItem itemValue="palaeobiology" itemLabel="#{msg.palaeobiology}" />	   
+                                            <p:ajax event="change"  listener="#{viewBean.departmentChanged()}" 
+                                                    process="@this" global="false" 
+                                                    update="collectionpanel  breadcrumbpanel departmentBtnPanel" />  
+                                        </h:selectOneRadio> 
+                                    </p:panel>  
+                                </ui:remove>
                                 <br />
                                 <br /> 
 

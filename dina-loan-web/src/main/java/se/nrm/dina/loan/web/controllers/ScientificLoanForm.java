@@ -19,7 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.event.TabChangeEvent;
 import se.nrm.dina.loan.web.filehander.LoanFileHandler;
-import se.nrm.dina.loan.web.logic.InitialData;
+//import se.nrm.dina.loan.web.logic.InitialData;
 import se.nrm.dina.loan.web.pdf.PDFCreator;
 import se.nrm.dina.loan.web.service.MongoService;
 import se.nrm.dina.loan.web.util.CommonNames;
@@ -92,9 +92,8 @@ public class ScientificLoanForm implements Serializable {
     @Inject
     private SampleBean samples;
 
-    @Inject
-    private InitialData data;
-
+//    @Inject
+//    private InitialData data;
     public ScientificLoanForm() {
     }
 
@@ -106,25 +105,24 @@ public class ScientificLoanForm implements Serializable {
         requestType = RequestType.Physical.getText();
         isPolicyRead = false;
 
-        map = data.getMap();
-
+//        map = data.getMap();
         if (map == null || map.isEmpty()) {
             map = new LinkedHashMap<>();
             map = service.findAllScientificCollection();
-        } else {
-            collectionItemMap = new LinkedHashMap<>();
+        }
+        collectionItemMap = new LinkedHashMap<>();
 
-            map.entrySet()
-                    .forEach(e -> {
-                        collections = e.getValue();
-                        SelectItem[] list = new SelectItem[collections.size()];
-                        int count = 0;
-                        for (Collection value : collections) {
-                            list[count] = new SelectItem(value.getName(), value.getName());
-                            count++;
-                        }
-                        collectionItemMap.put(e.getKey(), list);
-                    });
+        map.entrySet()
+                .forEach(e -> {
+                    collections = e.getValue();
+                    SelectItem[] list = new SelectItem[collections.size()];
+                    int count = 0;
+                    for (Collection value : collections) {
+                        list[count] = new SelectItem(value.getName(), value.getName());
+                        count++;
+                    }
+                    collectionItemMap.put(e.getKey(), list);
+                });
 
 //            collectionItems = new ArrayList<>();
 //
@@ -141,9 +139,8 @@ public class ScientificLoanForm implements Serializable {
 //            }).forEach((group) -> {
 //                collectionItems.add(group);
 //            });
-        }
         activeTab = new String[collectionItemMap.size()];
-        for(int i = 0; i < collectionItemMap.size(); i++) {
+        for (int i = 0; i < collectionItemMap.size(); i++) {
             activeTab[i] = "-1";
         }
     }
@@ -448,7 +445,5 @@ public class ScientificLoanForm implements Serializable {
     public void setActiveTab(String[] activeTab) {
         this.activeTab = activeTab;
     }
-
- 
 
 }
