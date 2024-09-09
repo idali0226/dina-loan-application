@@ -31,7 +31,7 @@
                                 
 
                                 <p:accordionPanel widgetVar="accordion" 
-                                                  multiple="true"  >  
+                                                  multiple="true"  activeIndex="null">  
                                     <p:ajax event="tabChange" listener="#{scientificLoanForm.onTabChange}" 
                                             process="@this" />
                                     <c:forEach items="#{scientificLoanForm.collectionItemMap.entrySet().toArray()}" 
