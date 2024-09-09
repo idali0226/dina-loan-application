@@ -106,7 +106,8 @@ public class PDFCreator implements Serializable {
     }
     
     private void openDocuments(Loan loan, String path) throws FileNotFoundException, DocumentException {
-           
+        log.info("openDocuments");
+        
         StringBuilder sb = new StringBuilder();
         sb.append(path);
         sb.append(loanrequest);
@@ -129,6 +130,7 @@ public class PDFCreator implements Serializable {
     
 
     private void addTitle(Loan loan) throws DocumentException {
+        log.info("addTitle");
         paragraph = new Paragraph(CommonString.getLoanRequest(isSwedish), titleFont);
         paragraph.setAlignment(Element.ALIGN_CENTER);
         addEmptyLine(paragraph, 1);
@@ -141,6 +143,7 @@ public class PDFCreator implements Serializable {
     }
 
     private void addNonSecondaryBorrow(Loan loan) throws DocumentException {
+        log.info("addNonSecondaryBorrow");
         paragraph = new Paragraph(CommonString.getContactDetails(isSwedish), subTitleFont);
         addEmptyLine(paragraph, 2);
         document.add(paragraph);

@@ -198,7 +198,7 @@ public class ScientificLoanForm implements Serializable {
     }
 
     private void buildLoan() {
-
+        log.info("buildLoan");
         if (!RequestType.Information.isInformation(requestType)) {
             loan.setCitesNumber(citesNumber);
             loan.setLoanDescription(descriptionOfLoan);
@@ -285,7 +285,7 @@ public class ScientificLoanForm implements Serializable {
     }
 
     public void onTabChange(TabChangeEvent event) {
-        log.info("active tab : {}", activeTab);
+        log.info("onTabChange"); 
         if (event != null) {
             Tab tab = event.getTab();
             if (tab != null) {

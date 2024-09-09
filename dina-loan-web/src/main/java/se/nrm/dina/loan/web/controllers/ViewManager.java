@@ -1,8 +1,6 @@
 package se.nrm.dina.loan.web.controllers;
 
-import java.io.Serializable;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.io.Serializable; 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
