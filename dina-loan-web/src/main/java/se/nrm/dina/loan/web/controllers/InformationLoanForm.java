@@ -185,6 +185,7 @@ public class InformationLoanForm implements Serializable {
     }
 
     private void buildBorrow() {
+        borrower.setHasPrimaryUser(false);
         loan.setBorrower(borrower.getUserFullName());
         loan.setPrimaryUser(borrower.getUser());
         loan.setSecondaryUser(null);

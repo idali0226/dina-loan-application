@@ -1,6 +1,6 @@
 package se.nrm.dina.loan.web.controllers;
 
-import java.io.Serializable; 
+import java.io.Serializable;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -85,6 +85,8 @@ public class ViewManager implements Serializable {
 
         String requestType = scientificForm.getRequestType();
         log.info(requestType);
+ 
+        breadCrumb.resetNavigationPathForPurpose(LoanPurpose.ScientificPurpose);
         switch (requestType) {
             case "Photo":
                 breadCrumb.setPhotoElement();
@@ -96,6 +98,7 @@ public class ViewManager implements Serializable {
                 breadCrumb.setPhiscalElement();
                 break;
         }
+        scientificForm.resetData(false);
     }
 
     public void departmentChanged() {
@@ -106,7 +109,7 @@ public class ViewManager implements Serializable {
 
         breadCrumb.setIsImplementDepartmentPath(isImplemented);
         otherForm.resetData();
-        scientificForm.resetData();
+        scientificForm.resetData(true);
     }
 
     public void selectpurpose() {
@@ -116,21 +119,25 @@ public class ViewManager implements Serializable {
         switch (loanform.getPurpose()) {
             case "commercialartother":
                 loanPurpose = LoanPurpose.CommercialArtOther;
+                otherForm.resetData();
                 break;
             case "educationexhibition":
                 loanPurpose = LoanPurpose.EducationExhibition;
+                otherForm.resetData();
                 break;
             default:
                 loanPurpose = LoanPurpose.ScientificPurpose;
+                scientificForm.resetData(true);
                 break;
         }
+
         breadCrumb.resetNavigationPathForPurpose(loanPurpose);
     }
 
     public void goToHome() {
         log.info("goToHome");
         if (LoanPurpose.ScientificPurpose.isScientificPurpose(loanform.getPurpose())) {
-            scientificForm.resetData();
+            scientificForm.resetData(true);
         } else {
             log.info("other ....");
             otherForm.resetData();
@@ -265,11 +272,10 @@ public class ViewManager implements Serializable {
     }
 
     public void gotoScNonPhysicalLoanPreviewPage() {
-
+        log.info("gotoScNonPhysicalLoanPreviewPage");
         breadCrumb.setNextItem(breadCrumb.getContactItem(), breadCrumb.getReviewItem());
 
-        if (RequestType.Information.isInformation(scientificForm.getRequestType())) {
-
+        if (RequestType.Information.isInformation(scientificForm.getRequestType())) { 
             navigator.gotoScInformationLoanPreviewPage();
         } else {
             navigator.gotoScientificLoanPreviewPage();
@@ -305,7 +311,7 @@ public class ViewManager implements Serializable {
     private void gotoMailServerDownPage() {
         navigator.gotoMailServerDownPage();
     }
-    
+
     private void gotoRequestFailedPage() {
         navigator.gotoRequestFailedPage();
     }
@@ -454,10 +460,15 @@ public class ViewManager implements Serializable {
     }
 
     public void navigateIndexReview() {
-
+        log.info("navigateIndexReview");
         breadCrumb.setManuItem(breadCrumb.getReviewItem());
         if (loanform.isScientificLoan()) {
-            navigator.gotoScientificLoanPreviewPage();
+            if (RequestType.Physical.isPhysical(scientificForm.getRequestType())) {
+                navigator.gotoScientificLoanPreviewPage();
+            } else {
+                gotoScNonPhysicalLoanPreviewPage();
+            }
+            
         } else {
             navigator.gotoInformationLoanPreviewPage();
         }

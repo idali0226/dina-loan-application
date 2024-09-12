@@ -111,6 +111,8 @@ public class SampleBean implements Serializable {
         samples = new ArrayList<>();
         sample = new Sample();
         sample.setType(NameMapping.getMsgByKey(CommonNames.PreservationTypeNotSpecified, isSwedish));
+        
+        showSearchResult = false;
     }
         
     public void searchFromSbdi(String taxa) {

@@ -6,6 +6,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import se.nrm.dina.loan.web.util.CountryNames;
+import se.nrm.dina.loan.web.util.RequestType;
 import se.nrm.dina.mongodb.loan.vo.User;
 
 /**
@@ -82,6 +83,7 @@ public class BorrowerController implements Serializable {
     public void borrowerTitleChanged() {
         log.info("borrowerTitleChanged : {}", hasPrimaryUser);
 
+ 
         if (user.getTitle() != null && user.getTitle().contains(student)) {
             addPrimaryContact();
         }

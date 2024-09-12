@@ -113,7 +113,7 @@ public class MailBuilder implements Serializable {
             String documentPath, String adminPath, 
             boolean isSwedish,  boolean hasSecondaryBorrow)
             throws MessagingException, AddressException, UnsupportedEncodingException {  
-        log.info("buildEmail");
+        log.info("buildEmail : {}", hasSecondaryBorrow);
         
         emailMap = new HashMap<>();
         emailMap.put("isSwedish", String.valueOf(isSwedish));

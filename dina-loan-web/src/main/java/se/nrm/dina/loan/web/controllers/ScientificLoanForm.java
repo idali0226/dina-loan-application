@@ -161,23 +161,25 @@ public class ScientificLoanForm implements Serializable {
         log.info("collection email : {} -- {}", collection.getManager(), collection.getEmail());
 
         buildLoan();
+        
         buildBorrow(borrower.isHasPrimaryUser());
 
         try {
             String path = fileHander.transferFiles(loan.getUuid());
 
             pdf.createScientificLoanPDF(loan, requestType, isSwedish, path);
+            
             service.saveLoan(loan);
             mailBuilder.buildEmail(loan, loanPolicyPath, servletPath,
                     form.getLoanDocumentPath(), form.getAdminPath(),
                     isSwedish, borrower.isHasPrimaryUser());
 
-            resetData();
+            resetData(true);
         } catch (FileNotFoundException | DocumentException ex) {
             log.error(ex.getMessage());
             message.addError(emptyString,
                     NameMapping.getMsgByKey(CommonNames.RequestFailed, isSwedish));
-            resetData();
+            resetData(true);
             throw new Exception(NameMapping.getMsgByKey(CommonNames.RequestFailed, isSwedish));
         } catch (MessagingException | UnsupportedEncodingException ex) {
             log.error("sending email failed: {}", ex.getMessage());
@@ -186,13 +188,13 @@ public class ScientificLoanForm implements Serializable {
             service.updateLoan(loan);
             message.addError(emptyString,
                     NameMapping.getMsgByKey(CommonNames.SendingEmailsFailed, isSwedish));
-            resetData();
+            resetData(true);
             throw new MessagingException(NameMapping.getMsgByKey(CommonNames.SendingEmailsFailed, isSwedish));
         } catch (IOException ex) {
             log.error(ex.getMessage());
             message.addError(emptyString,
                     NameMapping.getMsgByKey(CommonNames.RequestFailed, isSwedish));
-            resetData();
+            resetData(true);
             throw new Exception(NameMapping.getMsgByKey(CommonNames.RequestFailed, isSwedish));
         }
     }
@@ -209,6 +211,7 @@ public class ScientificLoanForm implements Serializable {
                 loan.setTypeMaterialFile(fileManager.getTypeFileName());
             }
             if (isIsPhoto()) {
+                borrower.setHasPrimaryUser(false);
                 loan.setPhotoInstraction(photoInstruction);
                 if (fileManager.getPhotoInstructionFile() != null) {
                     loan.setPhotoInstractionFile(fileManager.getPhotoInstructionFileName());
@@ -219,6 +222,8 @@ public class ScientificLoanForm implements Serializable {
                     loan.setDestructiveFile(fileManager.getDestructiveMethodFileName());
                 }
             }
+        } else {
+            borrower.setHasPrimaryUser(false);
         }
         loan.setType(requestType);
         loan.setReleventCollection(selectedCollection);
@@ -242,9 +247,12 @@ public class ScientificLoanForm implements Serializable {
 
     }
 
-    public void resetData() {
+    public void resetData(boolean isDefaultRequestType) {
         log.info("resetData");
-        requestType = RequestType.Physical.getText();
+        if(isDefaultRequestType) {
+            requestType = RequestType.Physical.getText();
+        }
+        
         selectedCollection = null;
         additionInformation = null;
         photoInstruction = null;
