@@ -23,9 +23,11 @@ import se.nrm.dina.loan.web.vo.SolrRecord;
 @Slf4j
 public class SolrService implements Serializable {
    
-    private final String searchCollections = " +collectionId:(163840 ev et ma va fish herps)"; 
+    // private final String searchCollections = " +collectionId:(163840 ev et ma va fish herps)";
     
 //    private final static String EXCLUDED_COLLECTIONS = " -cln:(262144 294912 458752 491521)";
+
+  private final String searchCollections = " +collectionCode:(NHRS ev et MA AV PI HE";
  
     private final int size = 1000;
     private SolrQuery solrQuery;
