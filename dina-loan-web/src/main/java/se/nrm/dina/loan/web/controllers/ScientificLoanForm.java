@@ -110,6 +110,7 @@ public class ScientificLoanForm implements Serializable {
             map = new LinkedHashMap<>();
             map = service.findAllScientificCollection();
         }
+        
         collectionItemMap = new LinkedHashMap<>();
 
         map.entrySet()

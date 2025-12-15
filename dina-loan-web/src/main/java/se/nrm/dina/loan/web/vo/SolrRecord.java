@@ -20,13 +20,13 @@ public class SolrRecord implements Serializable {
     @Field("catalogNumber")
     String catalogNum;
       
-    @Field("collectionId")
+    @Field("collectionCode")
     String collectionId;
        
     @Field("species")
     String species; 
     
-    @Field("txFullName")
+    @Field("scientificName")
     String fullname; 
     
     @Field("family")
@@ -41,13 +41,13 @@ public class SolrRecord implements Serializable {
     @Field("country") 
     String country;
     
-    @Field("collector") 
+    @Field("collectors") 
     String[] collector;
     
-    @Field("author")
+    @Field("scientificNameAuthorship")
     String[] author;
     
-    @Field("prepration")
+    @Field("preparations")
     String[] preparations;
     
     @Field("preservation") 
@@ -61,17 +61,17 @@ public class SolrRecord implements Serializable {
     @Field("typeStatus")
     String type; 
     
-    @Field("startDate")
+    @Field("eventDate")
     Date startDate;
     
     private final String evCode = "ev";
     private final String etCode = "et";
-    private final String mammalCode = "ma";
-    private final String birdCode = "va";
-    private final String herpsCode = "herps";
-    private final String fishCode = "fish";
+    private final String mammalCode = "MA";
+    private final String birdCode = "AV";
+    private final String herpsCode = "HE";
+    private final String fishCode = "PI";
     
-    private final String entomologyCode = "163840";
+    private final String entomologyCode = "NHRS";
     
 //    @Field("img")
 //    String[] imgMbids;

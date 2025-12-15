@@ -6,7 +6,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
+//import org.apache.commons.lang.StringUtils;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery; 
 import org.apache.solr.client.solrj.SolrServerException; 
@@ -27,26 +27,26 @@ public class SolrService implements Serializable {
     
 //    private final static String EXCLUDED_COLLECTIONS = " -cln:(262144 294912 458752 491521)";
 
-  private final String searchCollections = " +collectionCode:(NHRS ev et MA AV PI HE";
+//  private final String searchCollections = " +collectionCode:(NHRS ev et MA AV PI HE)";
  
     private final int size = 1000;
     private SolrQuery solrQuery;
     private QueryRequest request;
     private QueryResponse response;
  
-    private final String catelogNumberKey = "+cn:";
-    private final String familyKey = "+family:";
-    private final String genusKey = "+genus:";
-    private final String speciesKey = "+species:";
-    private final String wildCard = "*";
-    private final String searchAndStart = "+(";
-    private final String searchAndStop = ") ";
+//    private final String catelogNumberKey = "+copy_catalogNumber:";
+//    private final String familyKey = "+family:";
+//    private final String genusKey = "+genus:";
+//    private final String speciesKey = "+species:";
+//    private final String wildCard = "*";
+//    private final String searchAndStart = "+(";
+//    private final String searchAndStop = ") ";
     
-    private final String emptySpace = " ";
+//    private final String emptySpace = " ";
 //    private final String comma = ",";
 //    private final String parenthesesStart = "(";
 //    private final String parenthesesEnd = ")";
-    private final String replaceChars = "(),";
+//    private final String replaceChars = "(),";
     
 //    private String searchCollectionText;
     
@@ -93,124 +93,124 @@ public class SolrService implements Serializable {
     }
     
     
-    public List<SolrRecord> searchByCatalogNumber(String catalognumber) {
-        log.info("searchCatalogNumber :{}", catalognumber);
- 
-        String searchText = catelogNumberKey + catalognumber + searchCollections;
-        log.info("search text : {}", searchText);
-         
-        solrQuery = new SolrQuery();
-        solrQuery.setQuery(searchText); 
-        request = new QueryRequest(solrQuery);
-        request.setBasicAuthCredentials(username, password); 
-           
-        try { 
-            response = request.process(client); 
-            if (response.getResults().getNumFound() > 0) {
-                return response.getBeans(SolrRecord.class);
-            }  
-        } catch (SolrServerException | IOException ex) {            
-            log.error(ex.getMessage());
-            return null;
-        }     
-        return null;
-    }
+//    public List<SolrRecord> searchByCatalogNumber(String catalognumber) {
+//        log.info("searchCatalogNumber :{}", catalognumber);
+// 
+//        String searchText = catelogNumberKey + catalognumber + searchCollections;
+//        log.info("search text : {}", searchText);
+//         
+//        solrQuery = new SolrQuery();
+//        solrQuery.setQuery(searchText); 
+//        request = new QueryRequest(solrQuery);
+//        request.setBasicAuthCredentials(username, password); 
+//           
+//        try { 
+//            response = request.process(client); 
+//            if (response.getResults().getNumFound() > 0) {
+//                return response.getBeans(SolrRecord.class);
+//            }  
+//        } catch (SolrServerException | IOException ex) {            
+//            log.error(ex.getMessage());
+//            return null;
+//        }     
+//        return null;
+//    }
      
-    public List<SolrRecord> searchByFamily(String family) {
-        log.info("searchByFamily :{}", family);
-           
-        solrQuery = new SolrQuery();
-        solrQuery.setQuery(buildSearchText(family, familyKey)); 
-        solrQuery.setRows(size);
-        request = new QueryRequest(solrQuery);
-        request.setBasicAuthCredentials(username, password); 
-            
-        try { 
-            response = request.process(client);  
-            if (response.getResults().getNumFound() > 0) {
-                log.info("result size : {}", response.getResults().getNumFound());  
-                return response.getBeans(SolrRecord.class);
-            }  
-        } catch (SolrServerException | IOException ex) {            
-            log.error(ex.getMessage());
-            return null;
-        }     
-        return null; 
-    }
+//    public List<SolrRecord> searchByFamily(String family) {
+//        log.info("searchByFamily :{}", family);
+//           
+//        solrQuery = new SolrQuery();
+//        solrQuery.setQuery(buildSearchText(family, familyKey)); 
+//        solrQuery.setRows(size);
+//        request = new QueryRequest(solrQuery);
+//        request.setBasicAuthCredentials(username, password); 
+//            
+//        try { 
+//            response = request.process(client);  
+//            if (response.getResults().getNumFound() > 0) {
+//                log.info("result size : {}", response.getResults().getNumFound());  
+//                return response.getBeans(SolrRecord.class);
+//            }  
+//        } catch (SolrServerException | IOException ex) {            
+//            log.error(ex.getMessage());
+//            return null;
+//        }     
+//        return null; 
+//    }
     
-    public List<SolrRecord> searchByGunes(String genus) {
-        log.info("searchByGunes :{}", genus);
-           
-        solrQuery = new SolrQuery();
-        solrQuery.setQuery(buildSearchText(genus, genusKey)); 
-        solrQuery.setRows(size);
-        request = new QueryRequest(solrQuery);
-        request.setBasicAuthCredentials(username, password); 
-           
-        try { 
-            response = request.process(client); 
-            if (response.getResults().getNumFound() > 0) {
-                return response.getBeans(SolrRecord.class);
-            }  
-        } catch (SolrServerException | IOException ex) {            
-            log.error(ex.getMessage());
-            return null;
-        }     
-        return null; 
-    }
+//    public List<SolrRecord> searchByGunes(String genus) {
+//        log.info("searchByGunes :{}", genus);
+//           
+//        solrQuery = new SolrQuery();
+//        solrQuery.setQuery(buildSearchText(genus, genusKey)); 
+//        solrQuery.setRows(size);
+//        request = new QueryRequest(solrQuery);
+//        request.setBasicAuthCredentials(username, password); 
+//           
+//        try { 
+//            response = request.process(client); 
+//            if (response.getResults().getNumFound() > 0) {
+//                return response.getBeans(SolrRecord.class);
+//            }  
+//        } catch (SolrServerException | IOException ex) {            
+//            log.error(ex.getMessage());
+//            return null;
+//        }     
+//        return null; 
+//    }
     
     
-    public List<SolrRecord> searchBySpecies(String species) {
-        log.info("searchBySpecies :{}", species);
-           
-        solrQuery = new SolrQuery();
-        solrQuery.setQuery(buildSearchText(species, speciesKey)); 
-        solrQuery.setRows(size);
-        request = new QueryRequest(solrQuery);
-        request.setBasicAuthCredentials(username, password); 
-           
-        try { 
-            response = request.process(client); 
-            if (response.getResults().getNumFound() > 0) {
-                return response.getBeans(SolrRecord.class);
-            }  
-        } catch (SolrServerException | IOException ex) {            
-            log.error(ex.getMessage());
-            return null;
-        }     
-        return null; 
-    }
+//    public List<SolrRecord> searchBySpecies(String species) {
+//        log.info("searchBySpecies :{}", species);
+//           
+//        solrQuery = new SolrQuery();
+//        solrQuery.setQuery(buildSearchText(species, speciesKey)); 
+//        solrQuery.setRows(size);
+//        request = new QueryRequest(solrQuery);
+//        request.setBasicAuthCredentials(username, password); 
+//           
+//        try { 
+//            response = request.process(client); 
+//            if (response.getResults().getNumFound() > 0) {
+//                return response.getBeans(SolrRecord.class);
+//            }  
+//        } catch (SolrServerException | IOException ex) {            
+//            log.error(ex.getMessage());
+//            return null;
+//        }     
+//        return null; 
+//    }
     
-    private String buildSearchText(String taxa, String field) {
-        if(StringUtils.containsAny(taxa, replaceChars)) {
-            replaceChars(taxa);
-        }
-        String[] strings = taxa.split(emptySpace);
-        StringBuilder sb = new StringBuilder();
-        if (strings.length > 1) {
-            sb.append(searchAndStart);
-            for (String s : strings) {
-                if (!s.isEmpty()) { 
-                    sb.append(field);
-                    sb.append(wildCard);
-                    sb.append(s);
-                    sb.append(wildCard);
-                    sb.append(emptySpace);
-                }
-            }
-            sb.append(searchAndStop);
-        } else {
-            sb.append(field); 
-            sb.append(wildCard);
-            sb.append(taxa);
-            sb.append(wildCard);
-            sb.append(emptySpace);
-        } 
-        sb.append(searchCollections);
-        log.info("search text : {}", sb.toString());
-        return sb.toString().trim();
-    }
-    
+//    private String buildSearchText(String taxa, String field) {
+//        if(StringUtils.containsAny(taxa, replaceChars)) {
+//            replaceChars(taxa);
+//        }
+//        String[] strings = taxa.split(emptySpace);
+//        StringBuilder sb = new StringBuilder();
+//        if (strings.length > 1) {
+//            sb.append(searchAndStart);
+//            for (String s : strings) {
+//                if (!s.isEmpty()) { 
+//                    sb.append(field);
+//                    sb.append(wildCard);
+//                    sb.append(s);
+//                    sb.append(wildCard);
+//                    sb.append(emptySpace);
+//                }
+//            }
+//            sb.append(searchAndStop);
+//        } else {
+//            sb.append(field); 
+//            sb.append(wildCard);
+//            sb.append(taxa);
+//            sb.append(wildCard);
+//            sb.append(emptySpace);
+//        } 
+//        sb.append(searchCollections);
+//        log.info("search text : {}", sb.toString());
+//        return sb.toString().trim();
+//    }
+//    
 
     
     
@@ -344,9 +344,8 @@ public class SolrService implements Serializable {
 //    return sb.toString().trim();
 //  }
     
-    private String replaceChars(String value) {
-//        String s = value.replaceAll("[\\[\\](),]", " ");
-//        return s.trim();
-        return value.replaceAll("[\\[\\](),]", " ").trim();
-    }
+//    private String replaceChars(String value) {
+// 
+//        return value.replaceAll("[\\[\\](),]", " ").trim();
+//    }
 }

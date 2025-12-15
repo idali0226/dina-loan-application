@@ -31,11 +31,11 @@ public class SampleBean implements Serializable {
     private final String notSpecifiedSv = "ej specifierad";
     private final String notSpecifiedEn = "Not specified";
     
-    private final String catelogNumberKey = "+cn:";
+    private final String catelogNumberKey = "+copy_catalogNumber:";
     private final String familyKey = " +family:";
     private final String genusKey = " +genus:";
 //    private final String speciesKey = " +species:";
-    private final String txKey = " +tx:";
+    private final String txKey = " +species:";
     private final String wildCard = "*";
     private final String searchAndStart = " +(";
     private final String searchAndStop = ") ";
@@ -43,7 +43,7 @@ public class SampleBean implements Serializable {
     private final String replaceString = "[\\[\\](),]";
     private final String replaceChars = "(),";
     
-    private final String searchCollections = " +collectionId:(163840 ev et ma va fish herps)"; 
+    private final String searchCollections = " +collectionCode:(NHRS ev et MA AV PI HE)"; 
     
 //    private final String entomologyCode = "163840";
     
@@ -216,90 +216,90 @@ public class SampleBean implements Serializable {
         } 
     }
   
-    public void searchWithCatalogNumber() {
-        log.info("searchWithCatalogNumber : {}", sample.getCatalogNumber());
+//    public void searchWithCatalogNumber() {
+//        log.info("searchWithCatalogNumber : {}", sample.getCatalogNumber());
+//
+//        isSwedish = form.isSwedish();
+//        records = new ArrayList<>();
+//        if (sample.getCatalogNumber().isEmpty()) {
+//            sample = new Sample();
+//            message.addError(emptyString, 
+//                    NameMapping.getMsgByKey(CommonNames.MissingCatNum, isSwedish));
+//        } else {
+//            records = solr.searchByCatalogNumber(sample.getCatalogNumber());
+//            if (records == null || records.isEmpty()) {
+//                sample = new Sample();
+//                message.addInfo(emptyString, 
+//                        NameMapping.getMsgByKey(CommonNames.NoResults, isSwedish));
+//            } else {
+//                buildSolrResult(isSwedish);
+//            }
+//        } 
+//    }
 
-        isSwedish = form.isSwedish();
-        records = new ArrayList<>();
-        if (sample.getCatalogNumber().isEmpty()) {
-            sample = new Sample();
-            message.addError(emptyString, 
-                    NameMapping.getMsgByKey(CommonNames.MissingCatNum, isSwedish));
-        } else {
-            records = solr.searchByCatalogNumber(sample.getCatalogNumber());
-            if (records == null || records.isEmpty()) {
-                sample = new Sample();
-                message.addInfo(emptyString, 
-                        NameMapping.getMsgByKey(CommonNames.NoResults, isSwedish));
-            } else {
-                buildSolrResult(isSwedish);
-            }
-        } 
-    }
+//    public void searchWithFamily() {
+//        log.info("searchWithFamily : {}", sample.getFamily());
+//
+//        isSwedish = form.isSwedish();
+//        records = new ArrayList<>();
+//        if (!sample.getFamily().isEmpty()) {
+//            records = solr.searchByFamily(StringUtils.capitalize(sample.getFamily())); 
+//            
+//            if (records == null || records.isEmpty()) {
+//                sample = new Sample();
+//                message.addInfo(emptyString, 
+//                        NameMapping.getMsgByKey(CommonNames.NoResults, isSwedish));
+//            } else {
+//                buildSolrResult(isSwedish);
+//            }
+//        } else {
+//            sample = new Sample();
+//            message.addError(emptyString, 
+//                    NameMapping.getMsgByKey(CommonNames.MissingFamily, isSwedish));
+//        }
+//    }
 
-    public void searchWithFamily() {
-        log.info("searchWithFamily : {}", sample.getFamily());
-
-        isSwedish = form.isSwedish();
-        records = new ArrayList<>();
-        if (!sample.getFamily().isEmpty()) {
-            records = solr.searchByFamily(StringUtils.capitalize(sample.getFamily())); 
-            
-            if (records == null || records.isEmpty()) {
-                sample = new Sample();
-                message.addInfo(emptyString, 
-                        NameMapping.getMsgByKey(CommonNames.NoResults, isSwedish));
-            } else {
-                buildSolrResult(isSwedish);
-            }
-        } else {
-            sample = new Sample();
-            message.addError(emptyString, 
-                    NameMapping.getMsgByKey(CommonNames.MissingFamily, isSwedish));
-        }
-    }
-
-    public void searchWithGenus() {
-        log.info("searchWithGenus");
-
-        isSwedish = form.isSwedish();
-        records = new ArrayList<>();
-        if (!sample.getGenus().isEmpty()) {
-            records = solr.searchByGunes(StringUtils.capitalize(sample.getGenus())); 
-            if (records == null || records.isEmpty()) {
-                sample = new Sample();
-                message.addInfo(emptyString, 
-                        NameMapping.getMsgByKey(CommonNames.NoResults, isSwedish));
-            } else {
-                buildSolrResult(isSwedish);
-            }
-        } else {
-            sample = new Sample();
-            message.addError(emptyString, 
-                    NameMapping.getMsgByKey(CommonNames.MissingGenus, isSwedish));
-        }
-    }
-
-    public void searchWithSpecies() {
-        log.info("searchWithSpecies : {}", sample);
-
-        isSwedish = form.isSwedish();
-        records = new ArrayList<>();
-        if (!sample.getSpecies().isEmpty()) {
-            records = solr.searchBySpecies(StringUtils.capitalize(sample.getSpecies())); 
-            if (records == null || records.isEmpty()) {
-                message.addInfo(emptyString, 
-                        NameMapping.getMsgByKey(CommonNames.NoResults, isSwedish));
-                sample = new Sample();
-            } else {
-                buildSolrResult(isSwedish);
-            }
-        } else {
-            sample = new Sample();
-            message.addError(emptyString, 
-                    NameMapping.getMsgByKey(CommonNames.MissingSpecies, isSwedish));
-        }
-    }
+//    public void searchWithGenus() {
+//        log.info("searchWithGenus");
+//
+//        isSwedish = form.isSwedish();
+//        records = new ArrayList<>();
+//        if (!sample.getGenus().isEmpty()) {
+//            records = solr.searchByGunes(StringUtils.capitalize(sample.getGenus())); 
+//            if (records == null || records.isEmpty()) {
+//                sample = new Sample();
+//                message.addInfo(emptyString, 
+//                        NameMapping.getMsgByKey(CommonNames.NoResults, isSwedish));
+//            } else {
+//                buildSolrResult(isSwedish);
+//            }
+//        } else {
+//            sample = new Sample();
+//            message.addError(emptyString, 
+//                    NameMapping.getMsgByKey(CommonNames.MissingGenus, isSwedish));
+//        }
+//    }
+//
+//    public void searchWithSpecies() {
+//        log.info("searchWithSpecies : {}", sample);
+//
+//        isSwedish = form.isSwedish();
+//        records = new ArrayList<>();
+//        if (!sample.getSpecies().isEmpty()) {
+//            records = solr.searchBySpecies(StringUtils.capitalize(sample.getSpecies())); 
+//            if (records == null || records.isEmpty()) {
+//                message.addInfo(emptyString, 
+//                        NameMapping.getMsgByKey(CommonNames.NoResults, isSwedish));
+//                sample = new Sample();
+//            } else {
+//                buildSolrResult(isSwedish);
+//            }
+//        } else {
+//            sample = new Sample();
+//            message.addError(emptyString, 
+//                    NameMapping.getMsgByKey(CommonNames.MissingSpecies, isSwedish));
+//        }
+//    }
     
     private void buildSolrResult(boolean isSwedish) {
 
@@ -471,8 +471,6 @@ public class SampleBean implements Serializable {
         this.genus = genus;
     }
 
-
-
     public String getSpecies() {
         return species;
     }
@@ -484,7 +482,4 @@ public class SampleBean implements Serializable {
     public boolean isShowSearchResult() {
         return showSearchResult;
     }
-    
-    
-    
 }
