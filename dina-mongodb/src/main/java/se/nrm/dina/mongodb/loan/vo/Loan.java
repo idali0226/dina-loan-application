@@ -320,8 +320,12 @@ public class Loan implements Serializable {
         this.comments = comments;
     }
 
-    public String getSecondaryBorrower() {
+    public String getSecondaryBorrower() { 
         return secondaryUser == null ? "" : secondaryUser.getFirstname() + " " + secondaryUser.getLastname();
+    }
+    
+    public String getPrimaryBorrower() { 
+        return primaryUser == null ? "" : primaryUser.getFirstname() + " " + primaryUser.getLastname();
     }
 
     public boolean isEmailFailed() {

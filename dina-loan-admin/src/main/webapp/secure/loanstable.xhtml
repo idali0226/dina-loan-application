@@ -114,11 +114,11 @@
                 </p:column>
 
                 <p:column headerText="Borrower" style="min-width:150px" 
-                          sortBy="#{loan.borrower}"  
-                          filterBy="#{loan.borrower}" 
+                          sortBy="#{loan.primaryBorrower}"  
+                          filterBy="#{loan.primaryBorrower}" 
                           footerText="contains" 
                           filterMatchMode="contains">
-                    <h:outputText value="#{loan.borrower}" />
+                    <h:outputText value="#{loan.primaryBorrower}" />
                 </p:column>
 
                 <p:column headerText="2ndry Borrower"  style="min-width:150px" 
