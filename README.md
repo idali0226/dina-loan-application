@@ -16,6 +16,62 @@ The Loan Management Application is a Java-based web application designed for man
 *   **Search Engine**: Apache Solr 8.1.1
 *   **Testing**: JUnit 4, PowerMock 2.0.9, Mockito 1.7.4
 
+## System Architecture
+
+```mermaid
+    graph LR
+        %% Styling
+        classDef actor fill:#f9f,stroke:#333,stroke-width:2px;
+        classDef ui fill:#e1f5fe,stroke:#0277bd,stroke-width:2px;
+        classDef service fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
+        classDef db fill:#fff3e0,stroke:#ef6c00,stroke-width:2px;
+
+        User([User]):::actor
+        Admin([Administrator]):::actor
+
+        subgraph UI_Layer [User Interface]
+            direction TB
+            Web[dina-loan-web]:::ui
+            AdminApp[dina-loan-admin]:::ui
+        end
+
+        subgraph Service_Layer [Services]
+            direction TB
+            Manager[dina-manager]:::service
+            MongoMod[dina-mongodb]:::service
+            Email[dina-email]:::service
+        end
+
+        subgraph Data_Layer [Infrastructure]
+            direction TB
+            MySQL[(MySQL)]:::db
+            MongoDB[(MongoDB)]:::db
+            SMTP[SMTP Server]:::db
+            Solr[(Apache Solr)]:::db
+        end
+
+        %% Connections
+        User -->|Access| Web
+        Admin -->|Access| AdminApp
+
+        Web -->|Account Mgmt| Manager
+        AdminApp -->|Account Mgmt| Manager
+
+        Web -->|Data| MongoMod
+        AdminApp -->|Data| MongoMod
+
+        Web -->|Notify| Email
+        AdminApp -->|Notify| Email
+        
+        Web -->|Search| Solr
+
+        Manager -->|Persistence| MySQL
+        MongoMod -->|Persistence| MongoDB
+        Email -->|Send| SMTP
+
+```
+
+
 ## Project Structure
 
 The project is organized into several Maven modules:
